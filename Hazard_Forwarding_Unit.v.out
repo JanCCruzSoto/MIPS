@@ -1,0 +1,226 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000001b84dc9d260 .scope module, "Hazard_Forwarding_Unit" "Hazard_Forwarding_Unit" 2 1;
+ .timescale 0 0;
+    .port_info 0 /OUTPUT 2 "fwdA";
+    .port_info 1 /OUTPUT 2 "fwdB";
+    .port_info 2 /OUTPUT 1 "stallPC";
+    .port_info 3 /OUTPUT 1 "stallNPC";
+    .port_info 4 /OUTPUT 1 "stallIFID";
+    .port_info 5 /OUTPUT 1 "controlMux";
+    .port_info 6 /INPUT 1 "enableEX";
+    .port_info 7 /INPUT 1 "enableMEM";
+    .port_info 8 /INPUT 1 "enableWB";
+    .port_info 9 /INPUT 1 "loadEX";
+    .port_info 10 /INPUT 5 "regEX";
+    .port_info 11 /INPUT 5 "regMEM";
+    .port_info 12 /INPUT 5 "regWB";
+    .port_info 13 /INPUT 5 "operandA";
+    .port_info 14 /INPUT 5 "operandB";
+v000001b84dc734b0_0 .var "controlMux", 0 0;
+o000001b84dcabf78 .functor BUFZ 1, C4<z>; HiZ drive
+v000001b84dc73820_0 .net "enableEX", 0 0, o000001b84dcabf78;  0 drivers
+o000001b84dcabfa8 .functor BUFZ 1, C4<z>; HiZ drive
+v000001b84dc730e0_0 .net "enableMEM", 0 0, o000001b84dcabfa8;  0 drivers
+o000001b84dcabfd8 .functor BUFZ 1, C4<z>; HiZ drive
+v000001b84dca4e20_0 .net "enableWB", 0 0, o000001b84dcabfd8;  0 drivers
+v000001b84dca4ec0_0 .var "fwdA", 1 0;
+v000001b84ddcbc90_0 .var "fwdB", 1 0;
+o000001b84dcac068 .functor BUFZ 1, C4<z>; HiZ drive
+v000001b84ddcbd30_0 .net "loadEX", 0 0, o000001b84dcac068;  0 drivers
+o000001b84dcac098 .functor BUFZ 5, C4<zzzzz>; HiZ drive
+v000001b84dcf4fd0_0 .net "operandA", 4 0, o000001b84dcac098;  0 drivers
+o000001b84dcac0c8 .functor BUFZ 5, C4<zzzzz>; HiZ drive
+v000001b84dcf5070_0 .net "operandB", 4 0, o000001b84dcac0c8;  0 drivers
+o000001b84dcac0f8 .functor BUFZ 5, C4<zzzzz>; HiZ drive
+v000001b84dcf5110_0 .net "regEX", 4 0, o000001b84dcac0f8;  0 drivers
+o000001b84dcac128 .functor BUFZ 5, C4<zzzzz>; HiZ drive
+v000001b84dcf51b0_0 .net "regMEM", 4 0, o000001b84dcac128;  0 drivers
+o000001b84dcac158 .functor BUFZ 5, C4<zzzzz>; HiZ drive
+v000001b84dcf5250_0 .net "regWB", 4 0, o000001b84dcac158;  0 drivers
+v000001b84dcf52f0_0 .var "stallIFID", 0 0;
+v000001b84dcf5390_0 .var "stallNPC", 0 0;
+v000001b84dcf5430_0 .var "stallPC", 0 0;
+E_000001b84ddc8c90/0 .event anyedge, v000001b84dc73820_0, v000001b84dcf4fd0_0, v000001b84dcf5110_0, v000001b84dc730e0_0;
+E_000001b84ddc8c90/1 .event anyedge, v000001b84dcf51b0_0, v000001b84dca4e20_0, v000001b84dcf5250_0, v000001b84dcf5070_0;
+E_000001b84ddc8c90/2 .event anyedge, v000001b84dca4ec0_0, v000001b84ddcbc90_0, v000001b84ddcbd30_0, v000001b84dcf5430_0;
+E_000001b84ddc8c90/3 .event anyedge, v000001b84dcf5390_0, v000001b84dcf52f0_0, v000001b84dc734b0_0;
+E_000001b84ddc8c90 .event/or E_000001b84ddc8c90/0, E_000001b84ddc8c90/1, E_000001b84ddc8c90/2, E_000001b84ddc8c90/3;
+    .scope S_000001b84dc9d260;
+T_0 ;
+    %wait E_000001b84ddc8c90;
+    %load/vec4 v000001b84dc73820_0;
+    %flag_set/vec4 9;
+    %flag_get/vec4 9;
+    %jmp/0 T_0.2, 9;
+    %load/vec4 v000001b84dcf4fd0_0;
+    %load/vec4 v000001b84dcf5110_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+T_0.2;
+    %flag_set/vec4 8;
+    %jmp/0 T_0.0, 8;
+    %pushi/vec4 1, 0, 2;
+    %jmp/1 T_0.1, 8;
+T_0.0 ; End of true expr.
+    %load/vec4 v000001b84dc730e0_0;
+    %flag_set/vec4 10;
+    %flag_get/vec4 10;
+    %jmp/0 T_0.5, 10;
+    %load/vec4 v000001b84dcf4fd0_0;
+    %load/vec4 v000001b84dcf51b0_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+T_0.5;
+    %flag_set/vec4 9;
+    %jmp/0 T_0.3, 9;
+    %pushi/vec4 2, 0, 2;
+    %jmp/1 T_0.4, 9;
+T_0.3 ; End of true expr.
+    %load/vec4 v000001b84dca4e20_0;
+    %flag_set/vec4 11;
+    %flag_get/vec4 11;
+    %jmp/0 T_0.8, 11;
+    %load/vec4 v000001b84dcf4fd0_0;
+    %load/vec4 v000001b84dcf5250_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+T_0.8;
+    %flag_set/vec4 10;
+    %jmp/0 T_0.6, 10;
+    %pushi/vec4 3, 0, 2;
+    %jmp/1 T_0.7, 10;
+T_0.6 ; End of true expr.
+    %pushi/vec4 0, 0, 2;
+    %jmp/0 T_0.7, 10;
+ ; End of false expr.
+    %blend;
+T_0.7;
+    %jmp/0 T_0.4, 9;
+ ; End of false expr.
+    %blend;
+T_0.4;
+    %jmp/0 T_0.1, 8;
+ ; End of false expr.
+    %blend;
+T_0.1;
+    %store/vec4 v000001b84dca4ec0_0, 0, 2;
+    %load/vec4 v000001b84dc73820_0;
+    %flag_set/vec4 9;
+    %flag_get/vec4 9;
+    %jmp/0 T_0.11, 9;
+    %load/vec4 v000001b84dcf5070_0;
+    %load/vec4 v000001b84dcf5110_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+T_0.11;
+    %flag_set/vec4 8;
+    %jmp/0 T_0.9, 8;
+    %pushi/vec4 1, 0, 2;
+    %jmp/1 T_0.10, 8;
+T_0.9 ; End of true expr.
+    %load/vec4 v000001b84dc730e0_0;
+    %flag_set/vec4 10;
+    %flag_get/vec4 10;
+    %jmp/0 T_0.14, 10;
+    %load/vec4 v000001b84dcf5070_0;
+    %load/vec4 v000001b84dcf51b0_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+T_0.14;
+    %flag_set/vec4 9;
+    %jmp/0 T_0.12, 9;
+    %pushi/vec4 2, 0, 2;
+    %jmp/1 T_0.13, 9;
+T_0.12 ; End of true expr.
+    %load/vec4 v000001b84dca4e20_0;
+    %flag_set/vec4 11;
+    %flag_get/vec4 11;
+    %jmp/0 T_0.17, 11;
+    %load/vec4 v000001b84dcf5070_0;
+    %load/vec4 v000001b84dcf5250_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %and;
+T_0.17;
+    %flag_set/vec4 10;
+    %jmp/0 T_0.15, 10;
+    %pushi/vec4 3, 0, 2;
+    %jmp/1 T_0.16, 10;
+T_0.15 ; End of true expr.
+    %pushi/vec4 0, 0, 2;
+    %jmp/0 T_0.16, 10;
+ ; End of false expr.
+    %blend;
+T_0.16;
+    %jmp/0 T_0.13, 9;
+ ; End of false expr.
+    %blend;
+T_0.13;
+    %jmp/0 T_0.10, 8;
+ ; End of false expr.
+    %blend;
+T_0.10;
+    %store/vec4 v000001b84ddcbc90_0, 0, 2;
+    %vpi_call 2 37 "$display", "Forwarding: fwdA=%b, fwdB=%b", v000001b84dca4ec0_0, v000001b84ddcbc90_0 {0 0 0};
+    %vpi_call 2 38 "$display", "Time: %t, Inputs: enableEX=%b, enableMEM=%b, enableWB=%b, loadEX=%b, regEX=%d, regMEM=%d, regWB=%d, operandA=%d, operandB=%d", $time, v000001b84dc73820_0, v000001b84dc730e0_0, v000001b84dca4e20_0, v000001b84ddcbd30_0, v000001b84dcf5110_0, v000001b84dcf51b0_0, v000001b84dcf5250_0, v000001b84dcf4fd0_0, v000001b84dcf5070_0 {0 0 0};
+    %load/vec4 v000001b84ddcbd30_0;
+    %flag_set/vec4 9;
+    %flag_get/vec4 9;
+    %jmp/0 T_0.20, 9;
+    %load/vec4 v000001b84dcf4fd0_0;
+    %load/vec4 v000001b84dcf5110_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %jmp/1 T_0.21, 4;
+    %load/vec4 v000001b84dcf5070_0;
+    %load/vec4 v000001b84dcf5110_0;
+    %cmp/e;
+    %flag_get/vec4 4;
+    %or;
+T_0.21;
+    %and;
+T_0.20;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.18, 8;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001b84dcf5430_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001b84dcf5390_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001b84dcf52f0_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001b84dc734b0_0, 0, 1;
+    %vpi_call 2 46 "$display", "Load-use Hazard Detected, Stalling: stallPC=%b, stallNPC=%b, stallIFID=%b, controlMux=%b", v000001b84dcf5430_0, v000001b84dcf5390_0, v000001b84dcf52f0_0, v000001b84dc734b0_0 {0 0 0};
+    %jmp T_0.19;
+T_0.18 ;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001b84dcf5430_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001b84dcf5390_0, 0, 1;
+    %pushi/vec4 1, 0, 1;
+    %store/vec4 v000001b84dcf52f0_0, 0, 1;
+    %pushi/vec4 0, 0, 1;
+    %store/vec4 v000001b84dc734b0_0, 0, 1;
+    %vpi_call 2 52 "$display", "loadEx: loadEX = %b", v000001b84ddcbd30_0 {0 0 0};
+    %vpi_call 2 53 "$display", "No Hazard, Not Stalling: stallPC=%b, stallNPC=%b, stallIFID=%b, controlMux=%b", v000001b84dcf5430_0, v000001b84dcf5390_0, v000001b84dcf52f0_0, v000001b84dc734b0_0 {0 0 0};
+T_0.19 ;
+    %jmp T_0;
+    .thread T_0, $push;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "Hazard_Forwarding_Unit.v";

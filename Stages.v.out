@@ -1,0 +1,328 @@
+#! /c/Source/iverilog-install/bin/vvp
+:ivl_version "12.0 (devel)" "(s20150603-1539-g2693dd32b)";
+:ivl_delay_selection "TYPICAL";
+:vpi_time_precision + 0;
+:vpi_module "C:\iverilog\lib\ivl\system.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_sys.vpi";
+:vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
+:vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
+:vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
+S_000002074c927370 .scope module, "Pipeline_Register_32bit_EX_MEM" "Pipeline_Register_32bit_EX_MEM" 2 99;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "Clk";
+    .port_info 1 /INPUT 1 "Reset";
+    .port_info 2 /INPUT 1 "ID_LOAD_INSTR";
+    .port_info 3 /INPUT 1 "ID_RF_ENABLE";
+    .port_info 4 /INPUT 1 "ID_HI_ENABLE";
+    .port_info 5 /INPUT 1 "ID_LO_ENABLE";
+    .port_info 6 /INPUT 1 "ID_PC_PLUS8_INSTR";
+    .port_info 7 /INPUT 1 "ID_MEM_ENABLE";
+    .port_info 8 /INPUT 1 "ID_MEM_READWRITE";
+    .port_info 9 /INPUT 2 "ID_MEM_SIZE";
+    .port_info 10 /INPUT 1 "ID_MEM_SIGNE";
+    .port_info 11 /OUTPUT 1 "Out_ID_LOAD_INSTR";
+    .port_info 12 /OUTPUT 1 "Out_ID_RF_ENABLE";
+    .port_info 13 /OUTPUT 1 "Out_ID_HI_ENABLE";
+    .port_info 14 /OUTPUT 1 "Out_ID_LO_ENABLE";
+    .port_info 15 /OUTPUT 1 "Out_ID_PC_PLUS8_INSTR";
+    .port_info 16 /OUTPUT 1 "Out_ID_MEM_ENABLE";
+    .port_info 17 /OUTPUT 1 "Out_ID_MEM_READWRITE";
+    .port_info 18 /OUTPUT 2 "Out_ID_MEM_SIZE";
+    .port_info 19 /OUTPUT 1 "Out_ID_MEM_SIGNE";
+o000002074c929fd8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c8e3490_0 .net "Clk", 0 0, o000002074c929fd8;  0 drivers
+o000002074c92a008 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c8cd830_0 .net "ID_HI_ENABLE", 0 0, o000002074c92a008;  0 drivers
+o000002074c92a038 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c8cd8d0_0 .net "ID_LOAD_INSTR", 0 0, o000002074c92a038;  0 drivers
+o000002074c92a068 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c8e3000_0 .net "ID_LO_ENABLE", 0 0, o000002074c92a068;  0 drivers
+o000002074c92a098 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c8e30a0_0 .net "ID_MEM_ENABLE", 0 0, o000002074c92a098;  0 drivers
+o000002074c92a0c8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c913fc0_0 .net "ID_MEM_READWRITE", 0 0, o000002074c92a0c8;  0 drivers
+o000002074c92a0f8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c914060_0 .net "ID_MEM_SIGNE", 0 0, o000002074c92a0f8;  0 drivers
+o000002074c92a128 .functor BUFZ 2, C4<zz>; HiZ drive
+v000002074c914100_0 .net "ID_MEM_SIZE", 1 0, o000002074c92a128;  0 drivers
+o000002074c92a158 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c9141a0_0 .net "ID_PC_PLUS8_INSTR", 0 0, o000002074c92a158;  0 drivers
+o000002074c92a188 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c914240_0 .net "ID_RF_ENABLE", 0 0, o000002074c92a188;  0 drivers
+v000002074c9142e0_0 .var "Out_ID_HI_ENABLE", 0 0;
+v000002074c914380_0 .var "Out_ID_LOAD_INSTR", 0 0;
+v000002074c914420_0 .var "Out_ID_LO_ENABLE", 0 0;
+v000002074c977710_0 .var "Out_ID_MEM_ENABLE", 0 0;
+v000002074c977210_0 .var "Out_ID_MEM_READWRITE", 0 0;
+v000002074c9777b0_0 .var "Out_ID_MEM_SIGNE", 0 0;
+v000002074c9773f0_0 .var "Out_ID_MEM_SIZE", 1 0;
+v000002074c977030_0 .var "Out_ID_PC_PLUS8_INSTR", 0 0;
+v000002074c9772b0_0 .var "Out_ID_RF_ENABLE", 0 0;
+o000002074c92a368 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c977670_0 .net "Reset", 0 0, o000002074c92a368;  0 drivers
+E_000002074c8cb2b0 .event posedge, v000002074c8e3490_0;
+S_000002074c8e2ce0 .scope module, "Pipeline_Register_32bit_ID_EX" "Pipeline_Register_32bit_ID_EX" 2 29;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "Clk";
+    .port_info 1 /INPUT 1 "Reset";
+    .port_info 2 /INPUT 4 "ID_ALU_OP";
+    .port_info 3 /INPUT 1 "ID_LOAD_INSTR";
+    .port_info 4 /INPUT 1 "ID_RF_ENABLE";
+    .port_info 5 /INPUT 1 "ID_HI_ENABLE";
+    .port_info 6 /INPUT 1 "ID_LO_ENABLE";
+    .port_info 7 /INPUT 1 "ID_PC_PLUS8_INSTR";
+    .port_info 8 /INPUT 3 "ID_OP_H_S";
+    .port_info 9 /INPUT 1 "ID_MEM_ENABLE";
+    .port_info 10 /INPUT 1 "ID_MEM_READWRITE";
+    .port_info 11 /INPUT 2 "ID_MEM_SIZE";
+    .port_info 12 /INPUT 1 "ID_MEM_SIGNE";
+    .port_info 13 /OUTPUT 4 "Out_ID_ALU_OP";
+    .port_info 14 /OUTPUT 1 "Out_ID_LOAD_INSTR";
+    .port_info 15 /OUTPUT 1 "Out_ID_RF_ENABLE";
+    .port_info 16 /OUTPUT 1 "Out_ID_HI_ENABLE";
+    .port_info 17 /OUTPUT 1 "Out_ID_LO_ENABLE";
+    .port_info 18 /OUTPUT 1 "Out_ID_PC_PLUS8_INSTR";
+    .port_info 19 /OUTPUT 3 "Out_ID_OP_H_S";
+    .port_info 20 /OUTPUT 1 "Out_ID_MEM_ENABLE";
+    .port_info 21 /OUTPUT 1 "Out_ID_MEM_READWRITE";
+    .port_info 22 /OUTPUT 2 "Out_ID_MEM_SIZE";
+    .port_info 23 /OUTPUT 1 "Out_ID_MEM_SIGNE";
+o000002074c92a758 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c977170_0 .net "Clk", 0 0, o000002074c92a758;  0 drivers
+o000002074c92a788 .functor BUFZ 4, C4<zzzz>; HiZ drive
+v000002074c977350_0 .net "ID_ALU_OP", 3 0, o000002074c92a788;  0 drivers
+o000002074c92a7b8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c976d10_0 .net "ID_HI_ENABLE", 0 0, o000002074c92a7b8;  0 drivers
+o000002074c92a7e8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c976db0_0 .net "ID_LOAD_INSTR", 0 0, o000002074c92a7e8;  0 drivers
+o000002074c92a818 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c9768b0_0 .net "ID_LO_ENABLE", 0 0, o000002074c92a818;  0 drivers
+o000002074c92a848 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c977530_0 .net "ID_MEM_ENABLE", 0 0, o000002074c92a848;  0 drivers
+o000002074c92a878 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c976f90_0 .net "ID_MEM_READWRITE", 0 0, o000002074c92a878;  0 drivers
+o000002074c92a8a8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c977490_0 .net "ID_MEM_SIGNE", 0 0, o000002074c92a8a8;  0 drivers
+o000002074c92a8d8 .functor BUFZ 2, C4<zz>; HiZ drive
+v000002074c9770d0_0 .net "ID_MEM_SIZE", 1 0, o000002074c92a8d8;  0 drivers
+o000002074c92a908 .functor BUFZ 3, C4<zzz>; HiZ drive
+v000002074c976ef0_0 .net "ID_OP_H_S", 2 0, o000002074c92a908;  0 drivers
+o000002074c92a938 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c976bd0_0 .net "ID_PC_PLUS8_INSTR", 0 0, o000002074c92a938;  0 drivers
+o000002074c92a968 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c9775d0_0 .net "ID_RF_ENABLE", 0 0, o000002074c92a968;  0 drivers
+v000002074c976950_0 .var "Out_ID_ALU_OP", 3 0;
+v000002074c9769f0_0 .var "Out_ID_HI_ENABLE", 0 0;
+v000002074c976a90_0 .var "Out_ID_LOAD_INSTR", 0 0;
+v000002074c976b30_0 .var "Out_ID_LO_ENABLE", 0 0;
+v000002074c976c70_0 .var "Out_ID_MEM_ENABLE", 0 0;
+v000002074c976e50_0 .var "Out_ID_MEM_READWRITE", 0 0;
+v000002074c980d70_0 .var "Out_ID_MEM_SIGNE", 0 0;
+v000002074c97fa10_0 .var "Out_ID_MEM_SIZE", 1 0;
+v000002074c9805f0_0 .var "Out_ID_OP_H_S", 2 0;
+v000002074c97fab0_0 .var "Out_ID_PC_PLUS8_INSTR", 0 0;
+v000002074c97ff10_0 .var "Out_ID_RF_ENABLE", 0 0;
+o000002074c92aba8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c980b90_0 .net "Reset", 0 0, o000002074c92aba8;  0 drivers
+E_000002074c8cadb0 .event posedge, v000002074c977170_0;
+S_000002074c8cd510 .scope module, "Pipeline_Register_32bit_IF_ID" "Pipeline_Register_32bit_IF_ID" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 32 "DS";
+    .port_info 1 /INPUT 32 "PC";
+    .port_info 2 /INPUT 1 "Clk";
+    .port_info 3 /INPUT 1 "LE";
+    .port_info 4 /INPUT 1 "Reset";
+    .port_info 5 /OUTPUT 32 "Qs";
+    .port_info 6 /OUTPUT 32 "PC_out";
+o000002074c92b058 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c97fbf0_0 .net "Clk", 0 0, o000002074c92b058;  0 drivers
+o000002074c92b088 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v000002074c97ffb0_0 .net "DS", 31 0, o000002074c92b088;  0 drivers
+o000002074c92b0b8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c980050_0 .net "LE", 0 0, o000002074c92b0b8;  0 drivers
+o000002074c92b0e8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v000002074c980230_0 .net "PC", 31 0, o000002074c92b0e8;  0 drivers
+v000002074c981590_0 .var "PC_out", 31 0;
+v000002074c97f970_0 .var "Qs", 31 0;
+o000002074c92b178 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c97fc90_0 .net "Reset", 0 0, o000002074c92b178;  0 drivers
+E_000002074c8cae70 .event posedge, v000002074c97fbf0_0;
+S_000002074c8cd6a0 .scope module, "Pipeline_Register_32bit_MEM_WB" "Pipeline_Register_32bit_MEM_WB" 2 160;
+ .timescale 0 0;
+    .port_info 0 /INPUT 1 "Clk";
+    .port_info 1 /INPUT 1 "Reset";
+    .port_info 2 /INPUT 1 "ID_RF_ENABLE";
+    .port_info 3 /INPUT 1 "ID_HI_ENABLE";
+    .port_info 4 /INPUT 1 "ID_LO_ENABLE";
+    .port_info 5 /OUTPUT 1 "Out_ID_RF_ENABLE";
+    .port_info 6 /OUTPUT 1 "Out_ID_HI_ENABLE";
+    .port_info 7 /OUTPUT 1 "Out_ID_LO_ENABLE";
+o000002074c92b2f8 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c9807d0_0 .net "Clk", 0 0, o000002074c92b2f8;  0 drivers
+o000002074c92b328 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c9802d0_0 .net "ID_HI_ENABLE", 0 0, o000002074c92b328;  0 drivers
+o000002074c92b358 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c980690_0 .net "ID_LO_ENABLE", 0 0, o000002074c92b358;  0 drivers
+o000002074c92b388 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c980eb0_0 .net "ID_RF_ENABLE", 0 0, o000002074c92b388;  0 drivers
+v000002074c980730_0 .var "Out_ID_HI_ENABLE", 0 0;
+v000002074c981310_0 .var "Out_ID_LO_ENABLE", 0 0;
+v000002074c980870_0 .var "Out_ID_RF_ENABLE", 0 0;
+o000002074c92b448 .functor BUFZ 1, C4<z>; HiZ drive
+v000002074c981130_0 .net "Reset", 0 0, o000002074c92b448;  0 drivers
+E_000002074c8cadf0 .event posedge, v000002074c9807d0_0;
+    .scope S_000002074c927370;
+T_0 ;
+    %wait E_000002074c8cb2b0;
+    %load/vec4 v000002074c977670_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_0.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c914380_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c9772b0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c9142e0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c914420_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c977030_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c977710_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c977210_0, 0;
+    %pushi/vec4 0, 0, 2;
+    %assign/vec4 v000002074c9773f0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c9777b0_0, 0;
+    %jmp T_0.1;
+T_0.0 ;
+    %load/vec4 v000002074c8cd8d0_0;
+    %assign/vec4 v000002074c914380_0, 0;
+    %load/vec4 v000002074c914240_0;
+    %assign/vec4 v000002074c9772b0_0, 0;
+    %load/vec4 v000002074c8cd830_0;
+    %assign/vec4 v000002074c9142e0_0, 0;
+    %load/vec4 v000002074c8e3000_0;
+    %assign/vec4 v000002074c914420_0, 0;
+    %load/vec4 v000002074c9141a0_0;
+    %assign/vec4 v000002074c977030_0, 0;
+    %load/vec4 v000002074c8e30a0_0;
+    %assign/vec4 v000002074c977710_0, 0;
+    %load/vec4 v000002074c913fc0_0;
+    %assign/vec4 v000002074c977210_0, 0;
+    %load/vec4 v000002074c914100_0;
+    %assign/vec4 v000002074c9773f0_0, 0;
+    %load/vec4 v000002074c914060_0;
+    %assign/vec4 v000002074c9777b0_0, 0;
+T_0.1 ;
+    %jmp T_0;
+    .thread T_0;
+    .scope S_000002074c8e2ce0;
+T_1 ;
+    %wait E_000002074c8cadb0;
+    %load/vec4 v000002074c980b90_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_1.0, 8;
+    %pushi/vec4 0, 0, 4;
+    %assign/vec4 v000002074c976950_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c976a90_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c97ff10_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c9769f0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c976b30_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c97fab0_0, 0;
+    %pushi/vec4 0, 0, 3;
+    %assign/vec4 v000002074c9805f0_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c976c70_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c976e50_0, 0;
+    %pushi/vec4 0, 0, 2;
+    %assign/vec4 v000002074c97fa10_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c980d70_0, 0;
+    %jmp T_1.1;
+T_1.0 ;
+    %load/vec4 v000002074c977350_0;
+    %assign/vec4 v000002074c976950_0, 0;
+    %load/vec4 v000002074c976db0_0;
+    %assign/vec4 v000002074c976a90_0, 0;
+    %load/vec4 v000002074c9775d0_0;
+    %assign/vec4 v000002074c97ff10_0, 0;
+    %load/vec4 v000002074c976d10_0;
+    %assign/vec4 v000002074c9769f0_0, 0;
+    %load/vec4 v000002074c9768b0_0;
+    %assign/vec4 v000002074c976b30_0, 0;
+    %load/vec4 v000002074c976bd0_0;
+    %assign/vec4 v000002074c97fab0_0, 0;
+    %load/vec4 v000002074c976ef0_0;
+    %assign/vec4 v000002074c9805f0_0, 0;
+    %load/vec4 v000002074c977530_0;
+    %assign/vec4 v000002074c976c70_0, 0;
+    %load/vec4 v000002074c976f90_0;
+    %assign/vec4 v000002074c976e50_0, 0;
+    %load/vec4 v000002074c9770d0_0;
+    %assign/vec4 v000002074c97fa10_0, 0;
+    %load/vec4 v000002074c977490_0;
+    %assign/vec4 v000002074c980d70_0, 0;
+T_1.1 ;
+    %jmp T_1;
+    .thread T_1;
+    .scope S_000002074c8cd510;
+T_2 ;
+    %wait E_000002074c8cae70;
+    %load/vec4 v000002074c97ffb0_0;
+    %assign/vec4 v000002074c97f970_0, 0;
+    %load/vec4 v000002074c97fc90_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_2.0, 8;
+    %pushi/vec4 0, 0, 32;
+    %assign/vec4 v000002074c97f970_0, 0;
+    %pushi/vec4 0, 0, 32;
+    %assign/vec4 v000002074c981590_0, 0;
+    %jmp T_2.1;
+T_2.0 ;
+    %load/vec4 v000002074c980050_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_2.2, 8;
+    %load/vec4 v000002074c97ffb0_0;
+    %assign/vec4 v000002074c97f970_0, 0;
+    %load/vec4 v000002074c980230_0;
+    %assign/vec4 v000002074c981590_0, 0;
+T_2.2 ;
+T_2.1 ;
+    %jmp T_2;
+    .thread T_2;
+    .scope S_000002074c8cd6a0;
+T_3 ;
+    %wait E_000002074c8cadf0;
+    %load/vec4 v000002074c981130_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_3.0, 8;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c980870_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c980730_0, 0;
+    %pushi/vec4 0, 0, 1;
+    %assign/vec4 v000002074c981310_0, 0;
+    %jmp T_3.1;
+T_3.0 ;
+    %load/vec4 v000002074c980eb0_0;
+    %assign/vec4 v000002074c980870_0, 0;
+    %load/vec4 v000002074c9802d0_0;
+    %assign/vec4 v000002074c980730_0, 0;
+    %load/vec4 v000002074c980690_0;
+    %assign/vec4 v000002074c981310_0, 0;
+T_3.1 ;
+    %jmp T_3;
+    .thread T_3;
+# The file index is used to find the file name in the following table.
+:file_names 3;
+    "N/A";
+    "<interactive>";
+    "Stages.v";
