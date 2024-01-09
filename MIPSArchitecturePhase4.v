@@ -1,9 +1,8 @@
 `timescale 1ns / 1ns
 
 // This is phase 4 of the project, the full implementation of the MIPS architecture
-// Jan Carlos - 
-// Victor
-
+// Jan Carlos - 802--
+// Victor Barriera - 802--
 
 `include "Hazard_Forwarding_Unit.v"
 `include "PC_nPC.v"
@@ -56,44 +55,6 @@ reg stall_PC;
 reg stall_NPC;
 reg stall_IFID;
 
-// Refer to instance CU
-wire [3:0]  ID_ALU_OP;
-wire        ID_LOAD_INSTR;
-wire        ID_RF_ENABLE;
-wire        ID_HI_ENABLE;
-wire        ID_LO_ENABLE;
-wire        ID_PC_PLUS8_INSTR;
-wire        ID_UB_INSTR;
-wire        ID_JALR_JR_INSTR;
-wire [1:0]  ID_DESTINATION_REGISTER;
-wire [2:0]  ID_OP_H_S;
-
-wire        ID_MEM_ENABLE;
-wire        ID_MEM_READWRITE;
-wire [1:0]  ID_MEM_SIZE;
-wire        ID_MEM_SIGNE;
-
-// Controlled by Hazard
-
-
-// OUTPUT SIGNALS COMMING FROM THE CONTROL UNIT
-wire [3:0] OUT_ID_ALU_OP;
-wire OUT_ID_LOAD_INSTR;
-wire OUT_ID_RF_ENABLE;
-wire OUT_ID_HI_ENABLE;
-wire OUT_ID_LO_ENABLE;
-wire OUT_ID_PC_PLUS8_INSTR;
-wire OUT_ID_UB_INSTR;
-wire OUT_ID_JALR_JR_INSTR;
-
-wire [1:0] OUT_ID_DESTINATION_REGISTER;
-wire [2:0] OUT_ID_OP_H_S;
-wire OUT_ID_MEM_ENABLE;
-wire OUT_ID_MEM_READWRITE;
-wire [1:0] OUT_ID_MEM_SIZE;
-wire OUT_ID_MEM_SIGNE;
-
-
 
 // -------| INITIALIZING WIRES AND REGISTERS |------------------
 
@@ -145,10 +106,10 @@ wire CU_MUX_RF_ENABLE_ID;
 wire CU_MUX_HI_ENABLE_ID;
 wire CU_MUX_LO_ENABLE_ID;
 wire CU_MUX_PC_PLUS8_INSTR_ID;
-wire CU_MUX_UB_INSTR_ID;
+wire CU_MUX_UB_INSTR_UB_MUX;
 wire CU_MUX_JALR_JR_INSTR_ID;
 
-wire CU_MUX_ID_DESTINATION_REGISTER_ID;
+wire [1:0] CU_MUX_ID_DESTINATION_REGISTER_MUX_DESTINATION;
 wire CU_MUX_ID_OP_H_S_ID;
 
 wire CU_MUX_MEM_ENABLE_ID;
@@ -178,10 +139,10 @@ wire WB_ENABLEWB_HAZARD;
 wire EX_LOADEX_HAZARD;
 wire EX_REGEX_HAZARD;
 wire MEM_REGMEM_HAZARD;
-wire WB_REGWB_HAZARD;
+wire WB_REGWB_HAZARD_AND_REGISTER_FILE;
 
-wire ID_OPERAND_A_REGISTER_FILE_AND_HAZARD;
-wire ID_OPERAND_B_REGISTER_FILE_AND_HAZARD;
+wire [4:0] ID_OPERAND_A_REGISTER_FILE_AND_HAZARD;
+wire [4:0] ID_OPERAND_B_REGISTER_FILE_AND_HAZARD;
 
 // =====| IF/ID |===== //
 
@@ -194,19 +155,18 @@ wire ID_HI_ENABLE_EX;
 wire ID_LO_ENABLE_EX;
 wire ID_PC_PLUS8_INSTR_EX;
 wire ID_UB_INSTR_EX;
-wire ID_JALR_JR_INSTR_EX;
+
+wire ID_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX;
 
 wire [15:0] ID_IMM16_EX_AND_TIMES_4; 
 wire [31:0] ID_INSTRUCTION_CU;
 
 // =====| HI-REGISTER |===== //
 wire [31:0] HI_HISIGNAL_EX;
-wire [31:0] WB_PW_HI;
 wire WB_HIENABLE_HI;
 
 // ====| LO-REGISTER |==== //
 wire [31:0] LO_LOSIGNAL_EX;
-wire [31:0] WB_PW_LO;
 wire WB_LOENABLE_LO;
 
 // ====| TIMES 4 LOGIC BOX (CASE 1) |==== //
@@ -221,20 +181,53 @@ wire [31:0] PLUS_4_BOX_P4_EX;
 // ====| TIMES 4 LOGIC BOX (CASE 2) |==== //
 wire TIMES_4_ADDRESS26_EX;
 
-// ====| BITWISE OR |==== //
-
-
-
 // ====| BITWISE AND |=== //
+wire [31:0] BITWISE_AND_RESULT_BITWISE_OR;
+
+// ====| BITWISE OR |==== //
+wire [31:0] BITWISE_OR_UTA_UTAMUX;
+
+// ====| UTA MUX |==== //
+wire [31:0] UTA_MUX_UTA_MUX_RESULT_CTA_MUX;
+
+// ====| CTA MUX |==== //
+wire [31:0] EX_CTA_CTA_MUX;
+wire [31:0] CTA_MUX_TA_nPC_SELECTOR;
+
+// ====| UB MUX |
+wire UB_MUX_SELECTION_NPC_SELECTOR;
+
+// ====| MX1 |===== //
+wire [31:0] MX1_MX1RESULT_UTAMUX_AND_EX;
+
+// ====| MX2 |===== //
+wire [31:0] MX2_MX2_RESULT_EX;
+
+// ====| MUX DESTINATION
+wire [4:0] MUX_DESTINATION_REG_EX;
 
 // =====| ID/EX |===== //
+wire EX_PWDS_MX1_AND_MX2;
+
+// =====| EX/MEM |===== //
+wire MEM_PWDS_MX1_AND_MX2;
+
+// ====| CONDITIONAL HANDLER 
+wire COND_HANDLER_UB_UB_MUX;
+
+wire [31:0] REGISTER_FILE_PA_MX1;
+wire [31:0] REGISTER_FILE_PB_MX2;
+
+// ====| MEM/WB
+wire [31:0] WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2;
+wire WB_REG_FILE_ENABLE_REGISTER_FILE;
 
 
-// -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|--
-// --------------------------------------------------
-// -------| INITIALIZING MODULES |------------------
-// --------------------------------------------------
-// -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|--
+// -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|- //
+// --------------------------------------------------- //
+// -------| INITIALIZING MODULES |-------------------- //
+// --------------------------------------------------- //
+// -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|- //
 
 // ---- | Memories, utilized for precharging |----
 rom_512x8 Instruction_Memory (
@@ -262,14 +255,14 @@ ram_512x8 Data_Memory (
 // USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE
 Mux_9Bit_OR_32BIT_Case_One nPCselector (
     .nPC      (nPC[8:0]),
-    .TA       (TA),
-    .S        (S),
+    .TA       (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
+    .S        (UB_MUX_SELECTION_NPC_SELECTOR),  // SIGNAL EXISTS
     .Address  (nPC_MUX)
 );
 
 nPCLogicBox AddPlusFour(
   .nPC      (nPC_MUX[8:0]),         // IN
-  .result   (nPC_PLUS_4[8:0])   // OUT
+  .result   (nPC_PLUS_4[8:0])       // OUT
 );
 
 // not exactly 32 bits :\
@@ -338,7 +331,7 @@ Control_Unit CU (
     .ID_MEM_SIZE              (CU_MEM_SIZE_CU_MUX),                 // SIGNAL EXISTS
     .ID_MEM_SIGNE             (CU_MEM_SIGNE_CU_MUX),                // SIGNAL EXISTS
     // INPUT
-    .instruction              (DataOut_InstructionMemory)           // ALREADY EXISTS
+    .instruction              (ID_INSTRUCTION_CU)                   // SIGNAL EXISTS
 );
 
 Mux_Control_Unit CU_MUX (
@@ -349,10 +342,10 @@ Mux_Control_Unit CU_MUX (
     .OUT_ID_HI_ENABLE             (CU_MUX_HI_ENABLE_ID),                  // SIGNAL EXISTS
     .OUT_ID_LO_ENABLE             (CU_MUX_LO_ENABLE_ID),                  // SIGNAL EXISTS
     .OUT_ID_PC_PLUS8_INSTR        (CU_MUX_PC_PLUS8_INSTR_ID),             // SIGNAL EXISTS
-    .OUT_ID_UB_INSTR              (CU_MUX_UB_INSTR_ID),                   // SIGNAL EXISTS
+    .OUT_ID_UB_INSTR              (CU_MUX_UB_INSTR_UB_MUX),               // SIGNAL EXISTS
     .OUT_ID_JALR_JR_INSTR         (CU_MUX_JALR_JR_INSTR_ID),              // SIGNAL EXISTS
 
-    .OUT_ID_DESTINATION_REGISTER  (CU_MUX_ID_DESTINATION_REGISTER_ID),     // SIGNAL EXISTS
+    .OUT_ID_DESTINATION_REGISTER  (CU_MUX_ID_DESTINATION_REGISTER_MUX_DESTINATION),     // SIGNAL EXISTS
     .OUT_ID_OP_H_S                (CU_MUX_ID_OP_H_S_ID),                   // SIGNAL EXISTS
 
     .OUT_ID_MEM_ENABLE            (CU_MUX_MEM_ENABLE_ID),                 // SIGNAL EXISTS
@@ -364,22 +357,22 @@ Mux_Control_Unit CU_MUX (
     .controlMux                   (HAZARD_CONTROL_CU_MUX),
 
     // ---------| Spliced Instructions (INPUT) | -----------
-    .ID_ALU_OP                    (ID_ALU_OP),                          // SIGNAL EXISTS
-    .ID_LOAD_INSTR                (ID_LOAD_INSTR),                      // SIGNAL EXISTS
-    .ID_RF_ENABLE                 (ID_RF_ENABLE),                       // SIGNAL EXISTS
-    .ID_HI_ENABLE                 (ID_HI_ENABLE),                       // SIGNAL EXISTS
-    .ID_LO_ENABLE                 (ID_LO_ENABLE),                       // SIGNAL EXISTS
-    .ID_PC_PLUS8_INSTR            (ID_PC_PLUS8_INSTR),                  // SIGNAL EXISTS
-    .ID_UB_INSTR                  (ID_UB_INSTR),                        // SIGNAL EXISTS
-    .ID_JALR_JR_INSTR             (ID_JALR_JR_INSTR),                   // SIGNAL EXISTS
+    .ID_ALU_OP                    (CU_ALU_OP_CU_MUX),                          // SIGNAL EXISTS
+    .ID_LOAD_INSTR                (CU_LOAD_INSTR_CU_MUX),                      // SIGNAL EXISTS
+    .ID_RF_ENABLE                 (CU_RF_ENABLE_CU_MUX),                       // SIGNAL EXISTS
+    .ID_HI_ENABLE                 (CU_HI_ENABLE_CU_MUX),                       // SIGNAL EXISTS
+    .ID_LO_ENABLE                 (CU_LO_ENABLE_CU_MUX),                       // SIGNAL EXISTS
+    .ID_PC_PLUS8_INSTR            (CU_PC_PLUS8_INSTR_CU_MUX),                  // SIGNAL EXISTS
+    .ID_UB_INSTR                  (CU_UB_INSTR_CU_MUX),                        // SIGNAL EXISTS
+    .ID_JALR_JR_INSTR             (CU_JALR_JR_INSTR_CU_MUX),                   // SIGNAL EXISTS
     // here
-    .ID_DESTINATION_REGISTER      (CU_MUX_ID_DESTINATION_REGISTER_ID),  // SIGNAL EXISTS
-    .ID_OP_H_S                    (CU_MUX_ID_OP_H_S_ID),                // SIGNAL EXISTS
+    .ID_DESTINATION_REGISTER      (CU_DESTINATION_REGISTER_CU_MUX),  // SIGNAL EXISTS
+    .ID_OP_H_S                    (CU_OP_H_S_CU_MUX),                // SIGNAL EXISTS
 
-    .ID_MEM_ENABLE                (CU_MUX_MEM_ENABLE_ID),               // SIGNAL EXISTS
-    .ID_MEM_READWRITE             (CU_MUX_MEM_READWRITE_ID),            // SIGNAL EXISTS
-    .ID_MEM_SIZE                  (CU_MUX_MEM_SIZE_ID),                 // SIGNAL EXISTS
-    .ID_MEM_SIGNE                 (CU_MUX_MEM_SIGNE_ID),                // SIGNAL EXISTS
+    .ID_MEM_ENABLE                (CU_MEM_ENABLE_CU_MUX),               // SIGNAL EXISTS
+    .ID_MEM_READWRITE             (CU_MEM_READWRITE_CU_MUX),            // SIGNAL EXISTS
+    .ID_MEM_SIZE                  (CU_MEM_SIZE_CU_MUX),                 // SIGNAL EXISTS
+    .ID_MEM_SIGNE                 (CU_MEM_SIGNE_CU_MUX),                // SIGNAL EXISTS
 
      // ----| NOP |--------------------------------------
 
@@ -413,15 +406,15 @@ Hazard_Forwarding_Unit Hazard (
     .controlMux (HAZARD_CONTROL_CU_MUX), // SIGNAL EXISTS
 
     // input
-    .enableEX   (EX_ENABLEEX_HAZARD),       // SIGNAL EXISTS
-    .enableMEM  (MEM_ENABLEMEM_HAZARD),     // SIGNAL EXISTS
-    .enableWB   (WB_ENABLEWB_HAZARD),     // SIGNAL EXISTS
+    .enableEX   (EX_ENABLEEX_HAZARD),                 // SIGNAL EXISTS
+    .enableMEM  (MEM_ENABLEMEM_HAZARD),               // SIGNAL EXISTS
+    .enableWB   (WB_ENABLEWB_HAZARD),                 // SIGNAL EXISTS
 
-    .loadEX     (EX_LOADEX_HAZARD),     // SIGNAL EXISTS
+    .loadEX     (EX_LOADEX_HAZARD),                   // SIGNAL EXISTS
 
-    .regEX      (EX_REGEX_HAZARD),      // SIGNAL EXISTS
-    .regMEM     (MEM_REGMEM_HAZARD),        // SIGNAL EXISTS
-    .regWB      (WB_REGWB_HAZARD),      // SIGNAL EXISTS
+    .regEX      (EX_REGEX_HAZARD),                    // SIGNAL EXISTS
+    .regMEM     (MEM_REGMEM_HAZARD),                  // SIGNAL EXISTS
+    .regWB      (WB_REGWB_HAZARD_AND_REGISTER_FILE),  // SIGNAL EXISTS | RW signal
 
     .operandA   (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS
     .operandB   (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD) // SIGNAL EXISTS
@@ -450,7 +443,7 @@ HiRegister Hi (
     .HiSignal        (HI_HISIGNAL_EX),   // SIGNAL EXISTS
 
     // INPUT
-    .PW              (WB_PW_HI),         // SIGNAL EXISTS
+    .PW              (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),         // SIGNAL EXISTS
     .HiEnable        (WB_HIENABLE_HI),   // SIGNAL EXISTS
     .clk             (Clk)               // ALREADY EXISTS
 );
@@ -461,7 +454,7 @@ LowRegister Low (
     // INPUT
     .LoEnable       (WB_LOENABLE_LO),        // SIGNAL EXISTS
     .clk            (Clk),                   // ALREADY EXISTS
-    .PW             (WB_PW_LO)               // SIGNAL EXISTS
+    .PW             (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2)               // SIGNAL EXISTS
 );
 
 Times_Four_Logic_Box_Case_One X4_SE_Case_One ( /*USED FOR Imm16 FOR CONDITIONAL TA*/
@@ -488,42 +481,59 @@ Times_Four_Logic_Box_Case_Two X4_SE_Case_Two( /* USED FOR HANDLING Address26 FOR
 );
 
 Bitwise_OR_Logic_Box Bitwise_OR_Logic ( /*USED FOR CALCULATING UNCONDITIONAL TA*/
-    .Result                     (),
-    .AND_Output                 (),
+    // OUTPUT
     .Address26_x4_Output        (TIMES_4_ADDRESS26_EX)
-    
+
+    // INPUT
+    .Result                     (BITWISE_OR_UTA_UTAMUX),        // SIGNAL EXISTS | UTA IS UNCONDINTIONAL TARGET ADDRESS
+    .AND_Output                 (BITWISE_AND_RESULT_BITWISE_OR), // This is actually an input btw  
 );
 
 Bitwise_AND_Logic_Box Bitwise_AND_Logic ( /*USED FOR CALCULATING UNCONDITIONAL TA*/
-    .Result                     (),
-    .PC                         (IF_PC_ID),
-    .Second_Value               ()
+    // OUTPUT 
+    .Result                     (BITWISE_AND_RESULT_BITWISE_OR), // SIGNAL EXISTS
+
+    // INPUT
+    .PC                         (IF_PC_ID),                      // SIGNAL EXISTS
+    .Second_Value               (32'hf0000000)                   // SIGNAL EXISTS
 );
 
 // Wacky multiplexers Extravaganza // ----------------
 
-Mux_32Bit_OR_32BIT ID_MUX_Case_one (
-    .Input_One                  (),
-    .Input_Two                  (),
-    .Out                        ()
+Mux_32Bit_OR_32BIT UTA_MUX ( // ID_MUX_Case_one
+    // OUTPUT 
+    .Out                        (UTA_MUX_UTA_MUX_RESULT_CTA_MUX), // SIGNAL EXISTS
+
+    // INPUT
+    .Input_One                  (BITWISE_OR_UTA_UTAMUX), // SIGNAL EXISTS
+    .Input_Two                  (MX1_MX1RESULT_UTAMUX_AND_EX), // SIGNAL EXISTS
+    .S                          (ID_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX) // SIGNAL EXISTS
 );
-Mux_32Bit_OR_32BIT ID_MUX_Case_two (
-    .Input_One                  (),
-    .Input_Two                  (),
-    .Out                        ()
+Mux_32Bit_OR_32BIT CTA_MUX ( // ID_MUX_Case_two | Target Address
+    // OUTPUT
+    .Out                        (CTA_MUX_TA_nPC_SELECTOR),                  // SIGNAL EXISTS
+
+    // INPUT
+    .Input_One                  (UTA_MUX_UTA_MUX_RESULT_CTA_MUX),           // SIGNAL EXISTS
+    .Input_Two                  (EX_CTA_CTA_MUX),                           // SIGNAL EXISTS
+    .S                          (ID_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
 );
-Mux_32Bit_OR_32BIT ID_MUX_Case_three (
-    .Input_One                  (),
-    .Input_Two                  (),
-    .Out                        ()
+Mux_32Bit_OR_32BIT UB_MUX ( // ID_MUX_Case_three | Unconditional Branch
+    .Out                        (UB_MUX_SELECTION_NPC_SELECTOR),            // SIGNAL EXISTS
+
+    .Input_One                  (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
+    .Input_Two                  (32'hf0000000),                             // SIGNAL EXISTS
+    .S                          (CU_MUX_UB_INSTR_UB_MUX)                    // SIGNAL EXISTS
 );
 
 Mux_Destination_Registers ID_MUX_Destination (
-  .RD                           (), 
-  .RT                           (), 
-  .R31                          (),
-  .S                            (),
-  .Out                          ()
+    // OUTPUT
+    .Out                          (MUX_DESTINATION_REG_EX),                         // SIGNAL EXISTS
+    // INPUT
+    .RD                           (ID_INSTRUCTION_CU[15:11]),                       // SIGNAL EXISTS
+    .RT                           (ID_INSTRUCTION_CU[20:16]),                       // SIGNAL EXISTS
+    .R31                          (5'b11111),                                       // YES
+    .S                            (CU_MUX_ID_DESTINATION_REGISTER_MUX_DESTINATION)  // SIGNAL EXISTS
 );
 
 // End of Wacky multiplexer extravaganza // ----------
@@ -531,35 +541,37 @@ Mux_Destination_Registers ID_MUX_Destination (
 
 // End of the Wacky Logic Boxes Extravaganza // ------
 Register_File Reg_File (
-    .PA     (PA),
-    .PB     (PB),
+    // OUTPUT
+    .PA     (REGISTER_FILE_PA_MX1),                                         // SIGNAL EXISTS
+    .PB     (REGISTER_FILE_PB_MX2),                                         // SIGNAL EXISTS
 
-    .PW_DS  (),
-    .RW     (),
+    // INPUT
     .Clk    (Clk),
-    .E      (),
-    .RA     (operandA),
-    .RB     (operandB)
+    .RW     (WB_REGWB_HAZARD_AND_REGISTER_FILE),                            // SIGNAL EXISTS
+    .E      (WB_REG_FILE_ENABLE_REGISTER_FILE),                             // SIGNAL EXISTS
+    .PW_DS  (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),         // SIGNAL EXISTS
+    .RA     (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),                        // SIGNAL EXISTS
+    .RB     (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD)                         // SIGNAL EXISTS
 );
 
 Mux_RegisterFile_Ports MX1 (
     // PA
-    .ID_Result  (PA), 
-    .EX_Result  (),
-    .MEM_Result (),
-    .WB_Result  (),
-    .S          (HAZARD_FWDB_MX1), 
-    .Out        (OUT_MX1)
+    .ID_Result  (REGISTER_FILE_PA_MX1),                                     // SIGNAL EXISTS                                // SIGNAL EXISTS
+    .EX_Result  (EX_PWDS_MX1_AND_MX2),                                      // SIGNAL EXISTS
+    .MEM_Result (MEM_PWDS_MX1_AND_MX2),                                     // SIGNAL EXISTS
+    .WB_Result  (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),     // SIGNAL EXISTS
+    .S          (HAZARD_FWDB_MX1),                                          // SIGNAL EXISTS
+    .Out        (MX1_MX1RESULT_UTAMUX_AND_EX)
 );
 
 Mux_RegisterFile_Ports MX2 (
-    // PA
-    .ID_Result  (PB),
-    .EX_Result  (),
-    .MEM_Result (),
-    .WB_Result  (),
-    .S          (HAZARD_FWDB_MX2), 
-    .Out        (OUT_MX2)
+    // PB
+    .ID_Result  (REGISTER_FILE_PB_MX2),                                     // SIGNAL EXISTS
+    .EX_Result  (EX_PWDS_MX1_AND_MX2),                                      // SIGNAL EXISTS
+    .MEM_Result (MEM_PWDS_MX1_AND_MX2),                                     // SIGNAL EXISTS
+    .WB_Result  (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),     // SIGNAL EXISTS
+    .S          (HAZARD_FWDB_MX2),                                          // SIGNAL EXISTS
+    .Out        (MX2_MX2_RESULT_EX)                                         // SIGNAL EXISTS
 );
 
 // A bunch of other muxes that do uh... stuff
@@ -715,20 +727,22 @@ Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_Two (
 
 
 Pipeline_Register_32bit_MEM_WB MEM_WB (
-  .Clk,                     (Clk),
-  .Reset,                   (Reset),
-
-  // Input Control Signals
-  .ID_RF_ENABLE             (),
-  .ID_HI_ENABLE             (),
-  .ID_LO_ENABLE             (),
-
   // Output Control Signals
-  .Out_ID_RF_ENABLE         (),
-  .Out_ID_HI_ENABLE         (),
-  .Out_ID_LO_ENABLE         (),
+    .OUT_ID_RF_ENABLE         (),
 
-  OUT_EnableMEM             (WB_ENABLEWB_HAZARD) // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    .OUT_ID_HI_ENABLE         (),
+    .OUT_ID_LO_ENABLE         (),
+
+    .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+
+    .OUT_EnableMEM             (WB_ENABLEWB_HAZARD), // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    
+    // Input Control Signals
+    .ID_RF_ENABLE             (WB_REG_FILE_ENABLE_REGISTER_FILE), // SIGNAL EXISTS | REGISTER FILE
+    .ID_HI_ENABLE             (WB_HIENABLE_HI),                   // SIGNAL EXISTS
+    .ID_LO_ENABLE             (WB_LOENABLE_LO),                   // SIGNAL EXISTS
+    .Clk                      (Clk),
+    .Reset                    (Reset)
 );
 
 
