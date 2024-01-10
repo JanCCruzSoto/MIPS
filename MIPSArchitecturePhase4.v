@@ -200,8 +200,6 @@ wire [8:0] PLUS_8_PC_8_EX;
 
 // =====| ID/EX |===== //
 wire EX_PWDS_MX1_AND_MX2;
-
-
 wire EX_LOADEX_HAZARD;
 wire EX_RF_ENABLE_MEM;
 wire EX_HI_ENABLE_MEM;
@@ -220,21 +218,39 @@ wire EX_PC_8_PC_EX;
 wire EX_PC_8_MEM_AND_PC_SELECTOR_MUX;
 wire EX_MX1_ALU;
 wire EX_MX2_OPERAND;
-
 wire EX_HISIGNAL_OPERAND;
 wire EX_LOSIGNAL_OPERAND;
 
+// =====| OPERAND HANDLER |===== //
+wire [31:0] HANDLER_N_ALU;
+
+// =====| ALU |===== //
+wire [31:0] ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX;
+wire ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER;
+wire ALU_N_FLAG_MEM_AND_CONDITION_HANDLER;
+
+// =====| PC SELECTOR MUX |===== //
+
+
+// =====| CONDITION HANDLER |===== //
+wire CONDITION_HANDLER_IFRESET_IF;
+wire COND_HANDLER_UB_UB_MUX;
+wire [31:0] REGISTER_FILE_PA_MX1;
+wire [31:0] REGISTER_FILE_PB_MX2;
 
 // =====| EX/MEM |===== //
 wire MEM_PWDS_MX1_AND_MX2;
 
-
-
-// ====| CONDITIONAL HANDLER 
-wire COND_HANDLER_UB_UB_MUX;
-
-wire [31:0] REGISTER_FILE_PA_MX1;
-wire [31:0] REGISTER_FILE_PB_MX2;
+wire MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE;
+wire MEM_RF_ENABLE_;
+wire MEM_HI_ENABLE_WB;
+wire MEM_LO_ENABLE_WB;
+wire MEM_PC_PLUS8_INSTR_;
+wire MEM_MEM_ENABLE_DATA_MEMORY;
+wire MEM_MEM_READWRITE_DATA_MEMORY;
+wire MEM_MEM_SIZE_DATA_MEMORY;
+wire MEM_MEM_SIGNE_DATA_MEMORY;
+wire MEM_ADDRESS_DATA_MEMORY;
 
 // ====| MEM/WB
 wire [31:0] WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2;
@@ -452,7 +468,7 @@ Pipeline_Register_32bit_IF_ID IF_ID (
     .PC                 (PC),                                       // ALDREADY EXISTTS
     .Clk                (Clk),                                      // ALDREADY EXISTTS
     .LE                 (stall_IFID),                               // ALDREADY EXISTTS
-    .Reset              (Reset)                                     // ALDREADY EXISTTS
+    .Reset              (CONDITION_HANDLER_IFRESET_IF)                                     // ALDREADY EXISTTS
 );
 
 // Wacky Logic boxes Extravaganza // ------------------
@@ -647,12 +663,12 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | TODO: Create this signal in module
     .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | TODO: Create this signal in module
     .OUT_regMEM                 (MEM_REGMEM_HAZARD),                            // SIGNAL EXISTS | TODO: Create this signal in module
-    .OUT_regWB                  (WB_REGWB_HAZARD)                               // SIGNAL EXISTS | TODO: Create this signal in module
+    .OUT_regWB                  (WB_REGWB_HAZARD)                              // SIGNAL EXISTS | TODO: Create this signal in module
 );
 
 Handler Operand_Handler (
     // Output
-    .N          (OUT_Operand_Handler),
+    .N          (HANDLER_N_ALU),        // SIGNAL EXISTS
 
     // Inputs
     .PB         (EX_MX2_OPERAND),       // SIGNAL EXISTS
@@ -664,72 +680,84 @@ Handler Operand_Handler (
 );
 
 ALU ALU (
-    .operand_A      (OUT_ID_MX1),
-    .operand_B      (OUT_Operand_Handler),
-    .alu_control    (EX_ALU_OP_ALU),
-    .result         (Out_ALU_Result),
-    .z_flag         (Out_z_flag),
-    .n_flag         (Out_n_flag)
+    // INPUT
+    .operand_A      (EX_MX1_ALU),                               // SIGNAL EXISTS
+    .operand_B      (HANDLER_N_ALU),                            // SIGNAL EXISTS
+    .alu_control    (EX_ALU_OP_ALU),                            // SIGNAL EXISTS
+    // OUTPUT
+    .result         (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),   // SIGNAL EXISTS
+    .z_flag         (ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER),     // SIGNAL EXISTS
+    .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER)      // SIGNAL EXISTS
 );
 
-Mux_9Bit_OR_32BIT_Case_Two PCselector (
-  .PC_Plus_8    (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX),
-  .Result       (),
-  .S            (),
-  .Out          ()
+Mux_9Bit_OR_32BIT_Case_Two PC_Selector_MUX (
+    // OUTPUT
+    .Out          ()                                              // SIGNAL EXISTS
+
+    // INPUT
+    .PC_Plus_8    (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS
+    .Result       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       // SIGNAL EXISTS
+    .S            (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX),    // SIGNAL EXISTS
+  
 );
 
 Condition_Handler Condition_Handler (
-    .if_id_reset    (),
-    .CH_Out         (),
-    .instruction    (),
-    .z_flag         (),
-    .n_flag         ()
+    // OUTPUT
+    .if_id_reset    (CONDITION_HANDLER_IFRESET_IF),
+    .CH_Out         (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
+    // INPUT
+    .instruction    (), // TODO: CHANGE SIGNAL IN MODULE. THIS SHOULD BE 5 BITS INSTEAD OF 32, AND NAME SHOULD BE RT
+    .z_flag         (ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER),     // SIGNAL EXISTS
+    .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER)      // SIGNAL EXISTS
 );
 
 Pipeline_Register_32bit_EX_MEM EX_MEM (
-  .Clk,         // Clock signal
-  .Reset,        // Reset signal
-
-  // Input Control Signals
-  .EX_LOAD_INSTR            (EX_LOADEX_HAZARD),                             // SIGNAL EXISTS | TODO: ????
-  .EX_HI_ENABLE             (EX_HI_ENABLE_MEM),                             // SIGNAL EXISTS
-  .EX_LO_ENABLE             (EX_LO_ENABLE_MEM),                             // SIGNAL EXISTS
-  .EX_RF_ENABLE             (EX_RF_ENABLE_MEM),                             // SIGNAL EXISTS
-  .EX_PC_PLUS8_INSTR        (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX),    // SIGNAL EXISTS
-  .EX_MEM_ENABLE            (EX_MEM_ENABLE_MEM),                            // SIGNAL EXISTS
-  .EX_MEM_READWRITE         (EX_MEM_READWRITE_MEM),                         // SIGNAL EXISTS
-  .EX_MEM_SIZE              (EX_MEM_SIZE_MEM),                              // SIGNAL EXISTS
-  .EX_MEM_SIGNE             (EX_MEM_SIGNE_MEM),                             // SIGNAL EXISTS
-
-  // Output Control Signals
-  .Out_ID_LOAD_INSTR        (),
-  .Out_ID_RF_ENABLE         (),
-  .Out_ID_HI_ENABLE         (),
-  .Out_ID_LO_ENABLE         (),
-  .Out_ID_PC_PLUS8_INSTR    (),
-  .Out_ID_MEM_ENABLE        (),
-  .Out_ID_MEM_READWRITE     (),
-  .Out_ID_MEM_SIZE          (),
-  .Out_ID_MEM_SIGNE         (),
-
-    .OUT_EnableMEM              (MEM_ENABLEMEM_HAZARD) // SIGNAL EXISTS | TODO: Create signal on module
+    // INPUT
+    .Clk,         // Clock signal
+    .Reset,        // Reset signal
+    .EX_LOAD_INSTR             (EX_LOADEX_HAZARD),                              // SIGNAL EXISTS | TODO: ????
+    .EX_HI_ENABLE              (EX_HI_ENABLE_MEM),                              // SIGNAL EXISTS
+    .EX_LO_ENABLE              (EX_LO_ENABLE_MEM),                              // SIGNAL EXISTS
+    .EX_RF_ENABLE              (EX_RF_ENABLE_MEM),                              // SIGNAL EXISTS
+    .EX_PC_PLUS8_INSTR         (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX),     // SIGNAL EXISTS
+    .EX_MEM_ENABLE             (EX_MEM_ENABLE_MEM),                             // SIGNAL EXISTS
+    .EX_MEM_READWRITE          (EX_MEM_READWRITE_MEM),                          // SIGNAL EXISTS
+    .EX_MEM_SIZE               (EX_MEM_SIZE_MEM),                               // SIGNAL EXISTS
+    .EX_MEM_SIGNE              (EX_MEM_SIGNE_MEM),                              // SIGNAL EXISTS
+    .EX_ADDRESS                (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),        // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    // OUTPUT
+    .OUT_MEM_LOAD_INSTR        (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE),            // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_RF_ENABLE         (MEM_MEM_RF_),                                   // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_HI_ENABLE         (MEM_HI_ENABLE_WB),                              // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_LO_ENABLE         (MEM_LO_ENABLE_WB),                              // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_PC_PLUS8_INSTR    (MEM_PC_PLUS8_INSTR),                            // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_MEM_ENABLE        (MEM_MEM_ENABLE_DATA_MEMORY),                    // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_MEM_READWRITE     (MEM_MEM_READWRITE_DATA_MEMORY),                 // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_MEM_SIGNE         (MEM_MEM_SIGNE_DATA_MEMORY),                     // TODO: CHANGE THESE SIGNALS IN MODULE
+    .OUT_MEM_ADDRESS           (MEM_ADDRESS_DATA_MEMORY),                       // 
+    .OUT_EnableMEM             (MEM_ENABLEMEM_HAZARD)                           // SIGNAL EXISTS | TODO: Create signal on module
 );
 
 ram_512x8 Data_Memory (
-    .DataOut                (),
-    .Enable                 (),
-    .ReadWrite              (),
-    .SignExtend             (),
-    .Address                (),
-    .DataIn                 (),
-    .Size                   ()
+    // OUTPUT
+    .DataOut                (DATA_MEMORY),
+    // INPUT
+    .Enable                 (MEM_MEM_ENABLE_DATA_MEMORY),
+    .ReadWrite              (MEM_MEM_READWRITE_DATA_MEMORY),
+    .SignExtend             (MEM_MEM_SIGNE_DATA_MEMORY),
+    .Address                (MEM_ADDRESS_DATA_MEMORY),
+    .DataIn                 (MEM_DATAIN_DATA_MEMORY),
+    .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
 Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_One (
+    // OUTPUT
+    .Out                        (),
+    // INPUT
     .Input_One                  (),
     .Input_Two                  (),
-    .Out                        ()
+    .S                          (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE)
 );
 
 Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_Two (
@@ -743,8 +771,8 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
   // Output Control Signals
     .OUT_ID_RF_ENABLE         (),
 
-    .OUT_ID_HI_ENABLE         (),
-    .OUT_ID_LO_ENABLE         (),
+    .OUT_WB_HI_ENABLE         (MEM_HI_ENABLE_WB), // TODO: CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
+    .OUT_WB_LO_ENABLE         (MEM_LO_ENABLE_WB), // TODO: CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
 
     .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
 
@@ -757,9 +785,6 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     .Clk                      (Clk),
     .Reset                    (Reset)
 );
-
-
-// -----------------------------------
 
 
 // Clock generator
