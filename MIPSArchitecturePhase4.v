@@ -458,10 +458,10 @@ Pipeline_Register_32bit_IF_ID IF_ID (
     // OUTPUT
     .Qs                 (ID_INSTRUCTION_CU),                        // OUTPUT OF THE INSTRUCTION | SIGNAL EXISTS
     .PC_out             (IF_PC_ID),                                 // SIGNAL EXISTS
-    .OUT_IF_IMM16       (ID_IMM16_EX_AND_TIMES_4),                              //  TODO: Create this signal in module
+    .OUT_IF_IMM16       (ID_IMM16_EX_AND_TIMES_4),                              //   Create this signal in module
 
-    .OUT_ID_OPERAND_A   (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | TODO: Create this signal in module
-    .OUT_ID_OPERAND_B   (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | TODO: Create this signal in module
+    .OUT_ID_OPERAND_A   (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | Create this signal in module
+    .OUT_ID_OPERAND_B   (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | Create this signal in module
 
     // INPUT
     .DS                 (DataOut_InstructionMemory),                // SIGNAL EXISTS | INPUT OF THE INSTRUCTION
@@ -632,14 +632,14 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .ID_MEM_SIZE                (CU_MUX_MEM_SIZE_EX),                           // SIGNAL EXISTS
     .ID_MEM_SIGNE               (CU_MUX_MEM_SIGNE_EX),                          // SIGNAL EXISTS
     .ID_PC_PLUS8_INSTR          (CU_MUX_PC_PLUS8_INSTR_ID),                     // SIGNAL EXISTS
-    .ID_PC_PLUS8_RESULT         (PLUS_8_PC_8_EX),                               // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .MX1_RESULT                 (MX1_MX1RESULT_UTAMUX_AND_EX),                  // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .MX2_RESULT                 (MX2_MX2_RESULT_EX),                            // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .ID_HI_QS                   (HI_HISIGNAL_EX),                               // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .ID_LO_QS                   (LO_LOSIGNAL_EX),                               // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .ID_PC                      (IF_PC_ID),                                     // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .ID_IMM16                   (ID_IMM16_EX_AND_TIMES_4),                      // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
-    .ID_REG                     (MUX_DESTINATION_REG_EX),                       // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    .ID_PC_PLUS8_RESULT         (PLUS_8_PC_8_EX),                               // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .MX1_RESULT                 (MX1_MX1RESULT_UTAMUX_AND_EX),                  // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .MX2_RESULT                 (MX2_MX2_RESULT_EX),                            // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .ID_HI_QS                   (HI_HISIGNAL_EX),                               // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .ID_LO_QS                   (LO_LOSIGNAL_EX),                               // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .ID_PC                      (IF_PC_ID),                                     // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .ID_IMM16                   (ID_IMM16_EX_AND_TIMES_4),                      // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .ID_REG                     (MUX_DESTINATION_REG_EX),                       // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .ID_RT                      (),    // TODO: ADD SIGNAL TO MODULE
     
     // Output
@@ -654,17 +654,17 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_ID_MEM_READWRITE       (EX_MEM_READWRITE_MEM),                         // SIGNAL EXISTS
     .OUT_ID_MEM_SIZE            (EX_MEM_SIZE_MEM),                              // SIGNAL EXISTS
     .OUT_ID_MEM_SIGNE           (EX_MEM_SIGNE_MEM),                             // SIGNAL EXISTS
-    .OUT_ID_PC_PLUS8_RESULT     (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS | TODO: Create this signal in module
+    .OUT_ID_PC_PLUS8_RESULT     (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS | Create this signal in module
     .OUT_ID_MX1_Result          (EX_MX1_ALU),                                   // SIGNAL EXISTS
     .OUT_ID_MX2_Result          (EX_MX2_OPERAND),                               // SIGNAL EXISTS
-    .OUT_ID_HI_QS               (EX_HISIGNAL_OPERAND),                          // SIGNAL EXISTS TODO: CREATE THIS SIGNAL IN MODULE
-    .OUT_ID_LO_QS               (EX_LOSIGNAL_OPERAND),                          // SIGNAL EXISTS TODO: CREATE THIS SIGNAL IN MODULE
+    .OUT_ID_HI_QS               (EX_HISIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
+    .OUT_ID_LO_QS               (EX_LOSIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
     .OUT_ID_PC                  (EX_PC),                                        // TODO: VERIFY WITH GTK WAVE
     .OUT_ID_IMM16               (EX_IMM16_OPERAND),                             // SIGNAL EXISTS
-    .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | TODO: Create this signal in module
-    .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | TODO: Create this signal in module
-    .OUT_regMEM                 (MEM_REGMEM_HAZARD),                            // SIGNAL EXISTS | TODO: Create this signal in module
-    .OUT_regWB                  (WB_REGWB_HAZARD),                              // SIGNAL EXISTS | TODO: Create this signal in module
+    .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | Create this signal in module
+    .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
+    .OUT_regMEM                 (MEM_REGMEM_HAZARD),                            // SIGNAL EXISTS | Create this signal in module
+    .OUT_regWB                  (WB_REGWB_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
     .OUT_ID_RT                  ()              // TODO: ADD SIGNAL TO MODULE
 );
 
@@ -726,7 +726,7 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .EX_MEM_READWRITE          (EX_MEM_READWRITE_MEM),                          // SIGNAL EXISTS
     .EX_MEM_SIZE               (EX_MEM_SIZE_MEM),                               // SIGNAL EXISTS
     .EX_MEM_SIGNE              (EX_MEM_SIGNE_MEM),                              // SIGNAL EXISTS
-    .EX_ADDRESS                (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),        // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    .EX_ADDRESS                (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),        // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     // OUTPUT
     .OUT_MEM_LOAD_INSTR        (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE),            // TODO: CHANGE THESE SIGNALS IN MODULE
     .OUT_MEM_RF_ENABLE         (MEM_MEM_RF_),                                   // TODO: CHANGE THESE SIGNALS IN MODULE
@@ -738,7 +738,7 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .OUT_MEM_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // TODO: CHANGE THESE SIGNALS IN MODULE
     .OUT_MEM_MEM_SIGNE         (MEM_MEM_SIGNE_DATA_MEMORY),                     // TODO: CHANGE THESE SIGNALS IN MODULE
     .OUT_MEM_ADDRESS           (MEM_ADDRESS_DATA_MEMORY),                       // 
-    .OUT_EnableMEM             (MEM_ENABLEMEM_HAZARD)                           // SIGNAL EXISTS | TODO: Create signal on module
+    .OUT_EnableMEM             (MEM_ENABLEMEM_HAZARD)                           // SIGNAL EXISTS | Create signal on module
 );
 
 ram_512x8 Data_Memory (
@@ -776,9 +776,9 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     .OUT_WB_HI_ENABLE         (MEM_HI_ENABLE_WB), // TODO: CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
     .OUT_WB_LO_ENABLE         (MEM_LO_ENABLE_WB), // TODO: CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
 
-    .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
 
-    .OUT_EnableMEM             (WB_ENABLEWB_HAZARD), // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    .OUT_EnableMEM             (WB_ENABLEWB_HAZARD), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     
     // Input Control Signals
     .ID_RF_ENABLE             (WB_REG_FILE_ENABLE_REGISTER_FILE), // SIGNAL EXISTS | REGISTER FILE
