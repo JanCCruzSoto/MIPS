@@ -151,7 +151,11 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
   output reg Out_ID_MEM_ENABLE, //data memory enable
   output reg Out_ID_MEM_READWRITE, //load(read) or store(write)
   output reg [1:0] Out_ID_MEM_SIZE, //size of Store
-  output reg Out_ID_MEM_SIGNE //sign extension
+  output reg Out_ID_MEM_SIGNE, //sign extension
+
+  //TODO modification output
+
+  output reg OUT_EnableMEM 
 );
 
 always @(posedge Clk)
@@ -200,7 +204,12 @@ module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
   // Output Control Signals
   output reg Out_ID_RF_ENABLE, //register file enable
   output reg Out_ID_HI_ENABLE, //HI register enable
-  output reg Out_ID_LO_ENABLE //LO register enable
+  output reg Out_ID_LO_ENABLE, //LO register enable
+
+  // TODO modification output
+
+  output reg OUT_RW_REGISTER_FILE, // maybe have more or less bits lol
+  output reg OUT_EnableMEM 
 );
 
 always @(posedge Clk)
