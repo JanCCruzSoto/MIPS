@@ -2,18 +2,15 @@ module Condition_Handler (
     output reg          if_id_reset,
     output reg          CH_Out,
 
-    input wire [31:0]   instruction,
-
+    input wire  [5:0]   RT,
     input wire          z_flag,
     input wire          n_flag
-
-
 ); 
 
 
 always @* begin
     
-    case (instruction[31:26])
+    case (RT)
         6'b000101: begin //not equal
             if(z_flag == 0) CH_Out <= 1'b1;
             else CH_Out <= 1'b0;

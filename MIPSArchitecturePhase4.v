@@ -640,6 +640,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .ID_PC                      (IF_PC_ID),                                     // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
     .ID_IMM16                   (ID_IMM16_EX_AND_TIMES_4),                      // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
     .ID_REG                     (MUX_DESTINATION_REG_EX),                       // SIGNAL EXISTS | TODO: CREATE SIGNAL IN MODULE
+    .ID_RT                      (),    // TODO: ADD SIGNAL TO MODULE
     
     // Output
     .OUT_ID_ALU_OP              (EX_ALU_OP_ALU),                                // SIGNAL EXISTS
@@ -663,7 +664,8 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | TODO: Create this signal in module
     .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | TODO: Create this signal in module
     .OUT_regMEM                 (MEM_REGMEM_HAZARD),                            // SIGNAL EXISTS | TODO: Create this signal in module
-    .OUT_regWB                  (WB_REGWB_HAZARD)                              // SIGNAL EXISTS | TODO: Create this signal in module
+    .OUT_regWB                  (WB_REGWB_HAZARD),                              // SIGNAL EXISTS | TODO: Create this signal in module
+    .OUT_ID_RT                  ()              // TODO: ADD SIGNAL TO MODULE
 );
 
 Handler Operand_Handler (
@@ -706,7 +708,7 @@ Condition_Handler Condition_Handler (
     .if_id_reset    (CONDITION_HANDLER_IFRESET_IF),
     .CH_Out         (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
     // INPUT
-    .instruction    (), // TODO: CHANGE SIGNAL IN MODULE. THIS SHOULD BE 5 BITS INSTEAD OF 32, AND NAME SHOULD BE RT
+    .RT             (),
     .z_flag         (ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER),     // SIGNAL EXISTS
     .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER)      // SIGNAL EXISTS
 );
