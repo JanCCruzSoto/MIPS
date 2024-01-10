@@ -141,6 +141,10 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
   input wire [1:0] ID_MEM_SIZE, //size of Store
   input wire ID_MEM_SIGNE, //sign extension
 
+  //TODO modification input
+
+  input wire [8:0] EX_ADDRESS,
+
 
   // Output Control Signals
   output reg Out_ID_LOAD_INSTR, //load instructions
