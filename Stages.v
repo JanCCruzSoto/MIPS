@@ -4,8 +4,15 @@ module Pipeline_Register_32bit_IF_ID ( /*IF/ID REGISTER*/
   input wire Reset,        // Reset signal
   //PC y LE
   
-  output reg [31:0] Qs, PC_out    // 32-bit Instruction
+  output reg [31:0] Qs, PC_out,    // 32-bit Instruction
   //falta conectar el out
+
+  // TODO modifications
+  
+  output reg [15:0] OUT_IF_IMM16,
+  output reg [31:0] OUT_ID_OPERAND_A,
+  output reg [31:0] OUT_ID_OPERAND_B
+  
 );
 
 always @(posedge Clk)
@@ -58,6 +65,8 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
   output reg        Out_ID_MEM_READWRITE, //load(read) or store(write)
   output reg [1:0]  Out_ID_MEM_SIZE, //size of Store
   output reg        Out_ID_MEM_SIGNE //sign extension
+
+
 );
 
 always @(posedge Clk)
