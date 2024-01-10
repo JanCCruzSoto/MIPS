@@ -8,7 +8,7 @@ module Pipeline_Register_32bit_IF_ID ( /*IF/ID REGISTER*/
   //falta conectar el out
 
   // TODO modifications
-  
+
   output reg [15:0] OUT_IF_IMM16,
   output reg [31:0] OUT_ID_OPERAND_A,
   output reg [31:0] OUT_ID_OPERAND_B
@@ -52,6 +52,17 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
   input wire [1:0]    ID_MEM_SIZE, //size of Store
   input wire          ID_MEM_SIGNE, //sign extension
 
+  // TODO modification inputs
+  
+input wire [31:0] ID_PC_PLUS8_RESULT, //  maybe 8 bits
+input wire [31:0] MX1_RESULT,
+input wire[31:0] MX2_RESULT,
+input wire [31:0] ID_HI_QS,
+input wire [31:0] ID_LO_QS,
+input wire [31:0] ID_PC,
+input wire [15:0] ID_IMM16,
+input wire [4:0] ID_REG,
+
 
   // Output Control Signals
   output reg [3:0]  Out_ID_ALU_OP, //4 bit BUS (ALU CONTROL)
@@ -64,8 +75,16 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
   output reg        Out_ID_MEM_ENABLE, //data memory enable
   output reg        Out_ID_MEM_READWRITE, //load(read) or store(write)
   output reg [1:0]  Out_ID_MEM_SIZE, //size of Store
-  output reg        Out_ID_MEM_SIGNE //sign extension
+  output reg        Out_ID_MEM_SIGNE, //sign extension
 
+// TODO modifications outputs
+output reg [31:0] OUT_ID_PC_PLUS8_RESULT, // maybe 8 bits 
+output reg [31:0] OUT_ID_HI_QS,
+output reg [31:0] OUT_ID_LO_QS,
+output reg OUT_EnableEX,
+output reg [4:0] OUT_regEX,
+output reg [4:0] OUT_regMEM,
+output reg [4:0] OUT_regWB
 
 );
 
