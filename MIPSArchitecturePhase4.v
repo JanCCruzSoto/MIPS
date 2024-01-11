@@ -266,7 +266,7 @@ module PPU (
 
   // ---- | Memories, utilized for precharging |----
   rom_512x8 Instruction_Memory (
-              .Address (PC[31:0]),                     // IN
+              .Address (PC[8:0]),                     // IN
               .DataOut (DataOut_InstructionMemory)   // OUT
             );  // ROM
 
@@ -515,7 +515,7 @@ module PPU (
 
   // Wacky multiplexers Extravaganza // ----------------
 
-  32BitTwoToOne UTA_MUX ( // ID_MUX_Case_one
+  MUX32BitTwoToOne UTA_MUX ( // ID_MUX_Case_one
                        // OUTPUT
                        .Out                        (UTA_MUX_UTA_MUX_RESULT_CTA_MUX), // SIGNAL EXISTS
 
@@ -524,7 +524,7 @@ module PPU (
                        .Input_Two                  (MX1_MX1RESULT_UTAMUX_AND_EX), // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX) // SIGNAL EXISTS
                      );
-  32BitTwoToOne CTA_MUX ( // ID_MUX_Case_two | Target Address
+  MUX32BitTwoToOne CTA_MUX ( // ID_MUX_Case_two | Target Address
                        // OUTPUT
                        .Out                        (CTA_MUX_TA_nPC_SELECTOR),                  // SIGNAL EXISTS
 
@@ -536,7 +536,7 @@ module PPU (
                      
 
                      
-  32BitTwoToOne NPC_SELECTOR_MUX ( // IF Stage | NPC Selector 
+  MUX32BitTwoToOne NPC_SELECTOR_MUX ( // IF Stage | NPC Selector 
                        .Out                        (nPC_MUX),                               
 
                        .Input_One                  (CTA_MUX_TA_nPC_SELECTOR),             // SIGNAL EXISTS
@@ -544,7 +544,7 @@ module PPU (
                        .S                          (UB_MUX_SELECTION_NPC_SELECTOR)                                     // 
                      );
 
-  32BitTwoToOne PC_PLUS_8_MUX ( // EX Stage | PC+8 Selector
+  MUX32BitTwoToOne PC_PLUS_8_MUX ( // EX Stage | PC+8 Selector
                        .Out                        (PC_PLUS_8_MUX_PC_MX1_AND_MX2),                // SIGNAL EXISTS                        
 
                        .Input_One                  (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),             // SIGNAL EXISTS
@@ -737,7 +737,7 @@ ram_512x8 Data_Memory (
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
-  32BitTwoToOne MEM_Memory_MUX_Case_One (
+  MUX32BitTwoToOne MEM_Memory_MUX_Case_One (
                        // OUTPUT
                        .Out                        (),
                        // INPUT
@@ -746,7 +746,7 @@ ram_512x8 Data_Memory (
                        .S                          (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE)
                      );
 
-  32BitTwoToOne MEM_Memory_MUX_Case_Two (
+  MUX32BitTwoToOne MEM_Memory_MUX_Case_Two (
                        .Input_One                  (),
                        .Input_Two                  (),
                        .Out                        ()

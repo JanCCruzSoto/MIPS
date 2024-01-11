@@ -155,7 +155,8 @@ module Mux_1BitTwoToOne (
     endcase
   end
 endmodule
-module 32BitTwoToOne ( /*USED FOR 32 BIT INPUTS*/ /*TWO USED IN ID AND ONE USED IN MEM*/
+
+module MUX32BitTwoToOne ( /*USED FOR 32 BIT INPUTS*/ /*TWO USED IN ID AND ONE USED IN MEM*/
     input wire [31:0] Input_One,
     input wire [31:0] Input_Two,
 
@@ -169,10 +170,10 @@ module 32BitTwoToOne ( /*USED FOR 32 BIT INPUTS*/ /*TWO USED IN ID AND ONE USED 
 
     case(S)
       1'b0:
-        Out = Input_One;
+        Out <= Input_One;
 
       1'b1:
-        Out = Input_Two;
+        Out <= Input_Two;
     endcase
   end
 
