@@ -54,38 +54,37 @@ module Mux_Control_Unit (
     case(controlMux)
       1'b0:
       begin
-        OUT_ID_ALU_OP <= ID_ALU_OP;
-        OUT_ID_LOAD_INSTR <= ID_LOAD_INSTR;
-        OUT_ID_RF_ENABLE <= ID_RF_ENABLE;
-        OUT_ID_HI_ENABLE <= ID_HI_ENABLE;
-        OUT_ID_LO_ENABLE <= ID_LO_ENABLE;
-        OUT_ID_PC_PLUS8_INSTR <= ID_PC_PLUS8_INSTR;
-        OUT_ID_UB_INSTR <= ID_UB_INSTR;
-        OUT_ID_JALR_JR_INSTR <= ID_JALR_JR_INSTR;
-        OUT_ID_DESTINATION_REGISTER <= ID_DESTINATION_REGISTER;
-        OUT_ID_OP_H_S <= ID_OP_H_S;
-        OUT_ID_MEM_ENABLE <= ID_MEM_ENABLE;
-        OUT_ID_MEM_READWRITE <= ID_MEM_READWRITE;
-        OUT_ID_MEM_SIZE <= ID_MEM_SIZE;
-        OUT_ID_MEM_SIGNE <= ID_MEM_SIGNE;
+        OUT_ID_ALU_OP                 <= ID_ALU_OP;
+        OUT_ID_LOAD_INSTR             <= ID_LOAD_INSTR;
+        OUT_ID_RF_ENABLE              <= ID_RF_ENABLE;
+        OUT_ID_HI_ENABLE              <= ID_HI_ENABLE;
+        OUT_ID_LO_ENABLE              <= ID_LO_ENABLE;
+        OUT_ID_PC_PLUS8_INSTR         <= ID_PC_PLUS8_INSTR;
+        OUT_ID_UB_INSTR               <= ID_UB_INSTR;
+        OUT_ID_JALR_JR_INSTR          <= ID_JALR_JR_INSTR;
+        OUT_ID_DESTINATION_REGISTER   <= ID_DESTINATION_REGISTER;
+        OUT_ID_OP_H_S                 <= ID_OP_H_S;
+        OUT_ID_MEM_ENABLE             <= ID_MEM_ENABLE;
+        OUT_ID_MEM_READWRITE          <= ID_MEM_READWRITE;
+        OUT_ID_MEM_SIZE               <= ID_MEM_SIZE;
+        OUT_ID_MEM_SIGNE              <= ID_MEM_SIGNE;
       end
-
       1'b1:
       begin
-        OUT_ID_ALU_OP <= ZERO_ID_ALU_OP;
-        OUT_ID_LOAD_INSTR <= ZERO_ID_LOAD_INSTR;
-        OUT_ID_RF_ENABLE <= ZERO_ID_RF_ENABLE;
-        OUT_ID_HI_ENABLE <= ZERO_ID_HI_ENABLE;
-        OUT_ID_LO_ENABLE <= ZERO_ID_LO_ENABLE;
-        OUT_ID_PC_PLUS8_INSTR <= ZERO_ID_PC_PLUS8_INSTR;
-        OUT_ID_UB_INSTR <= ZERO_ID_UB_INSTR;
-        OUT_ID_JALR_JR_INSTR <= ZERO_ID_JALR_JR_INSTR;
+        OUT_ID_ALU_OP               <= ZERO_ID_ALU_OP;
+        OUT_ID_LOAD_INSTR           <= ZERO_ID_LOAD_INSTR;
+        OUT_ID_RF_ENABLE            <= ZERO_ID_RF_ENABLE;
+        OUT_ID_HI_ENABLE            <= ZERO_ID_HI_ENABLE;
+        OUT_ID_LO_ENABLE            <= ZERO_ID_LO_ENABLE;
+        OUT_ID_PC_PLUS8_INSTR       <= ZERO_ID_PC_PLUS8_INSTR;
+        OUT_ID_UB_INSTR             <= ZERO_ID_UB_INSTR;
+        OUT_ID_JALR_JR_INSTR        <= ZERO_ID_JALR_JR_INSTR;
         OUT_ID_DESTINATION_REGISTER <= ZERO_ID_DESTINATION_REGISTER;
-        OUT_ID_OP_H_S <= ZERO_ID_OP_H_S;
-        OUT_ID_MEM_ENABLE <= ZERO_ID_MEM_ENABLE;
-        OUT_ID_MEM_READWRITE <= ZERO_ID_MEM_READWRITE;
-        OUT_ID_MEM_SIZE <= ZERO_ID_MEM_SIZE;
-        OUT_ID_MEM_SIGNE <= ZERO_ID_MEM_SIGNE;
+        OUT_ID_OP_H_S               <= ZERO_ID_OP_H_S;
+        OUT_ID_MEM_ENABLE           <= ZERO_ID_MEM_ENABLE;
+        OUT_ID_MEM_READWRITE        <= ZERO_ID_MEM_READWRITE;
+        OUT_ID_MEM_SIZE             <= ZERO_ID_MEM_SIZE;
+        OUT_ID_MEM_SIGNE            <= ZERO_ID_MEM_SIGNE;
       end
     endcase
   end

@@ -36,99 +36,97 @@ endmodule
 module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN THE INPUTS NON RELATED TO CONTROL SIGNALS
     input wire Clk,         // Clock signal
     input wire Reset,        // Reset signal
-    //output reg [31:0] Qs    // 32-bit output data
 
     // Input Control Signals
-    input wire [3:0]    ID_ALU_OP, //4 bit BUS (ALU CONTROL)
-    input wire          ID_LOAD_INSTR, //load instructions
-    input wire          ID_RF_ENABLE, //register file enable
-    input wire          ID_HI_ENABLE, //HI register enable
-    input wire          ID_LO_ENABLE, //LO register enable
-    input wire          ID_PC_PLUS8_INSTR, //storing PC+8
-    input wire [2:0]    ID_OP_H_S, //Operation Handler Control Signal
-    input wire          ID_MEM_ENABLE, //data memory enable
-    input wire          ID_MEM_READWRITE, //load(read) or store(write)
-    input wire [1:0]    ID_MEM_SIZE, //size of Store
-    input wire          ID_MEM_SIGNE, //sign extension
-
-    // TODO modification inputs
-
-    input wire [31:0] ID_PC_PLUS8_RESULT, //  maybe 8 bits
+    input wire [3:0]    ID_ALU_OP,        // 4 BIT BUS (ALU CONTROL)
+    input wire          ID_LOAD_INSTR,    // LOAD INSTRUCTIONS
+    input wire          ID_RF_ENABLE,     // REGISTER FILE ENABLE
+    input wire          ID_HI_ENABLE,     // HI REGISTER ENABLE
+    input wire          ID_LO_ENABLE,     // LO REGISTER ENABLE
+    input wire          ID_PC_PLUS8_INSTR,// STORING PC+8
+    input wire [2:0]    ID_OP_H_S,        // OPERATION HANDLER CONTROL SIGNAL
+    input wire          ID_MEM_ENABLE,    // DATA MEMORY ENABLE
+    input wire          ID_MEM_READWRITE, // LOAD(READ) OR STORE(WRITE)
+    input wire [1:0]    ID_MEM_SIZE,      // SIZE OF STORE
+    input wire          ID_MEM_SIGNE,     // SIGN EXTENSION
+    input wire [31:0] ID_PC_PLUS8_RESULT,
     input wire [31:0] MX1_RESULT,
     input wire [31:0] MX2_RESULT,
     input wire [31:0] ID_HI_QS,
     input wire [31:0] ID_LO_QS,
     input wire [31:0] ID_PC,
     input wire [15:0] ID_IMM16,
-    input wire [4:0] ID_REG,
-
-    //TODO modifications inputs
-
     input wire [4:0] ID_RT,
 
-
-    // Output Control Signals
-    output reg [3:0]  OUT_ID_ALU_OP,     // 4 bit BUS (ALU CONTROL)
-    output reg        OUT_ID_LOAD_INSTR, // LOAD INSTRUCTIONS
-    output reg        OUT_ID_RF_ENABLE, //register file enable
-    output reg        OUT_ID_HI_ENABLE, //HI register enable
-    output reg        OUT_ID_LO_ENABLE, //LO register enable
-    output reg        OUT_ID_PC_PLUS8_INSTR, //storing PC+8
-    output reg [2:0]  OUT_ID_OP_H_S, //Operation Handler Control Signal
-    output reg        OUT_ID_MEM_ENABLE, //data memory enable
-    output reg        OUT_ID_MEM_READWRITE, //load(read) or store(write)
-    output reg [1:0]  OUT_ID_MEM_SIZE, //size of Store
-    output reg        OUT_ID_MEM_SIGNE, //sign extension
-
-    // TODO modifications outputs
+    // Output Contræl Signals
+    output reg [3:0]  OUT_ID_ALU_OP,          // 4 bit BUS (ALU CONTROL)
+    output reg        OUT_ID_LOAD_INSTR,      // LOAD INSTRUCTIONS
+    output reg        OUT_ID_RF_ENABLE,       // Register file enable
+    output reg        OUT_ID_HI_ENABLE,       // HI register enable
+    output reg        OUT_ID_LO_ENABLE,       // LO register enable
+    output reg        OUT_ID_PC_PLUS8_INSTR,  // Storing PC+8
+    output reg [2:0]  OUT_ID_OP_H_S,          // Operation Handler Control Signal
+    output reg        OUT_ID_MEM_ENABLE,      // Data memory enable
+    output reg        OUT_ID_MEM_READWRITE,   // Load(read) or store(write)
+    output reg [1:0]  OUT_ID_MEM_SIZE,        // Size of Store
+    output reg        OUT_ID_MEM_SIGNE,       // Sign extension
     output reg [31:0] OUT_ID_PC_PLUS8_RESULT, // maybe 8 bits
     output reg [31:0] OUT_ID_HI_QS,
     output reg [31:0] OUT_ID_LO_QS,
     output reg        OUT_EnableEX,
-    output reg [4:0] OUT_regEX,
-    output reg [4:0] OUT_regMEM,
-    output reg [4:0] OUT_regWB,
-    output reg [4:0] OUT_ID_RT
-
-
+    output reg [4:0]  OUT_regEX,
+    output reg [4:0]  OUT_regMEM,
+    output reg [4:0]  OUT_regWB,
+    output reg [4:0]  OUT_ID_RT
   );
 
   always @(posedge Clk)
   begin
-
     if (Reset)
     begin
-      OUT_ID_ALU_OP <= 4'b0;
-      OUT_ID_LOAD_INSTR <= 1'b0;
-      OUT_ID_RF_ENABLE <= 1'b0;
-      OUT_ID_HI_ENABLE <= 1'b0;
-      OUT_ID_LO_ENABLE <= 1'b0;
-      OUT_ID_PC_PLUS8_INSTR <= 1'b0;
-      OUT_ID_OP_H_S <= 3'b0;
-      OUT_ID_MEM_ENABLE <= 1'b0;
-      OUT_ID_MEM_READWRITE <= 1'b0;
-      OUT_ID_MEM_SIZE <= 2'b0;
-      OUT_ID_MEM_SIGNE <= 1'b0;
+      OUT_ID_ALU_OP           <= 4'b0;
+      OUT_ID_LOAD_INSTR       <= 1'b0;
+      OUT_ID_RF_ENABLE        <= 1'b0;
+      OUT_ID_HI_ENABLE        <= 1'b0;
+      OUT_ID_LO_ENABLE        <= 1'b0;
+      OUT_ID_PC_PLUS8_INSTR   <= 1'b0;
+      OUT_ID_OP_H_S           <= 3'b0;
+      OUT_ID_MEM_ENABLE       <= 1'b0;
+      OUT_ID_MEM_READWRITE    <= 1'b0;
+      OUT_ID_MEM_SIZE         <= 2'b0;
+      OUT_ID_MEM_SIGNE        <= 1'b0;
+      OUT_ID_PC_PLUS8_RESULT  <= 32'b0;
+      OUT_ID_HI_QS            <= 32'b0;
+      OUT_ID_LO_QS            <= 32'b0;
+      OUT_EnableEX            <= 1'b0;
+      OUT_regEX               <= 5'b0;
+      OUT_regMEM              <= 5'b0;
+      OUT_regWB               <= 5'b0;
+      OUT_ID_RT               <= 5'b0;
     end
     else
     begin
-      OUT_ID_ALU_OP <= ID_ALU_OP;
-      OUT_ID_LOAD_INSTR <= ID_LOAD_INSTR;
-      OUT_ID_RF_ENABLE <= ID_RF_ENABLE;
-      OUT_ID_HI_ENABLE <= ID_HI_ENABLE;
-      OUT_ID_LO_ENABLE <= ID_LO_ENABLE;
-      OUT_ID_PC_PLUS8_INSTR <= ID_PC_PLUS8_INSTR;
-      OUT_ID_OP_H_S <= ID_OP_H_S;
-      OUT_ID_MEM_ENABLE <= ID_MEM_ENABLE;
-      OUT_ID_MEM_READWRITE <= ID_MEM_READWRITE;
-      OUT_ID_MEM_SIZE <= ID_MEM_SIZE;
-      OUT_ID_MEM_SIGNE <= ID_MEM_SIGNE;
-      OUT_ID_RT <= ID_RT;                          // Added RT in module
+      OUT_ID_ALU_OP           <= ID_ALU_OP;
+      OUT_ID_LOAD_INSTR       <= ID_LOAD_INSTR;
+      OUT_ID_RF_ENABLE        <= ID_RF_ENABLE;
+      OUT_ID_HI_ENABLE        <= ID_HI_ENABLE;
+      OUT_ID_LO_ENABLE        <= ID_LO_ENABLE;
+      OUT_ID_PC_PLUS8_INSTR   <= ID_PC_PLUS8_INSTR;
+      OUT_ID_OP_H_S           <= ID_OP_H_S;
+      OUT_ID_MEM_ENABLE       <= ID_MEM_ENABLE;
+      OUT_ID_MEM_READWRITE    <= ID_MEM_READWRITE;
+      OUT_ID_MEM_SIZE         <= ID_MEM_SIZE;
+      OUT_ID_MEM_SIGNE        <= ID_MEM_SIGNE;
+      OUT_ID_RT               <= ID_RT;                   // Added RT in module
+      OUT_ID_PC_PLUS8_RESULT  <= ID_PC_PLUS8_RESULT;
+      OUT_ID_HI_QS            <= MX1_RESULT;
+      OUT_ID_LO_QS            <= MX2_RESULT;
+      OUT_EnableEX            <= ID_HI_QS;
+      OUT_regEX               <= ID_LO_QS;
+      OUT_regMEM              <= ID_PC;
+      OUT_regWB               <= ID_IMM16;
     end
-
-
   end
-
 endmodule
 
 module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
@@ -244,7 +242,6 @@ module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
   end
 
 endmodule
-
 
 
 
