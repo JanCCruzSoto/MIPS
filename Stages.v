@@ -158,6 +158,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     output reg        OUT_EX_MEM_SIGNE,      // SIGN EXTENSION
     output reg        OUT_EnableMEM,
     output reg [8:0]  OUT_EX_ADDRESS
+    // TODO: SEEMS REGMEM IS NOT HERE, WE ALSO NEED TO ADD IT, FOR INPUT AND OUTPUT
   );
   always @(posedge Clk)
   begin
@@ -192,52 +193,46 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
   end
 endmodule
 
+// 14 siggnals in
 module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
-    //input wire [31:0] DS,    // 32-bit input data
     input wire Clk,         // Clock signal
     input wire Reset,        // Reset signal
-    //output reg [31:0] Qs    // 32-bit output data
 
     // Input Control Signals
     input wire MEM_RF_ENABLE, // Register file enable
     input wire MEM_HI_ENABLE, // HI register enable
     input wire MEM_LO_ENABLE, // LO register enable
-
+    input wire [31:0] MEM_TO_REG_MUX_RESULT,
+    input wire [31:0] EX_REGEX,
 
     // Output Control Signals
     output reg OUT_MEM_RF_ENABLE, //register file enable
     output reg OUT_MEM_HI_ENABLE, //HI register enable
     output reg OUT_MEM_LO_ENABLE, //LO register enable
-
-
-    // HI AND LO REGISTER OUTPUTS
-    output reg OUT_WB_LO_ENABLE,     // LO register enable
-    output reg OUT_WB_HI_ENABLE,     // HI register enable
-
-    output reg OUT_RW_REGISTER_FILE, // maybe have more or less bits lol
-    output reg OUT_EnableMEM
+    output reg [31:0] OUT_RW_REGISTER_FILE,
+    output reg [31:0] OUT_PW_MEM_TO_REG_MUX
   );
 
   always @(posedge Clk)
-    //COMENTARIO BOBO
   begin
     if (Reset)
     begin
-      OUT_MEM_RF_ENABLE <= 1'b0;
-      OUT_MEM_HI_ENABLE <= 1'b0;
-      OUT_MEM_LO_ENABLE <= 1'b0;
+      OUT_MEM_RF_ENABLE     <= 1'b0;
+      OUT_MEM_HI_ENABLE     <= 1'b0;
+      OUT_MEM_LO_ENABLE     <= 1'b0;
+      OUT_RW_REGISTER_FILE  <= 32'b0;
+      OUT_PW_MEM_TO_REG_MUX <= 32'b0;
     end
     else
     begin
-      OUT_MEM_RF_ENABLE <= MEM_RF_ENABLE;
-      OUT_MEM_HI_ENABLE <= MEM_HI_ENABLE;
-      OUT_MEM_LO_ENABLE <= MEM_LO_ENABLE;
+      OUT_MEM_RF_ENABLE     <= MEM_RF_ENABLE;
+      OUT_MEM_HI_ENABLE     <= MEM_HI_ENABLE;
+      OUT_MEM_LO_ENABLE     <= MEM_LO_ENABLE;
+      OUT_RW_REGISTER_FILE  <= MEM_TO_REG_MUX_RESULT;
+      OUT_PW_MEM_TO_REG_MUX <= EX_REGEX;
     end
   end
 
 endmodule
-
-
-
 
 
