@@ -6,7 +6,7 @@ module ALU (
     output wire       z_flag,
     output wire       n_flag
 );
-
+// comentario en el alu
 // Initialize outputs
 assign z_flag = (result == 32'b0);
 assign n_flag = (result[31] == 1);
