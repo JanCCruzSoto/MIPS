@@ -10,8 +10,8 @@ module Pipeline_Register_32bit_IF_ID ( /*IF/ID REGISTER*/
   // TODO modifications
 
   output reg [15:0] OUT_IF_IMM16,
-  output reg [31:0] OUT_IF_OPERAND_A,
-  output reg [31:0] OUT_IF_OPERAND_B
+  output reg [4:0] OUT_IF_OPERAND_A,
+  output reg [4:0] OUT_IF_OPERAND_B
   
 );
 
@@ -20,7 +20,7 @@ begin
 // instancias mas declaracion
     Qs <= DS;
 
-    if (Reset)
+    if (Reset)                //TODO: HACER LA IMPLEMENTACION DE LAS SEñALES QUE FALTAN
     begin
         Qs <= 32'b0; //Resets to decimal 4
         PC_out <= 32'b0;
@@ -56,12 +56,16 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
   
 input wire [31:0] ID_PC_PLUS8_RESULT, //  maybe 8 bits
 input wire [31:0] MX1_RESULT,
-input wire[31:0] MX2_RESULT,
+input wire [31:0] MX2_RESULT,
 input wire [31:0] ID_HI_QS,
 input wire [31:0] ID_LO_QS,
 input wire [31:0] ID_PC,
 input wire [15:0] ID_IMM16,
 input wire [4:0] ID_REG,
+
+//TODO modifications inputs
+
+input wire [4:0] ID_RT,
 
 
   // Output Control Signals
@@ -119,6 +123,7 @@ begin
     OUT_ID_MEM_READWRITE <= ID_MEM_READWRITE;
     OUT_ID_MEM_SIZE <= ID_MEM_SIZE;
     OUT_ID_MEM_SIGNE <= ID_MEM_SIGNE;
+    OUT_ID_RT <= ID_RT;                          // Added RT in module
     end
 
     

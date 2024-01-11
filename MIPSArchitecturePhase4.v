@@ -52,9 +52,9 @@ module PPU (
 
   // Controls when the flow will flow and when it should stop
   // TODO: Change to wires after getting job done
-  reg stall_PC;
-  reg stall_NPC;
-  reg stall_IFID;
+  wire stall_PC;
+  wire stall_NPC;
+  wire stall_IFID;
 
 
   // -------| INITIALIZING WIRES AND REGISTERS |------------------
@@ -185,7 +185,7 @@ module PPU (
   wire [31:0] CTA_MUX_TA_nPC_SELECTOR;
 
   // ====| UB MUX |
-  wire UB_MUX_SELECTION_NPC_SELECTOR; // TODO: SE CAMBIO DE 32 A 1 BIT VERIFICAR
+  wire UB_MUX_SELECTION_NPC_SELECTOR; // TODO: SE CAMBIO DE 32 A 1 BIT VERIFICAR CREAR NUEVO MUX O VERIFICAR SI YA HAY UNO
 
   // ====| MX1 |===== //
   wire [31:0] MX1_MX1RESULT_UTAMUX_AND_EX;
@@ -235,7 +235,7 @@ module PPU (
 
   // =====| CONDITION HANDLER |===== //
   wire CONDITION_HANDLER_IFRESET_IF;
-  wire [31:] COND_HANDLER_UB_UB_MUX; //TODO: SE CAMBIO DE 1 A 32 BITS
+  wire [31:0] COND_HANDLER_UB_UB_MUX; //TODO: SE CAMBIO DE 1 A 32 BITS
   wire [31:0] REGISTER_FILE_PA_MX1;
   wire [31:0] REGISTER_FILE_PB_MX2;
 
