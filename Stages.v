@@ -130,72 +130,66 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
 endmodule
 
 module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
-    //input wire [31:0] DS,    // 32-bit input data
-    input wire Clk,         // Clock signal
-    input wire Reset,        // Reset signal
-    //output reg [31:0] Qs    // 32-bit output data
+    input wire Clk,                       // CLOCK SIGNAL
+    input wire Reset,                     // RESET SIGNAL
 
     // Input Control Signals
-    input wire EX_LOAD_INSTR, //load instructions
-    input wire EX_RF_ENABLE, //register file enable
-    input wire EX_HI_ENABLE, //HI register enable
-    input wire EX_LO_ENABLE, //LO register enable
-    input wire EX_PC_PLUS8_INSTR, //storing PC+8
-    input wire EX_MEM_ENABLE, //data memory enable
-    input wire EX_MEM_READWRITE, //load(read) or store(write)
-    input wire [1:0] EX_MEM_SIZE, //size of Store
-    input wire EX_MEM_SIGNE, //sign extension
-
-    //TODO modification input
-
-    input wire [8:0] EX_ADDRESS,
+    input wire        EX_LOAD_INSTR,       // LOAD INSTRUCTIONS
+    input wire        EX_RF_ENABLE,        // REGISTER FILE ENABLE
+    input wire        EX_HI_ENABLE,        // HI REGISTER ENABLE
+    input wire        EX_LO_ENABLE,        // LO REGISTER ENABLE
+    input wire        EX_PC_PLUS8_INSTR,   // STORING PC+8
+    input wire        EX_MEM_ENABLE,       // DATA MEMORY ENABLE
+    input wire        EX_MEM_READWRITE,    // LOAD(READ) OR STORE(WRITE)
+    input wire [1:0]  EX_MEM_SIZE,         // SIZE OF STORE
+    input wire        EX_MEM_SIGNE,        // SIGN EXTENSION
+    input wire [31:0] EX_ADDRESS,          // OUTPUT FROM THE ALU
+    input wire        EX_ENABLE_MEM,
 
     // Output ContrEX Signals
-    output reg OUT_EX_LOAD_INSTR, //load instructions
-    output reg OUT_EX_RF_ENABLE, //register file enable
-    output reg OUT_EX_HI_ENABLE, //HI register enable
-    output reg OUT_EX_LO_ENABLE, //LO register enable
-    output reg OUT_EX_PC_PLUS8_INSTR, //storing PC+8
-    output reg OUT_EX_MEM_ENABLE, //data memory enable
-    output reg OUT_EX_MEM_READWRITE, //load(read) or store(write)
-    output reg [1:0] OUT_EX_MEM_SIZE, //size of Store
-    output reg OUT_EX_MEM_SIGNE, //sign extension
-
-    //TODO modification output
-
-    output reg OUT_EnableMEM
+    output reg        OUT_EX_LOAD_INSTR,     // LOAD INSTRUCTIONS
+    output reg        OUT_EX_RF_ENABLE,      // REGISTER FILE ENABLE
+    output reg        OUT_EX_HI_ENABLE,      // HI REGISTER ENABLE
+    output reg        OUT_EX_LO_ENABLE,      // LO REGISTER ENABLE
+    output reg        OUT_EX_PC_PLUS8_INSTR, // STORING PC+8
+    output reg        OUT_EX_MEM_ENABLE,     // DATA MEMORY ENABLE
+    output reg        OUT_EX_MEM_READWRITE,  // LOAD(READ) OR STORE(WRITE)
+    output reg [1:0]  OUT_EX_MEM_SIZE,       // SIZE OF STORE
+    output reg        OUT_EX_MEM_SIGNE,      // SIGN EXTENSION
+    output reg        OUT_EnableMEM,
+    output reg [8:0]  OUT_EX_ADDRESS
   );
-
   always @(posedge Clk)
   begin
 
     if (Reset)
     begin
-      OUT_EX_LOAD_INSTR <= 1'b0;
-      OUT_EX_RF_ENABLE <= 1'b0;
-      OUT_EX_HI_ENABLE <= 1'b0;
-      OUT_EX_LO_ENABLE <= 1'b0;
-      OUT_EX_PC_PLUS8_INSTR <= 1'b0;
-      OUT_EX_MEM_ENABLE <= 1'b0;
-      OUT_EX_MEM_READWRITE <= 1'b0;
-      OUT_EX_MEM_SIZE <= 2'b0;
-      OUT_EX_MEM_SIGNE <= 1'b0;
+      OUT_EX_LOAD_INSTR       <= 1'b0;
+      OUT_EX_RF_ENABLE        <= 1'b0;
+      OUT_EX_HI_ENABLE        <= 1'b0;
+      OUT_EX_LO_ENABLE        <= 1'b0;
+      OUT_EX_PC_PLUS8_INSTR   <= 1'b0;
+      OUT_EX_MEM_ENABLE       <= 1'b0;
+      OUT_EX_MEM_READWRITE    <= 1'b0;
+      OUT_EX_MEM_SIZE         <= 2'b0;
+      OUT_EX_MEM_SIGNE        <= 1'b0;
+      OUT_EnableMEM           <= 1'b0;
     end
     else
     begin
-      OUT_EX_LOAD_INSTR <= EX_LOAD_INSTR;
-      OUT_EX_RF_ENABLE <= EX_RF_ENABLE;
-      OUT_EX_HI_ENABLE <= EX_HI_ENABLE;
-      OUT_EX_LO_ENABLE <= EX_LO_ENABLE;
-      OUT_EX_PC_PLUS8_INSTR <= EX_PC_PLUS8_INSTR;
-      OUT_EX_MEM_ENABLE <= EX_MEM_ENABLE;
-      OUT_EX_MEM_READWRITE <= EX_MEM_READWRITE;
-      OUT_EX_MEM_SIZE <= EX_MEM_SIZE;
-      OUT_EX_MEM_SIGNE <= EX_MEM_SIGNE;
+      OUT_EX_LOAD_INSTR       <= EX_LOAD_INSTR;
+      OUT_EX_RF_ENABLE        <= EX_RF_ENABLE;
+      OUT_EX_HI_ENABLE        <= EX_HI_ENABLE;
+      OUT_EX_LO_ENABLE        <= EX_LO_ENABLE;
+      OUT_EX_PC_PLUS8_INSTR   <= EX_PC_PLUS8_INSTR;
+      OUT_EX_MEM_ENABLE       <= EX_MEM_ENABLE;
+      OUT_EX_MEM_READWRITE    <= EX_MEM_READWRITE;
+      OUT_EX_MEM_SIZE         <= EX_MEM_SIZE;
+      OUT_EX_MEM_SIGNE        <= EX_MEM_SIGNE;
+      OUT_EnableMEM           <= EX_ENABLE_MEM;
+      OUT_EX_ADDRESS          <= EX_ADDRESS[8:0];
     end
-
   end
-
 endmodule
 
 module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
