@@ -200,17 +200,20 @@ module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
   //output reg [31:0] Qs    // 32-bit output data
 
   // Input Control Signals
-  input wire ID_RF_ENABLE, //register file enable
-  input wire ID_HI_ENABLE, //HI register enable
-  input wire ID_LO_ENABLE, //LO register enable
+  input wire MEM_RF_ENABLE, // Register file enable
+  input wire MEM_HI_ENABLE, // HI register enable
+  input wire MEM_LO_ENABLE, // LO register enable
 
 
   // Output Control Signals
-  output reg Out_ID_RF_ENABLE, //register file enable
-  output reg Out_ID_HI_ENABLE, //HI register enable
-  output reg Out_ID_LO_ENABLE, //LO register enable
+  output reg OUT_ID_RF_ENABLE, //register file enable
+  output reg OUT_ID_HI_ENABLE, //HI register enable
+  output reg OUT_ID_LO_ENABLE, //LO register enable
 
-  // TODO modification output
+
+  // HI AND LO REGISTER OUTPUTS
+  output reg .OUT_WB_LO_ENABLE,     // LO register enable
+  output reg .OUT_WB_HI_ENABLE,     // HI register enable
 
   output reg OUT_RW_REGISTER_FILE, // maybe have more or less bits lol
   output reg OUT_EnableMEM 
