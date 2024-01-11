@@ -35,7 +35,7 @@ module PPU (
   wire Enable; // Enable, allows the architecture to run
   wire SignExtend;
   wire [1:0] Size;
-  wire [8:0] Address;     // This outputs from the ALU into the RAM Address TODO: Verify if the address is 8 or 7 bits for MIPS architecture
+  wire [8:0] Address;     // This outputs from the ALU into the RAM Address 
   wire [31:0] DataIn;     // This outputs from the EX_MX2 mux into the DataIn from the RAM
   wire [31:0] DataOut; // TODO: Find a way to receive instructions from the outside instead
 
@@ -140,6 +140,10 @@ module PPU (
 
   wire [4:0] ID_OPERAND_A_REGISTER_FILE_AND_HAZARD;
   wire [4:0] ID_OPERAND_B_REGISTER_FILE_AND_HAZARD;
+
+  // =====| PC_PLUS_8_MUX | =====//
+
+  wire [31:0] PC_PLUS_8_MUX_PC_MX1_AND_MX2;   // created this new wire for the mux vic did
 
   // =====| IF/ID |===== //
   wire CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX;
@@ -262,36 +266,22 @@ module PPU (
 
   // ---- | Memories, utilized for precharging |----
   rom_512x8 Instruction_Memory (
-              .Address (PC[8:0]),                     // IN
+              .Address (PC[31:0]),                     // IN
               .DataOut (DataOut_InstructionMemory)   // OUT
             );  // ROM
 
   // -----------------------------------------------
 
-  // ----| Counter Modules |----
-
-  // These three modules are related and are design give
-  // feedback to one another in order to count
-
-  // TODO: Confirm new NPC SELECTOR MUX   (Line 551)  before deletion
-
-  // // USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE
-  // Mux_9Bit_OR_32BIT_Case_One nPCselector (
-  //                              .nPC      (nPC[8:0]),
-  //                              .TA       (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
-  //                              .S        (UB_MUX_SELECTION_NPC_SELECTOR),  // SIGNAL EXISTS
-  //                              .Address  (nPC_MUX)
-  //                            );
 
   nPCLogicBox AddPlusFour(
-                .nPC      (nPC_MUX[8:0]),         // IN
-                .result   (nPC_PLUS_4[8:0])       // OUT
+                .nPC      (nPC_MUX[31:0]),         // IN
+                .result   (nPC_PLUS_4[31:0])       // OUT
               );
 
   // not exactly 32 bits :\
   Register_32bit_nPC nPC_reg (
-                       .DS           (nPC_PLUS_4[8:0]),   // IN
-                       .Qs           (nPC[8:0]),          // OUT
+                       .DS           (nPC_PLUS_4[31:0]),   // IN
+                       .Qs           (nPC[31:0]),          // OUT
                        .stallnPC     (stall_NPC),
                        .Clk          (Clk),
                        .Reset        (Reset)
@@ -299,8 +289,8 @@ module PPU (
 
   // Refer to Memory.v for differences between this and the nPC
   Register_32bit_PC PC_reg (
-                      .DS         (nPC_MUX[8:0]),       // IN
-                      .Qs         (PC[8:0]),          // OUT
+                      .DS         (nPC_MUX[31:0]),       // IN
+                      .Qs         (PC[31:0]),          // OUT
                       .stallPC    (stall_PC),
                       .Clk        (Clk),
                       .Reset      (Reset)
@@ -525,7 +515,7 @@ module PPU (
 
   // Wacky multiplexers Extravaganza // ----------------
 
-  Mux_32Bit_OR_32BIT UTA_MUX ( // ID_MUX_Case_one
+  32BitTwoToOne UTA_MUX ( // ID_MUX_Case_one
                        // OUTPUT
                        .Out                        (UTA_MUX_UTA_MUX_RESULT_CTA_MUX), // SIGNAL EXISTS
 
@@ -534,7 +524,7 @@ module PPU (
                        .Input_Two                  (MX1_MX1RESULT_UTAMUX_AND_EX), // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX) // SIGNAL EXISTS
                      );
-  Mux_32Bit_OR_32BIT CTA_MUX ( // ID_MUX_Case_two | Target Address
+  32BitTwoToOne CTA_MUX ( // ID_MUX_Case_two | Target Address
                        // OUTPUT
                        .Out                        (CTA_MUX_TA_nPC_SELECTOR),                  // SIGNAL EXISTS
 
@@ -544,16 +534,18 @@ module PPU (
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
                      );
                      
-  Mux_32Bit_OR_32BIT NPC_SELECTOR_MUX ( // IF Stage | NPC Selector 
-                       .Out                        (NPC),                                 // TODO: Confirm output signal
+
+                     
+  32BitTwoToOne NPC_SELECTOR_MUX ( // IF Stage | NPC Selector 
+                       .Out                        (nPC_MUX),                               
 
                        .Input_One                  (CTA_MUX_TA_nPC_SELECTOR),             // SIGNAL EXISTS
-                       .Input_Two                  (nPC_MUX),                             // SIGNAL EXISTS
-                       .S                          ()                                     // TODO: Add output signal of UB_MUX
+                       .Input_Two                  (nPC),                             // SIGNAL EXISTS
+                       .S                          (UB_MUX_SELECTION_NPC_SELECTOR)                                     // 
                      );
 
-  Mux_32Bit_OR_32BIT PC_PLUS_8_MUX ( // EX Stage | PC+8 Selector
-                       .Out                        (PC_PLUS_8_MUX_PC_MX1_AND_MX2),                //TODO: Signal does not exist                            // TODO: Find or create output signal
+  32BitTwoToOne PC_PLUS_8_MUX ( // EX Stage | PC+8 Selector
+                       .Out                        (PC_PLUS_8_MUX_PC_MX1_AND_MX2),                // SIGNAL EXISTS                        
 
                        .Input_One                  (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),             // SIGNAL EXISTS
                        .Input_Two                  (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),      // SIGNAL EXISTS
@@ -692,17 +684,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
         .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER)      // SIGNAL EXISTS
       );
 
-  // TODO: Confirm newest edition of PC_SELECTOR_MUX  (Line 557)  before deletion
 
-  // Mux_9Bit_OR_32BIT_Case_Two PC_Selector_MUX (
-  //                              // OUTPUT
-  //                              .Out          (),                                              
-
-  //                              // INPUT
-  //                              .PC_Plus_8    (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              
-  //                              .Result       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       
-  //                              .S            (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)     
-  //                            );
 
   Condition_Handler Condition_Handler (
                       // OUTPUT
@@ -755,7 +737,7 @@ ram_512x8 Data_Memory (
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
-  Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_One (
+  32BitTwoToOne MEM_Memory_MUX_Case_One (
                        // OUTPUT
                        .Out                        (),
                        // INPUT
@@ -764,7 +746,7 @@ ram_512x8 Data_Memory (
                        .S                          (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE)
                      );
 
-  Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_Two (
+  32BitTwoToOne MEM_Memory_MUX_Case_Two (
                        .Input_One                  (),
                        .Input_Two                  (),
                        .Out                        ()
@@ -814,7 +796,7 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
   end
 
 initial begin
-  $monitor("Instruction: %b | CLK: %b | PC: %d | nPC: %d", DataOut_InstructionMemory, Clk, PC[8:0], nPC[8:0]);
+  $monitor("Instruction: %b | CLK: %b | PC: %d | nPC: %d", DataOut_InstructionMemory, Clk, PC[31:0], nPC[31:0]);
 end
 
 

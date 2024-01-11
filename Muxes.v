@@ -90,54 +90,53 @@ module Mux_Control_Unit (
   end
 endmodule
 
-module Mux_9Bit_OR_32BIT_Case_One ( /*USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE*/
-    input wire [8:0] nPC,
-    input wire [31:0] TA,
+// module Mux_9Bit_OR_32BIT_Case_One ( /*USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE*/
+//     input wire [8:0] nPC,
+//     input wire [31:0] TA,
 
-    input wire S, //Selection signal
+//     input wire S, //Selection signal
 
-    output reg [31:0] Address
-  );
+//     output reg [31:0] Address
+//   );
 
-  always@(*)
-  begin
+//   always@(*)
+//   begin
 
-    case(S)
-      1'b0:
-        Address = nPC;
+//     case(S)
+//       1'b0:
+//         Address = nPC;
 
-      1'b1:
-        Address = TA;
-    endcase
+//       1'b1:
+//         Address = TA;
+//     endcase
 
-  end
+//   end
 
-endmodule
+// endmodule
 
-// TODO: Eliminate Mux because 32bit mux replaces this
-module Mux_9Bit_OR_32BIT_Case_Two ( /*USED FOR SELECTING PC + 8 WHEN REQUIRED BY AN INSTRUCTION*/
-    input wire [8:0] PC_Plus_8,
-    input wire [31:0] Result,
+// module Mux_9Bit_OR_32BIT_Case_Two ( /*USED FOR SELECTING PC + 8 WHEN REQUIRED BY AN INSTRUCTION*/
+//     input wire [8:0] PC_Plus_8,
+//     input wire [31:0] Result,
 
-    input wire S, //Selection signal
+//     input wire S, //Selection signal
 
-    output reg [31:0] Out
-  );
+//     output reg [31:0] Out
+//   );
 
-  always@(*)
-  begin
+//   always@(*)
+//   begin
 
-    case(S)
-      1'b0:
-        Out = Result;
+//     case(S)
+//       1'b0:
+//         Out = Result;
 
-      1'b1:
-        Out = PC_Plus_8;
-    endcase
+//       1'b1:
+//         Out = PC_Plus_8;
+//     endcase
 
-  end
+//   end
 
-endmodule
+// endmodule
 
 
 module Mux_1BitTwoToOne (
@@ -156,9 +155,7 @@ module Mux_1BitTwoToOne (
     endcase
   end
 endmodule
-
-// OPTIONAL TODO: Change naming of this to 32BitTwoToOne because name is giving brain aunerisims
-module Mux_32Bit_OR_32BIT ( /*USED FOR 32 BIT INPUTS*/ /*TWO USED IN ID AND ONE USED IN MEM*/
+module 32BitTwoToOne ( /*USED FOR 32 BIT INPUTS*/ /*TWO USED IN ID AND ONE USED IN MEM*/
     input wire [31:0] Input_One,
     input wire [31:0] Input_Two,
 
@@ -370,4 +367,6 @@ module Mux_32to1 (
     //P = register_inputs[R];
   end
 endmodule
+
+
 

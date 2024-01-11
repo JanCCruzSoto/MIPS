@@ -35,7 +35,7 @@ reg StallFID;
 wire Enable; // Enable, allows the architecture to run 
 wire SignExtend;
 wire [1:0] Size;
-wire [8:0] Address;     // This outputs from the ALU into the RAM Address TODO: Verify if the address is 8 or 7 bits for MIPS architecture
+wire [8:0] Address;     // This outputs from the ALU into the RAM Address 
 wire [31:0] DataIn;     // This outputs from the EX_MX2 mux into the DataIn from the RAM
 wire [31:0] DataOut; // TODO: Find a way to receive instructions from the outside instead
 
@@ -51,9 +51,8 @@ wire [31:0] TA; // Target Address
 wire [31:0] DataOut_InstructionMemory;
 
 // Controls when the flow will flow and when it should stop
-// TODO: Change to wires after getting job done
-reg stall_PC;
-reg stall_NPC;
+wire stall_PC;
+wire stall_NPC;
 
 // Refer to instance CU
 wire [3:0]  ID_ALU_OP;

@@ -1,9 +1,9 @@
 module Register_32bit_PC (
-  input wire [8:0] DS,    // 8-bit input data
+  input wire [31:0] DS,    // 8-bit input data
   input wire stallPC,          // Write enable signal
   input wire Clk,         // Clock signal
   input wire Reset,        // Reset signal
-  output reg [8:0] Qs    // 8-bit output data
+  output reg [31:0] Qs    // 8-bit output data
 );
 
 always @(posedge Clk) //alrevez 
@@ -23,12 +23,13 @@ end
 
 endmodule
 
+
 module Register_32bit_nPC ( //Works different than PC, because it never decreases to 0
-  input wire [8:0] DS,    // 8-bit input data
+  input wire [31:0] DS,    // 8-bit input data
   input wire stallnPC,          // Write enable signal
   input wire Clk,         // Clock signal
   input wire Reset,        // Reset signal
-  output reg [8:0] Qs    // 8-bit output data
+  output reg [31:0] Qs    // 8-bit output data
 );
 
 always @(posedge Clk)
