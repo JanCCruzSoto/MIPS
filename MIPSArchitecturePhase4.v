@@ -557,7 +557,7 @@ module PPU (
                      );
 
   Mux_32Bit_OR_32BIT PC_PLUS_8_MUX ( // EX Stage | PC+8 Selector
-                       .Out                        (),                                            // TODO: Find or create output signal
+                       .Out                        (PC_PLUS_8_MUX_PC_MX1_AND_MX2),                //TODO: Signal does not exist                            // TODO: Find or create output signal
 
                        .Input_One                  (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),             // SIGNAL EXISTS
                        .Input_Two                  (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),      // SIGNAL EXISTS
