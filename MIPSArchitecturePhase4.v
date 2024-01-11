@@ -51,7 +51,7 @@ module PPU (
   wire [31:0] DataOut_InstructionMemory;
 
   // Controls when the flow will flow and when it should stop
-  // TODO: Change to wires after getting job done
+  // Change to wires after getting job done
   wire stall_PC;
   wire stall_NPC;
   wire stall_IFID;
@@ -79,11 +79,7 @@ module PPU (
   wire [31:0] EX_PC_MEM;
   wire [31:0] MEM_PC_WB;
 
-  // TODO: FIX BITS FOR SIGNALS FROM CU
-  // TODO: FIX BITS FOR SIGNALS FROM IF/ID
-  // TODO: FIX BITS FOR SIGNALS FROM ID/EX
-  // TODO: FIX BITS FOR SIGNALS FROM EX/MEM
-  // TODO: FIX BITS FOR SIGNALS FROM ALU
+
 
   // =====| CU/CU-MUX |===== //
 
