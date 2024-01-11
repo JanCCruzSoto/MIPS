@@ -1,8 +1,8 @@
 module Sum_Logic_Box ( /*USED FOR CONDITIONAL TARGET ADDRESS CALCULATION*/
-    input wire [8:0] First_Value, //PC+4
-    input wire [15:0] Second_Value, //4*imm16
+    input wire [31:0] First_Value, //PC+4 TODO: SE CAMBIO DE 9 BIT A 32
+    input wire [31:0] Second_Value, //4*imm16 // TODO: SE CAMBIO DE 16 A 32 BIT
 
-    output reg [15:0] Result
+    output reg [31:0] Result        // TODO: SE CAMBIO DE 16 A 32 BIT
   );
   always@(First_Value || Second_Value)
   begin
@@ -21,7 +21,7 @@ module Plus_8_Logic_Box ( /*USED FOR CALCULATING PC + 8 ON ID STAGE*/
 endmodule
 
 module Bitwise_AND_Logic_Box ( /*USED FOR CALCULATING UNCONDITIONAL TA*/
-    input wire [8:0] PC,
+    input wire [31:0] PC,   // TODO: SE CAMBIO DE 9 A 32
     input wire [31:0] Second_Value, //Would be a Direct 32'hf0000000
 
     output reg [31:0] Result

@@ -7,170 +7,219 @@
 :vpi_module "C:\iverilog\lib\ivl\vhdl_textio.vpi";
 :vpi_module "C:\iverilog\lib\ivl\v2005_math.vpi";
 :vpi_module "C:\iverilog\lib\ivl\va_math.vpi";
-S_000001d8dfd9caa0 .scope module, "Bitwise_AND_Logic_Box" "Bitwise_AND_Logic_Box" 2 24;
+S_00000206f3c8cc70 .scope module, "Bitwise_AND_Logic_Box" "Bitwise_AND_Logic_Box" 2 23;
  .timescale 0 0;
     .port_info 0 /INPUT 9 "PC";
     .port_info 1 /INPUT 32 "Second_Value";
     .port_info 2 /OUTPUT 32 "Result";
-o000001d8dfd9efd8 .functor BUFZ 9, C4<zzzzzzzzz>; HiZ drive
-v000001d8dfd98270_0 .net "PC", 8 0, o000001d8dfd9efd8;  0 drivers
-v000001d8dfd98310_0 .var "Result", 31 0;
-o000001d8dfd9f038 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
-v000001d8dfd939f0_0 .net "Second_Value", 31 0, o000001d8dfd9f038;  0 drivers
-E_000001d8dfcd7ec0 .event anyedge, v000001d8dfd98270_0;
-S_000001d8dfd9cc30 .scope module, "Bitwise_OR_Logic_Box" "Bitwise_OR_Logic_Box" 2 36;
+o00000206f3c91fb8 .functor BUFZ 9, C4<zzzzzzzzz>; HiZ drive
+v00000206f3c80ae0_0 .net "PC", 8 0, o00000206f3c91fb8;  0 drivers
+v00000206f3c80c20_0 .var "Result", 31 0;
+o00000206f3c92018 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c81080_0 .net "Second_Value", 31 0, o00000206f3c92018;  0 drivers
+E_00000206f3c76640 .event anyedge, v00000206f3c80ae0_0;
+S_00000206f3c8ce00 .scope module, "Bitwise_OR_Logic_Box" "Bitwise_OR_Logic_Box" 2 35;
  .timescale 0 0;
     .port_info 0 /INPUT 32 "AND_Output";
     .port_info 1 /INPUT 32 "Address26_x4_Output";
     .port_info 2 /OUTPUT 32 "Result";
-L_000001d8dfe4a380 .functor OR 1, L_000001d8dfdf11a0, L_000001d8dfdef940, C4<0>, C4<0>;
-o000001d8dfd9f0f8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
-v000001d8dfd94490_0 .net "AND_Output", 31 0, o000001d8dfd9f0f8;  0 drivers
-o000001d8dfd9f128 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
-v000001d8dfd94350_0 .net "Address26_x4_Output", 31 0, o000001d8dfd9f128;  0 drivers
-v000001d8dfd93bd0_0 .var "Result", 31 0;
-L_000001d8dfdf1868 .functor BUFT 1, C4<00000000000000000000000000000000>, C4<0>, C4<0>, C4<0>;
-v000001d8dfd94710_0 .net/2u *"_ivl_1", 31 0, L_000001d8dfdf1868;  1 drivers
-v000001d8dfd943f0_0 .net *"_ivl_10", 0 0, L_000001d8dfe4a380;  1 drivers
-v000001d8dfd94850_0 .net *"_ivl_3", 0 0, L_000001d8dfdf11a0;  1 drivers
-L_000001d8dfdf18b0 .functor BUFT 1, C4<00000000000000000000000000000000>, C4<0>, C4<0>, C4<0>;
-v000001d8dfd93a90_0 .net/2u *"_ivl_5", 31 0, L_000001d8dfdf18b0;  1 drivers
-v000001d8dfd93c70_0 .net *"_ivl_7", 0 0, L_000001d8dfdef940;  1 drivers
-E_000001d8dfcd7f00 .event anyedge, L_000001d8dfe4a380;
-L_000001d8dfdf11a0 .cmp/ne 32, o000001d8dfd9f0f8, L_000001d8dfdf1868;
-L_000001d8dfdef940 .cmp/ne 32, o000001d8dfd9f128, L_000001d8dfdf18b0;
-S_000001d8dfd9ad50 .scope module, "Plus_8_Logic_Box" "Plus_8_Logic_Box" 2 13;
+L_00000206f3c7daf0 .functor OR 1, L_00000206f3ce7490, L_00000206f3ce7350, C4<0>, C4<0>;
+o00000206f3c920d8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c807c0_0 .net "AND_Output", 31 0, o00000206f3c920d8;  0 drivers
+o00000206f3c92108 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c80540_0 .net "Address26_x4_Output", 31 0, o00000206f3c92108;  0 drivers
+v00000206f3c80680_0 .var "Result", 31 0;
+L_00000206f3ce8878 .functor BUFT 1, C4<00000000000000000000000000000000>, C4<0>, C4<0>, C4<0>;
+v00000206f3c80cc0_0 .net/2u *"_ivl_1", 31 0, L_00000206f3ce8878;  1 drivers
+v00000206f3c80400_0 .net *"_ivl_10", 0 0, L_00000206f3c7daf0;  1 drivers
+v00000206f3c805e0_0 .net *"_ivl_3", 0 0, L_00000206f3ce7490;  1 drivers
+L_00000206f3ce88c0 .functor BUFT 1, C4<00000000000000000000000000000000>, C4<0>, C4<0>, C4<0>;
+v00000206f3c81120_0 .net/2u *"_ivl_5", 31 0, L_00000206f3ce88c0;  1 drivers
+v00000206f3c80fe0_0 .net *"_ivl_7", 0 0, L_00000206f3ce7350;  1 drivers
+E_00000206f3c763c0 .event anyedge, L_00000206f3c7daf0;
+L_00000206f3ce7490 .cmp/ne 32, o00000206f3c920d8, L_00000206f3ce8878;
+L_00000206f3ce7350 .cmp/ne 32, o00000206f3c92108, L_00000206f3ce88c0;
+S_00000206f3c8af20 .scope module, "HiRegister" "HiRegister" 2 89;
  .timescale 0 0;
-    .port_info 0 /INPUT 9 "PC";
-    .port_info 1 /OUTPUT 9 "Result";
-o000001d8dfd9f308 .functor BUFZ 9, C4<zzzzzzzzz>; HiZ drive
-v000001d8dfd947b0_0 .net "PC", 8 0, o000001d8dfd9f308;  0 drivers
-v000001d8dfd94530_0 .var "Result", 8 0;
-E_000001d8dfcd8200 .event anyedge, v000001d8dfd947b0_0;
-S_000001d8dfd9aee0 .scope module, "Sum_Logic_Box" "Sum_Logic_Box" 2 1;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "HiEnable";
+    .port_info 2 /INPUT 32 "PW";
+    .port_info 3 /OUTPUT 32 "HiSignal";
+o00000206f3c922e8 .functor BUFZ 1, C4<z>; HiZ drive
+v00000206f3c809a0_0 .net "HiEnable", 0 0, o00000206f3c922e8;  0 drivers
+v00000206f3c80720_0 .var "HiSignal", 31 0;
+o00000206f3c92348 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c80e00_0 .net "PW", 31 0, o00000206f3c92348;  0 drivers
+o00000206f3c92378 .functor BUFZ 1, C4<z>; HiZ drive
+v00000206f3c80860_0 .net "clk", 0 0, o00000206f3c92378;  0 drivers
+E_00000206f3c769c0 .event posedge, v00000206f3c80860_0;
+S_00000206f3c8b0b0 .scope module, "LoRegister" "LoRegister" 2 107;
  .timescale 0 0;
-    .port_info 0 /INPUT 9 "First_Value";
-    .port_info 1 /INPUT 16 "Second_Value";
-    .port_info 2 /OUTPUT 16 "Result";
-L_000001d8dfe4ad90 .functor OR 1, L_000001d8dfdf05c0, L_000001d8dfdf0d40, C4<0>, C4<0>;
-o000001d8dfd9f3c8 .functor BUFZ 9, C4<zzzzzzzzz>; HiZ drive
-v000001d8dfd93b30_0 .net "First_Value", 8 0, o000001d8dfd9f3c8;  0 drivers
-v000001d8dfd945d0_0 .var "Result", 15 0;
-o000001d8dfd9f428 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
-v000001d8dfd93d10_0 .net "Second_Value", 15 0, o000001d8dfd9f428;  0 drivers
-L_000001d8dfdf18f8 .functor BUFT 1, C4<000000000>, C4<0>, C4<0>, C4<0>;
-v000001d8dfd94170_0 .net/2u *"_ivl_1", 8 0, L_000001d8dfdf18f8;  1 drivers
-v000001d8dfd94670_0 .net *"_ivl_10", 0 0, L_000001d8dfe4ad90;  1 drivers
-v000001d8dfd948f0_0 .net *"_ivl_3", 0 0, L_000001d8dfdf05c0;  1 drivers
-L_000001d8dfdf1940 .functor BUFT 1, C4<0000000000000000>, C4<0>, C4<0>, C4<0>;
-v000001d8dfd94030_0 .net/2u *"_ivl_5", 15 0, L_000001d8dfdf1940;  1 drivers
-v000001d8dfd93db0_0 .net *"_ivl_7", 0 0, L_000001d8dfdf0d40;  1 drivers
-E_000001d8dfcd8240 .event anyedge, L_000001d8dfe4ad90;
-L_000001d8dfdf05c0 .cmp/ne 9, o000001d8dfd9f3c8, L_000001d8dfdf18f8;
-L_000001d8dfdf0d40 .cmp/ne 16, o000001d8dfd9f428, L_000001d8dfdf1940;
-S_000001d8dfd97f50 .scope module, "Times_Four_Logic_Box_Case_One" "Times_Four_Logic_Box_Case_One" 2 48;
+    .port_info 0 /INPUT 1 "clk";
+    .port_info 1 /INPUT 1 "LoEnable";
+    .port_info 2 /INPUT 32 "PW";
+    .port_info 3 /OUTPUT 32 "LoSignal";
+o00000206f3c92468 .functor BUFZ 1, C4<z>; HiZ drive
+v00000206f3c81260_0 .net "LoEnable", 0 0, o00000206f3c92468;  0 drivers
+v00000206f3c80b80_0 .var "LoSignal", 31 0;
+o00000206f3c924c8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c81300_0 .net "PW", 31 0, o00000206f3c924c8;  0 drivers
+o00000206f3c924f8 .functor BUFZ 1, C4<z>; HiZ drive
+v00000206f3c804a0_0 .net "clk", 0 0, o00000206f3c924f8;  0 drivers
+E_00000206f3c76c00 .event posedge, v00000206f3c804a0_0;
+S_00000206f3c88120 .scope module, "Plus_8_Logic_Box" "Plus_8_Logic_Box" 2 13;
+ .timescale 0 0;
+    .port_info 0 /INPUT 32 "PC";
+    .port_info 1 /OUTPUT 32 "Result";
+o00000206f3c925e8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c80900_0 .net "PC", 31 0, o00000206f3c925e8;  0 drivers
+v00000206f3c80d60_0 .var "Result", 31 0;
+E_00000206f3c76180 .event anyedge, v00000206f3c80900_0;
+S_00000206f3c882b0 .scope module, "Sum_Logic_Box" "Sum_Logic_Box" 2 1;
+ .timescale 0 0;
+    .port_info 0 /INPUT 32 "First_Value";
+    .port_info 1 /INPUT 32 "Second_Value";
+    .port_info 2 /OUTPUT 32 "Result";
+L_00000206f3c7cf90 .functor OR 1, L_00000206f3ce7030, L_00000206f3ce7d50, C4<0>, C4<0>;
+o00000206f3c926a8 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c80ea0_0 .net "First_Value", 31 0, o00000206f3c926a8;  0 drivers
+v00000206f3c80f40_0 .var "Result", 31 0;
+o00000206f3c92708 .functor BUFZ 32, C4<zzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3c811c0_0 .net "Second_Value", 31 0, o00000206f3c92708;  0 drivers
+L_00000206f3ce8908 .functor BUFT 1, C4<00000000000000000000000000000000>, C4<0>, C4<0>, C4<0>;
+v00000206f3ce8570_0 .net/2u *"_ivl_1", 31 0, L_00000206f3ce8908;  1 drivers
+v00000206f3ce7fd0_0 .net *"_ivl_10", 0 0, L_00000206f3c7cf90;  1 drivers
+v00000206f3ce7e90_0 .net *"_ivl_3", 0 0, L_00000206f3ce7030;  1 drivers
+L_00000206f3ce8950 .functor BUFT 1, C4<00000000000000000000000000000000>, C4<0>, C4<0>, C4<0>;
+v00000206f3ce6db0_0 .net/2u *"_ivl_5", 31 0, L_00000206f3ce8950;  1 drivers
+v00000206f3ce7850_0 .net *"_ivl_7", 0 0, L_00000206f3ce7d50;  1 drivers
+E_00000206f3c76e00 .event anyedge, L_00000206f3c7cf90;
+L_00000206f3ce7030 .cmp/ne 32, o00000206f3c926a8, L_00000206f3ce8908;
+L_00000206f3ce7d50 .cmp/ne 32, o00000206f3c92708, L_00000206f3ce8950;
+S_00000206f3c86010 .scope module, "Times_Four_Logic_Box_Case_One" "Times_Four_Logic_Box_Case_One" 2 47;
  .timescale 0 0;
     .port_info 0 /INPUT 16 "Imm16";
     .port_info 1 /OUTPUT 32 "Result";
-o000001d8dfd9f5d8 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
-v000001d8dfd940d0_0 .net "Imm16", 15 0, o000001d8dfd9f5d8;  0 drivers
-v000001d8dfd93e50_0 .net "Imm16_extended", 31 0, L_000001d8dfdf0160;  1 drivers
-v000001d8dfd93ef0_0 .var "Result", 31 0;
-v000001d8dfd93f90_0 .net *"_ivl_1", 0 0, L_000001d8dfdf00c0;  1 drivers
-v000001d8dfd94210_0 .net *"_ivl_2", 15 0, L_000001d8dfdf0e80;  1 drivers
-E_000001d8dfcd7f40 .event anyedge, v000001d8dfd93e50_0;
-L_000001d8dfdf00c0 .part o000001d8dfd9f5d8, 15, 1;
-LS_000001d8dfdf0e80_0_0 .concat [ 1 1 1 1], L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0;
-LS_000001d8dfdf0e80_0_4 .concat [ 1 1 1 1], L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0;
-LS_000001d8dfdf0e80_0_8 .concat [ 1 1 1 1], L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0;
-LS_000001d8dfdf0e80_0_12 .concat [ 1 1 1 1], L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0, L_000001d8dfdf00c0;
-L_000001d8dfdf0e80 .concat [ 4 4 4 4], LS_000001d8dfdf0e80_0_0, LS_000001d8dfdf0e80_0_4, LS_000001d8dfdf0e80_0_8, LS_000001d8dfdf0e80_0_12;
-L_000001d8dfdf0160 .concat [ 16 16 0 0], o000001d8dfd9f5d8, L_000001d8dfdf0e80;
-S_000001d8dfd980e0 .scope module, "Times_Four_Logic_Box_Case_Two" "Times_Four_Logic_Box_Case_Two" 2 62;
+o00000206f3c928b8 .functor BUFZ 16, C4<zzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3ce6f90_0 .net "Imm16", 15 0, o00000206f3c928b8;  0 drivers
+v00000206f3ce6bd0_0 .net "Imm16_extended", 31 0, L_00000206f3ce70d0;  1 drivers
+v00000206f3ce6ef0_0 .var "Result", 31 0;
+v00000206f3ce84d0_0 .net *"_ivl_1", 0 0, L_00000206f3ce8070;  1 drivers
+v00000206f3ce72b0_0 .net *"_ivl_2", 15 0, L_00000206f3ce7ad0;  1 drivers
+E_00000206f3c76700 .event anyedge, v00000206f3ce6bd0_0;
+L_00000206f3ce8070 .part o00000206f3c928b8, 15, 1;
+LS_00000206f3ce7ad0_0_0 .concat [ 1 1 1 1], L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070;
+LS_00000206f3ce7ad0_0_4 .concat [ 1 1 1 1], L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070;
+LS_00000206f3ce7ad0_0_8 .concat [ 1 1 1 1], L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070;
+LS_00000206f3ce7ad0_0_12 .concat [ 1 1 1 1], L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070, L_00000206f3ce8070;
+L_00000206f3ce7ad0 .concat [ 4 4 4 4], LS_00000206f3ce7ad0_0_0, LS_00000206f3ce7ad0_0_4, LS_00000206f3ce7ad0_0_8, LS_00000206f3ce7ad0_0_12;
+L_00000206f3ce70d0 .concat [ 16 16 0 0], o00000206f3c928b8, L_00000206f3ce7ad0;
+S_00000206f3c861a0 .scope module, "Times_Four_Logic_Box_Case_Two" "Times_Four_Logic_Box_Case_Two" 2 62;
  .timescale 0 0;
     .port_info 0 /INPUT 26 "Address26";
     .port_info 1 /OUTPUT 32 "Result";
-o000001d8dfd9f728 .functor BUFZ 26, C4<zzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
-v000001d8dfd942b0_0 .net "Address26", 25 0, o000001d8dfd9f728;  0 drivers
-v000001d8dfdf0980_0 .net "Address26_extended", 31 0, L_000001d8dfdf1740;  1 drivers
-v000001d8dfdf0ac0_0 .var "Result", 31 0;
-v000001d8dfdf0020_0 .net *"_ivl_1", 0 0, L_000001d8dfdf07a0;  1 drivers
-v000001d8dfdef8a0_0 .net *"_ivl_2", 5 0, L_000001d8dfdf14c0;  1 drivers
-E_000001d8dfcd7f80 .event anyedge, v000001d8dfdf0980_0;
-L_000001d8dfdf07a0 .part o000001d8dfd9f728, 25, 1;
-LS_000001d8dfdf14c0_0_0 .concat [ 1 1 1 1], L_000001d8dfdf07a0, L_000001d8dfdf07a0, L_000001d8dfdf07a0, L_000001d8dfdf07a0;
-LS_000001d8dfdf14c0_0_4 .concat [ 1 1 0 0], L_000001d8dfdf07a0, L_000001d8dfdf07a0;
-L_000001d8dfdf14c0 .concat [ 4 2 0 0], LS_000001d8dfdf14c0_0_0, LS_000001d8dfdf14c0_0_4;
-L_000001d8dfdf1740 .concat [ 26 6 0 0], o000001d8dfd9f728, L_000001d8dfdf14c0;
-S_000001d8dfd95e00 .scope module, "nPCLogicBox" "nPCLogicBox" 2 77;
+o00000206f3c92a08 .functor BUFZ 26, C4<zzzzzzzzzzzzzzzzzzzzzzzzzz>; HiZ drive
+v00000206f3ce6d10_0 .net "Address26", 25 0, o00000206f3c92a08;  0 drivers
+v00000206f3ce86b0_0 .net "Address26_extended", 31 0, L_00000206f3ce7170;  1 drivers
+v00000206f3ce73f0_0 .var "Result", 31 0;
+v00000206f3ce7a30_0 .net *"_ivl_1", 0 0, L_00000206f3ce6c70;  1 drivers
+v00000206f3ce6e50_0 .net *"_ivl_2", 5 0, L_00000206f3ce7b70;  1 drivers
+E_00000206f3c76400 .event anyedge, v00000206f3ce86b0_0;
+L_00000206f3ce6c70 .part o00000206f3c92a08, 25, 1;
+LS_00000206f3ce7b70_0_0 .concat [ 1 1 1 1], L_00000206f3ce6c70, L_00000206f3ce6c70, L_00000206f3ce6c70, L_00000206f3ce6c70;
+LS_00000206f3ce7b70_0_4 .concat [ 1 1 0 0], L_00000206f3ce6c70, L_00000206f3ce6c70;
+L_00000206f3ce7b70 .concat [ 4 2 0 0], LS_00000206f3ce7b70_0_0, LS_00000206f3ce7b70_0_4;
+L_00000206f3ce7170 .concat [ 26 6 0 0], o00000206f3c92a08, L_00000206f3ce7b70;
+S_00000206f3c90b20 .scope module, "nPCLogicBox" "nPCLogicBox" 2 78;
  .timescale 0 0;
     .port_info 0 /INPUT 9 "nPC";
     .port_info 1 /OUTPUT 9 "result";
-o000001d8dfd9f878 .functor BUFZ 9, C4<zzzzzzzzz>; HiZ drive
-v000001d8dfdf1100_0 .net "nPC", 8 0, o000001d8dfd9f878;  0 drivers
-v000001d8dfdf0700_0 .var "result", 8 0;
-E_000001d8dfcd8280 .event anyedge, v000001d8dfdf1100_0;
-    .scope S_000001d8dfd9caa0;
+o00000206f3c92b58 .functor BUFZ 9, C4<zzzzzzzzz>; HiZ drive
+v00000206f3ce8430_0 .net "nPC", 8 0, o00000206f3c92b58;  0 drivers
+v00000206f3ce7210_0 .var "result", 8 0;
+E_00000206f3c76f00 .event anyedge, v00000206f3ce8430_0;
+    .scope S_00000206f3c8cc70;
 T_0 ;
-    %wait E_000001d8dfcd7ec0;
-    %load/vec4 v000001d8dfd98270_0;
+    %wait E_00000206f3c76640;
+    %load/vec4 v00000206f3c80ae0_0;
     %pad/u 32;
-    %load/vec4 v000001d8dfd939f0_0;
+    %load/vec4 v00000206f3c81080_0;
     %and;
-    %store/vec4 v000001d8dfd98310_0, 0, 32;
+    %store/vec4 v00000206f3c80c20_0, 0, 32;
     %jmp T_0;
     .thread T_0, $push;
-    .scope S_000001d8dfd9cc30;
+    .scope S_00000206f3c8ce00;
 T_1 ;
-    %wait E_000001d8dfcd7f00;
-    %load/vec4 v000001d8dfd94490_0;
-    %load/vec4 v000001d8dfd94350_0;
+    %wait E_00000206f3c763c0;
+    %load/vec4 v00000206f3c807c0_0;
+    %load/vec4 v00000206f3c80540_0;
     %or;
-    %store/vec4 v000001d8dfd93bd0_0, 0, 32;
+    %store/vec4 v00000206f3c80680_0, 0, 32;
     %jmp T_1;
     .thread T_1, $push;
-    .scope S_000001d8dfd9ad50;
+    .scope S_00000206f3c8af20;
 T_2 ;
-    %wait E_000001d8dfcd8200;
-    %load/vec4 v000001d8dfd947b0_0;
-    %addi 8, 0, 9;
-    %store/vec4 v000001d8dfd94530_0, 0, 9;
+    %wait E_00000206f3c769c0;
+    %load/vec4 v00000206f3c809a0_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_2.0, 8;
+    %load/vec4 v00000206f3c80e00_0;
+    %assign/vec4 v00000206f3c80720_0, 0;
+T_2.0 ;
     %jmp T_2;
-    .thread T_2, $push;
-    .scope S_000001d8dfd9aee0;
+    .thread T_2;
+    .scope S_00000206f3c8b0b0;
 T_3 ;
-    %wait E_000001d8dfcd8240;
-    %load/vec4 v000001d8dfd93b30_0;
-    %pad/u 16;
-    %load/vec4 v000001d8dfd93d10_0;
-    %add;
-    %store/vec4 v000001d8dfd945d0_0, 0, 16;
+    %wait E_00000206f3c76c00;
+    %load/vec4 v00000206f3c81260_0;
+    %flag_set/vec4 8;
+    %jmp/0xz  T_3.0, 8;
+    %load/vec4 v00000206f3c81300_0;
+    %assign/vec4 v00000206f3c80b80_0, 0;
+T_3.0 ;
     %jmp T_3;
-    .thread T_3, $push;
-    .scope S_000001d8dfd97f50;
+    .thread T_3;
+    .scope S_00000206f3c88120;
 T_4 ;
-    %wait E_000001d8dfcd7f40;
-    %load/vec4 v000001d8dfd93e50_0;
-    %muli 4, 0, 32;
-    %store/vec4 v000001d8dfd93ef0_0, 0, 32;
+    %wait E_00000206f3c76180;
+    %load/vec4 v00000206f3c80900_0;
+    %addi 8, 0, 32;
+    %store/vec4 v00000206f3c80d60_0, 0, 32;
     %jmp T_4;
     .thread T_4, $push;
-    .scope S_000001d8dfd980e0;
+    .scope S_00000206f3c882b0;
 T_5 ;
-    %wait E_000001d8dfcd7f80;
-    %load/vec4 v000001d8dfdf0980_0;
-    %muli 4, 0, 32;
-    %store/vec4 v000001d8dfdf0ac0_0, 0, 32;
+    %wait E_00000206f3c76e00;
+    %load/vec4 v00000206f3c80ea0_0;
+    %load/vec4 v00000206f3c811c0_0;
+    %add;
+    %store/vec4 v00000206f3c80f40_0, 0, 32;
     %jmp T_5;
     .thread T_5, $push;
-    .scope S_000001d8dfd95e00;
+    .scope S_00000206f3c86010;
 T_6 ;
-    %wait E_000001d8dfcd8280;
-    %load/vec4 v000001d8dfdf1100_0;
-    %addi 4, 0, 9;
-    %store/vec4 v000001d8dfdf0700_0, 0, 9;
+    %wait E_00000206f3c76700;
+    %load/vec4 v00000206f3ce6bd0_0;
+    %muli 4, 0, 32;
+    %store/vec4 v00000206f3ce6ef0_0, 0, 32;
     %jmp T_6;
     .thread T_6, $push;
+    .scope S_00000206f3c861a0;
+T_7 ;
+    %wait E_00000206f3c76400;
+    %load/vec4 v00000206f3ce86b0_0;
+    %muli 4, 0, 32;
+    %store/vec4 v00000206f3ce73f0_0, 0, 32;
+    %jmp T_7;
+    .thread T_7, $push;
+    .scope S_00000206f3c90b20;
+T_8 ;
+    %wait E_00000206f3c76f00;
+    %load/vec4 v00000206f3ce8430_0;
+    %addi 4, 0, 9;
+    %store/vec4 v00000206f3ce7210_0, 0, 9;
+    %jmp T_8;
+    .thread T_8, $push;
 # The file index is used to find the file name in the following table.
 :file_names 3;
     "N/A";

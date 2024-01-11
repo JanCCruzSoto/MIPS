@@ -185,7 +185,7 @@ module PPU (
   wire [31:0] CTA_MUX_TA_nPC_SELECTOR;
 
   // ====| UB MUX |
-  wire [31:0] UB_MUX_SELECTION_NPC_SELECTOR;
+  wire UB_MUX_SELECTION_NPC_SELECTOR; // TODO: SE CAMBIO DE 32 A 1 BIT VERIFICAR
 
   // ====| MX1 |===== //
   wire [31:0] MX1_MX1RESULT_UTAMUX_AND_EX;
@@ -235,7 +235,7 @@ module PPU (
 
   // =====| CONDITION HANDLER |===== //
   wire CONDITION_HANDLER_IFRESET_IF;
-  wire COND_HANDLER_UB_UB_MUX;
+  wire [31:] COND_HANDLER_UB_UB_MUX; //TODO: SE CAMBIO DE 1 A 32 BITS
   wire [31:0] REGISTER_FILE_PA_MX1;
   wire [31:0] REGISTER_FILE_PB_MX2;
 
@@ -546,7 +546,7 @@ module PPU (
                        .Input_Two                  (EX_CTA_CTA_MUX),                           // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
                      );
-  Mux_32Bit_OR_32BIT UB_MUX ( // ID_MUX_Case_three | Unconditional Branch
+  Mux_32Bit_OR_32BIT UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
                        .Out                        (UB_MUX_SELECTION_NPC_SELECTOR),            // SIGNAL EXISTS
 
                        .Input_One                  (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
