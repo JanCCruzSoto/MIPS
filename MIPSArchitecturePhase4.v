@@ -277,15 +277,14 @@ module PPU (
   // These three modules are related and are design give
   // feedback to one another in order to count
 
-  // TODO: Confirm new NPC SELECTOR MUX   (Line 551)  before deletion
 
-  // // USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE
-  // Mux_9Bit_OR_32BIT_Case_One nPCselector (
-  //                              .nPC      (nPC[8:0]),
-  //                              .TA       (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
-  //                              .S        (UB_MUX_SELECTION_NPC_SELECTOR),  // SIGNAL EXISTS
-  //                              .Address  (nPC_MUX)
-  //                            );
+  // USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE
+  Mux_9Bit_OR_32BIT_Case_One nPCselector (
+                               .nPC      (nPC[8:0]),
+                               .TA       (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
+                               .S        (UB_MUX_SELECTION_NPC_SELECTOR),  // SIGNAL EXISTS
+                               .Address  (nPC_MUX)
+                             );
 
   nPCLogicBox AddPlusFour(
                 .nPC      (nPC_MUX[8:0]),         // IN
@@ -547,21 +546,12 @@ module PPU (
                        .Input_Two                  (EX_CTA_CTA_MUX),                           // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
                      );
-                     
-  Mux_32Bit_OR_32BIT NPC_SELECTOR_MUX ( // IF Stage | NPC Selector 
-                       .Out                        (NPC),                                 // TODO: Confirm output signal
+  Mux_32Bit_OR_32BIT UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
+                       .Out                        (UB_MUX_SELECTION_NPC_SELECTOR),            // SIGNAL EXISTS
 
-                       .Input_One                  (CTA_MUX_TA_nPC_SELECTOR),             // SIGNAL EXISTS
-                       .Input_Two                  (nPC_MUX),                             // SIGNAL EXISTS
-                       .S                          ()                                     // TODO: Add output signal of UB_MUX
-                     );
-
-  Mux_32Bit_OR_32BIT PC_PLUS_8_MUX ( // EX Stage | PC+8 Selector
-                       .Out                        (PC_PLUS_8_MUX_PC_MX1_AND_MX2),                //TODO: Signal does not exist                            // TODO: Find or create output signal
-
-                       .Input_One                  (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),             // SIGNAL EXISTS
-                       .Input_Two                  (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),      // SIGNAL EXISTS
-                       .S                          (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)    // SIGNAL EXISTS 
+                       .Input_One                  (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
+                       .Input_Two                  (32'hf0000000),                             // SIGNAL EXISTS
+                       .S                          (CU_MUX_UB_INSTR_UB_MUX)                    // SIGNAL EXISTS
                      );
 
   Mux_Destination_Registers ID_MUX_Destination (
@@ -619,7 +609,7 @@ module PPU (
                      .PC     (IF_PC_ID),                 // SIGNAL EXISTS
                      .Result (PLUS_8_PC_8_EX)            // SIGNAL EXISTS
                    );
-
+// 21 signals
 Pipeline_Register_32bit_ID_EX ID_EX (
     .Clk                        (Clk),
     .Reset                      (Reset),
@@ -696,17 +686,15 @@ Pipeline_Register_32bit_ID_EX ID_EX (
         .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER)      // SIGNAL EXISTS
       );
 
-  // TODO: Confirm newest edition of PC_SELECTOR_MUX  (Line 557)  before deletion
+  Mux_9Bit_OR_32BIT_Case_Two PC_Selector_MUX (
+                               // OUTPUT
+                               .Out          (), // PC_PLUS_MUX_PC_MX1_AND_MX2                                              // SIGNAL EXISTS
 
-  // Mux_9Bit_OR_32BIT_Case_Two PC_Selector_MUX (
-  //                              // OUTPUT
-  //                              .Out          (),                                              
-
-  //                              // INPUT
-  //                              .PC_Plus_8    (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              
-  //                              .Result       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       
-  //                              .S            (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)     
-  //                            );
+                               // INPUT
+                               .PC_Plus_8    (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS
+                               .Result       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       // SIGNAL EXISTS
+                               .S            (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)     // SIGNAL EXISTS
+                             );
 
   Condition_Handler Condition_Handler (
                       // OUTPUT

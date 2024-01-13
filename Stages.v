@@ -49,14 +49,14 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     input wire          ID_MEM_READWRITE, // LOAD(READ) OR STORE(WRITE)
     input wire [1:0]    ID_MEM_SIZE,      // SIZE OF STORE
     input wire          ID_MEM_SIGNE,     // SIGN EXTENSION
-    input wire [31:0] ID_PC_PLUS8_RESULT,
-    input wire [31:0] MX1_RESULT,
-    input wire [31:0] MX2_RESULT,
-    input wire [31:0] ID_HI_QS,
-    input wire [31:0] ID_LO_QS,
-    input wire [31:0] ID_PC,
-    input wire [15:0] ID_IMM16,
-    input wire [4:0] ID_RT,
+    input wire [31:0]   ID_PC_PLUS8_RESULT,
+    input wire [31:0]   MX1_RESULT,
+    input wire [31:0]   MX2_RESULT,
+    input wire [31:0]   ID_HI_QS,
+    input wire [31:0]   ID_LO_QS,
+    input wire [31:0]   ID_PC,
+    input wire [15:0]   ID_IMM16,
+    input wire [4:0]    ID_RT,
 
     // Output Contræl Signals
     output reg [3:0]  OUT_ID_ALU_OP,          // 4 bit BUS (ALU CONTROL)
@@ -74,8 +74,11 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     output reg [31:0] OUT_ID_HI_QS,
     output reg [31:0] OUT_ID_LO_QS,
     output reg        OUT_EnableEX,
+    output reg [31:0] OUT_ID_MX1_RESULT,
+    output reg [31:0] OUT_ID_MX2_RESULT,
     output reg [4:0]  OUT_regEX,
     output reg [4:0]  OUT_regMEM,
+    output reg [31:0] OUT_ID_PC,
     output reg [4:0]  OUT_regWB,
     output reg [4:0]  OUT_ID_RT
   );
@@ -103,6 +106,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_regMEM              <= 5'b0;
       OUT_regWB               <= 5'b0;
       OUT_ID_RT               <= 5'b0;
+      OUT_ID_PC               <= 32'b0;
     end
     else
     begin
@@ -119,12 +123,15 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_MEM_SIGNE        <= ID_MEM_SIGNE;
       OUT_ID_RT               <= ID_RT;                   // Added RT in module
       OUT_ID_PC_PLUS8_RESULT  <= ID_PC_PLUS8_RESULT;
-      OUT_ID_HI_QS            <= MX1_RESULT;
-      OUT_ID_LO_QS            <= MX2_RESULT;
+      OUT_ID_HI_QS            <= ID_HI_QS;
+      OUT_ID_LO_QS            <= ID_LO_QS;
+      OUT_ID_MX1_RESULT       <= MX1_RESULT;
+      OUT_ID_MX2_RESULT       <= MX2_RESULT;
       OUT_EnableEX            <= ID_HI_QS;
       OUT_regEX               <= ID_LO_QS;
       OUT_regMEM              <= ID_PC;
       OUT_regWB               <= ID_IMM16;
+      OUT_ID_PC               <= ID_PC;
     end
   end
 endmodule
