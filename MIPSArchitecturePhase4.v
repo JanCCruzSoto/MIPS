@@ -35,7 +35,7 @@ module PPU (
   wire Enable; // Enable, allows the architecture to run
   wire SignExtend;
   wire [1:0] Size;
-  wire [8:0] Address;     // This outputs from the ALU into the RAM Address TODO: Verify if the address is 8 or 7 bits for MIPS architecture
+  wire [8:0] Address;     // This outputs from the ALU into the RAM Address 
   wire [31:0] DataIn;     // This outputs from the EX_MX2 mux into the DataIn from the RAM
   wire [31:0] DataOut; // TODO: Find a way to receive instructions from the outside instead
 
@@ -51,7 +51,7 @@ module PPU (
   wire [31:0] DataOut_InstructionMemory;
 
   // Controls when the flow will flow and when it should stop
-  // TODO: Change to wires after getting job done
+  // Change to wires after getting job done
   wire stall_PC;
   wire stall_NPC;
   wire stall_IFID;
@@ -79,11 +79,7 @@ module PPU (
   wire [31:0] EX_PC_MEM;
   wire [31:0] MEM_PC_WB;
 
-  // TODO: FIX BITS FOR SIGNALS FROM CU
-  // TODO: FIX BITS FOR SIGNALS FROM IF/ID
-  // TODO: FIX BITS FOR SIGNALS FROM ID/EX
-  // TODO: FIX BITS FOR SIGNALS FROM EX/MEM
-  // TODO: FIX BITS FOR SIGNALS FROM ALU
+
 
   // =====| CU/CU-MUX |===== //
 
@@ -144,6 +140,10 @@ module PPU (
 
   wire [4:0] ID_OPERAND_A_REGISTER_FILE_AND_HAZARD;
   wire [4:0] ID_OPERAND_B_REGISTER_FILE_AND_HAZARD;
+
+  // =====| PC_PLUS_8_MUX | =====//
+
+  wire [31:0] PC_PLUS_8_MUX_PC_MX1_AND_MX2;   // created this new wire for the mux vic did
 
   // =====| IF/ID |===== //
   wire CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX;
@@ -287,14 +287,14 @@ module PPU (
                              );
 
   nPCLogicBox AddPlusFour(
-                .nPC      (nPC_MUX[8:0]),         // IN
-                .result   (nPC_PLUS_4[8:0])       // OUT
+                .nPC      (nPC_MUX[31:0]),         // IN
+                .result   (nPC_PLUS_4[31:0])       // OUT
               );
 
   // not exactly 32 bits :\
   Register_32bit_nPC nPC_reg (
-                       .DS           (nPC_PLUS_4[8:0]),   // IN
-                       .Qs           (nPC[8:0]),          // OUT
+                       .DS           (nPC_PLUS_4[31:0]),   // IN
+                       .Qs           (nPC[31:0]),          // OUT
                        .stallnPC     (stall_NPC),
                        .Clk          (Clk),
                        .Reset        (Reset)
@@ -302,8 +302,8 @@ module PPU (
 
   // Refer to Memory.v for differences between this and the nPC
   Register_32bit_PC PC_reg (
-                      .DS         (nPC_MUX[8:0]),       // IN
-                      .Qs         (PC[8:0]),          // OUT
+                      .DS         (nPC_MUX[31:0]),       // IN
+                      .Qs         (PC[31:0]),          // OUT
                       .stallPC    (stall_PC),
                       .Clk        (Clk),
                       .Reset      (Reset)
@@ -528,7 +528,7 @@ module PPU (
 
   // Wacky multiplexers Extravaganza // ----------------
 
-  Mux_32Bit_OR_32BIT UTA_MUX ( // ID_MUX_Case_one
+  MUX32BitTwoToOne UTA_MUX ( // ID_MUX_Case_one
                        // OUTPUT
                        .Out                        (UTA_MUX_UTA_MUX_RESULT_CTA_MUX), // SIGNAL EXISTS
 
@@ -537,7 +537,7 @@ module PPU (
                        .Input_Two                  (MX1_MX1RESULT_UTAMUX_AND_EX), // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX) // SIGNAL EXISTS
                      );
-  Mux_32Bit_OR_32BIT CTA_MUX ( // ID_MUX_Case_two | Target Address
+  MUX32BitTwoToOne CTA_MUX ( // ID_MUX_Case_two | Target Address
                        // OUTPUT
                        .Out                        (CTA_MUX_TA_nPC_SELECTOR),                  // SIGNAL EXISTS
 
@@ -747,7 +747,7 @@ ram_512x8 Data_Memory (
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
-  Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_One (
+  MUX32BitTwoToOne MEM_Memory_MUX_Case_One (
                        // OUTPUT
                        .Out                        (),
                        // INPUT
@@ -756,7 +756,7 @@ ram_512x8 Data_Memory (
                        .S                          (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE)
                      );
 
-  Mux_32Bit_OR_32BIT MEM_Memory_MUX_Case_Two (
+  MUX32BitTwoToOne MEM_Memory_MUX_Case_Two (
                        .Input_One                  (),
                        .Input_Two                  (),
                        .Out                        ()
@@ -806,7 +806,7 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
   end
 
 initial begin
-  $monitor("Instruction: %b | CLK: %b | PC: %d | nPC: %d", DataOut_InstructionMemory, Clk, PC[8:0], nPC[8:0]);
+  $monitor("Instruction: %b | CLK: %b | PC: %d | nPC: %d", DataOut_InstructionMemory, Clk, PC[31:0], nPC[31:0]);
 end
 
 

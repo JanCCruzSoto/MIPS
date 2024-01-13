@@ -76,8 +76,8 @@ endmodule
 
 
 module nPCLogicBox (
-    input wire [8:0] nPC,
-    output reg [8:0] result
+    input wire [31:0] nPC,
+    output reg [31:0] result
   );
   always@(nPC)
   begin
