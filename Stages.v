@@ -147,7 +147,8 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     input wire        EX_RF_ENABLE,        // REGISTER FILE ENABLE
     input wire        EX_HI_ENABLE,        // HI REGISTER ENABLE
     input wire        EX_LO_ENABLE,        // LO REGISTER ENABLE
-    input wire        EX_PC_PLUS8_INSTR,   // STORING PC+8
+    input wire        EX_PC_PLUS8_INSTR,   // STORING PC+8 INSTRUCCTION
+    input wire [31:0] EX_PC_PLUS_8,        // THE ACTUAL PC+8 THAT IS BEING PROPAGATED
     input wire        EX_MEM_ENABLE,       // DATA MEMORY ENABLE
     input wire        EX_MEM_READWRITE,    // LOAD(READ) OR STORE(WRITE)
     input wire [1:0]  EX_MEM_SIZE,         // SIZE OF STORE
@@ -161,6 +162,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     output reg        OUT_EX_HI_ENABLE,      // HI REGISTER ENABLE
     output reg        OUT_EX_LO_ENABLE,      // LO REGISTER ENABLE
     output reg        OUT_EX_PC_PLUS8_INSTR, // STORING PC+8
+    output reg [31:0] OUT_EX_PC_PLUS_8,      // yes
     output reg        OUT_EX_MEM_ENABLE,     // DATA MEMORY ENABLE
     output reg        OUT_EX_MEM_READWRITE,  // LOAD(READ) OR STORE(WRITE)
     output reg [1:0]  OUT_EX_MEM_SIZE,       // SIZE OF STORE
@@ -179,6 +181,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
       OUT_EX_HI_ENABLE        <= 1'b0;
       OUT_EX_LO_ENABLE        <= 1'b0;
       OUT_EX_PC_PLUS8_INSTR   <= 1'b0;
+      OUT_EX_PC_PLUS_8        <= 32'b0;
       OUT_EX_MEM_ENABLE       <= 1'b0;
       OUT_EX_MEM_READWRITE    <= 1'b0;
       OUT_EX_MEM_SIZE         <= 2'b0;
@@ -192,12 +195,15 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
       OUT_EX_HI_ENABLE        <= EX_HI_ENABLE;
       OUT_EX_LO_ENABLE        <= EX_LO_ENABLE;
       OUT_EX_PC_PLUS8_INSTR   <= EX_PC_PLUS8_INSTR;
+      OUT_EX_PC_PLUS_8        <= EX_PC_PLUS_8;
       OUT_EX_MEM_ENABLE       <= EX_MEM_ENABLE;
       OUT_EX_MEM_READWRITE    <= EX_MEM_READWRITE;
       OUT_EX_MEM_SIZE         <= EX_MEM_SIZE;
       OUT_EX_MEM_SIGNE        <= EX_MEM_SIGNE;
       OUT_EnableMEM           <= EX_ENABLE_MEM;
-      OUT_EX_ADDRESS          <= EX_ADDRESS[8:0];
+      // The address is 9 bits but we taking all 32 because weĺl 
+      // need em when selecting between this and the data out
+      OUT_EX_ADDRESS          <= EX_ADDRESS;    
     end
   end
 endmodule

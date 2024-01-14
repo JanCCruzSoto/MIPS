@@ -40,11 +40,7 @@ module PPU (
   wire [31:0] DataOut;   
 
 
-  // Counters
-  wire [31:0] PC;         // The actual Program Counter.
-  wire [31:0] nPC;        // The Next Program Counter
-  wire [31:0] nPC_PLUS_4;
-  wire [31:0] nPC_MUX;
+
 
   wire [31:0] TA; // Target Address
 
@@ -73,9 +69,17 @@ module PPU (
   // Anyway, wires also have a naming convention so its easier to read
   // <WHERE_IT_CAME_FROM>WIRE_NAME<WHERE_ITS_GOING_TO
 
+
+  // ====| IN IF |===== //
+
+  wire [31:0] PC;         // The actual Program Counter.
+  wire [31:0] nPC;        // The Next Program Counter
+  wire [31:0] nPC_PLUS_4;
+  wire [31:0] nPC_MUX;
+
   // =====| COUNTERS (SET ASIDE FOR SANITY) |===== //
   wire [31:0] IF_PC_ID; // GOES TO ID, BITWISE_AND, ALU+4
-  wire [31:0] ID_PC_EX;
+  wire [31:0] ID_PC_EX; // GOES STRAIGHT TO OPERAND HANDLER, LOOK FOR PC+8 WHERE PC KEEPS PROPAGATING
   wire [31:0] EX_PC_MEM;
   wire [31:0] MEM_PC_WB;
 
@@ -197,7 +201,7 @@ module PPU (
   wire [4:0] MUX_DESTINATION_REG_EX;
 
   // ====| PLUS-8-LOGIC-BOX |==== //
-  wire [31:0] PLUS_8_PC_8_EX;
+  wire [31:0] PLUS_8_PC_8_EX; // THIS IS THE PC THAT KEEPS PROPAGATING TO MEM
 
   // =====| ID/EX |===== //
   wire [31:0] EX_PWDS_MX1_AND_MX2;
@@ -290,9 +294,9 @@ module PPU (
 
   // USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE
   MUX32BitTwoToOne NPC_SELECTOR_MUX (
-                               .Out               (nPC),
+                               .Out               (nPC_MUX),
                                .Input_One         (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
-                               .Input_Two         (nPC_MUX),  // SIGNAL EXISTS
+                               .Input_Two         (nPC),  // SIGNAL EXISTS
                                .S                 (UB_MUX_SELECTION_NPC_SELECTOR)
                              );
 
@@ -303,8 +307,8 @@ module PPU (
 
   // not exactly 32 bits :\
   Register_32bit_nPC nPC_reg (
-                       .DS           (nPC_PLUS_4[31:0]),   // IN
-                       .QS           (nPC[31:0]),          // OUT
+                       .DS           (nPC_PLUS_4),   // IN
+                       .QS           (nPC),          // OUT
                        .stallnPC     (stall_NPC),
                        .Clk          (Clk),
                        .Reset        (Reset)
@@ -312,8 +316,8 @@ module PPU (
 
   // Refer to Memory.v for differences between this and the nPC
   Register_32bit_PC PC_reg (
-                      .DS         (nPC_MUX[31:0]),       // IN
-                      .QS         (PC[31:0]),          // OUT
+                      .DS         (nPC_MUX),     // IN
+                      .QS         (PC),          // OUT
                       .stallPC    (stall_PC),
                       .Clk        (Clk),
                       .Reset      (Reset)
@@ -663,7 +667,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_ID_MX2_RESULT          (EX_MX2_OPERAND),                               // SIGNAL EXISTS
     .OUT_ID_HI_QS               (EX_HISIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
     .OUT_ID_LO_QS               (EX_LOSIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
-    .OUT_ID_PC                  (EX_PC),                                        // TODO: VERIFY WITH GTK WAVE
+    .OUT_ID_PC                  (ID_PC_EX),                                        // TODO: VERIFY WITH GTK WAVE
     .OUT_ID_IMM16               (EX_IMM16_OPERAND),                             // SIGNAL EXISTS
     .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | Create this signal in module
     .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
@@ -680,7 +684,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
             .PB         (EX_MX2_OPERAND),       // SIGNAL EXISTS
             .HI         (EX_HISIGNAL_OPERAND),  // SIGNAL EXISTS
             .LO         (EX_LOSIGNAL_OPERAND),  // SIGNAL EXISTS
-            .PC         (Out_ID_PC),            // TODO: Verify with GTK Wave
+            .PC         (ID_PC_EX),            // TODO: Verify with GTK Wave
             .imm16      (EX_IMM16_OPERAND),     // SIGNAL EXISTS
             .Si         (EX_OP_H_S_OPERAND)     // SIGNAL EXISTS
           );
@@ -726,7 +730,8 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .EX_HI_ENABLE              (EX_HI_ENABLE_MEM),                              // SIGNAL EXISTS
     .EX_LO_ENABLE              (EX_LO_ENABLE_MEM),                              // SIGNAL EXISTS
     .EX_RF_ENABLE              (EX_RF_ENABLE_MEM),                              // SIGNAL EXISTS
-    .EX_PC_PLUS8_INSTR         (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX),     // SIGNAL EXISTS
+    .EX_PC_PLUS8_INSTR         (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX),     // SIGNAL EXISTS // NOT TO BE CONFUSED WITH EX_PC_8_MEM_AND_PC_SELECTOR_MUX WHICH IS 32 BITS AND THE ACTUAL PC+8
+    .EX_PC_PLUS_8              (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),
     .EX_MEM_ENABLE             (EX_MEM_ENABLE_MEM),                             // SIGNAL EXISTS
     .EX_MEM_READWRITE          (EX_MEM_READWRITE_MEM),                          // SIGNAL EXISTS
     .EX_MEM_SIZE               (EX_MEM_SIZE_MEM),                               // SIGNAL EXISTS
@@ -737,7 +742,8 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .OUT_EX_RF_ENABLE         (MEM_MEM_RF_),                                   // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_HI_ENABLE         (MEM_HI_ENABLE_WB),                              // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_LO_ENABLE         (MEM_LO_ENABLE_WB),                              // CHANGE THESE SIGNALS IN MODULE
-    .OUT_EX_PC_PLUS8_INSTR    (MEM_PC_PLUS8_INSTR_PLUS_8_MUX),                            // CHANGE THESE SIGNALS IN MODULE
+    .OUT_EX_PC_PLUS8_INSTR    (MEM_PC_PLUS8_INSTR_PLUS_8_MUX),                 // CHANGE THESE SIGNALS IN MODULE
+    .OUT_EX_PC_PLUS_8         (MEM_PLUS8_PLUS_8_MUX),
     .OUT_EX_MEM_ENABLE        (MEM_MEM_ENABLE_DATA_MEMORY),                    // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_READWRITE     (MEM_MEM_READWRITE_DATA_MEMORY),                 // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // CHANGE THESE SIGNALS IN MODULE
