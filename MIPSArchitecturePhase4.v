@@ -546,7 +546,7 @@ module PPU (
                        .Input_Two                  (EX_CTA_CTA_MUX),                           // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
                      );
-  Mux_32Bit_OR_32BIT UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
+  MUX32BitTwoToOne UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
                        .Out                        (UB_MUX_SELECTION_NPC_SELECTOR),            // SIGNAL EXISTS
 
                        .Input_One                  (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
