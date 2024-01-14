@@ -246,12 +246,23 @@ module PPU (
   wire MEM_RF_ENABLE_;
   wire MEM_HI_ENABLE_WB;
   wire MEM_LO_ENABLE_WB;
-  wire MEM_PC_PLUS8_INSTR_;
+  wire MEM_PC_PLUS8_INSTR_PLUS_8_MUX;
   wire MEM_MEM_ENABLE_DATA_MEMORY;
   wire MEM_MEM_READWRITE_DATA_MEMORY;
   wire [1:0] MEM_MEM_SIZE_DATA_MEMORY;
   wire MEM_MEM_SIGNE_DATA_MEMORY;
-  wire [31:0] MEM_ADDRESS_DATA_MEMORY;
+  wire [31:0] MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX;
+
+
+
+// ====
+
+  
+  wire [31:0] PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2;
+  wire MEM_PC_PLUS8_INSTR_PLUS_8_MUX;
+  wire [31:0] MEM_PLUS8_PLUS_8_MUX;
+  wire [31:0] SUSSY_MUX_RES_PLUS_8_MUX;
+  wire [31:0] DATA_MEMORY_RES_SUSSY_MUX;
 
   // ====| MEM/WB
   wire [31:0] WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2;
@@ -727,39 +738,41 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .OUT_EX_RF_ENABLE         (MEM_MEM_RF_),                                   // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_HI_ENABLE         (MEM_HI_ENABLE_WB),                              // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_LO_ENABLE         (MEM_LO_ENABLE_WB),                              // CHANGE THESE SIGNALS IN MODULE
-    .OUT_EX_PC_PLUS8_INSTR    (MEM_PC_PLUS8_INSTR),                            // CHANGE THESE SIGNALS IN MODULE
+    .OUT_EX_PC_PLUS8_INSTR    (MEM_PC_PLUS8_INSTR_PLUS_8_MUX),                            // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_ENABLE        (MEM_MEM_ENABLE_DATA_MEMORY),                    // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_READWRITE     (MEM_MEM_READWRITE_DATA_MEMORY),                 // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_SIGNE         (MEM_MEM_SIGNE_DATA_MEMORY),                     // CHANGE THESE SIGNALS IN MODULE
-    .OUT_EX_ADDRESS           (MEM_ADDRESS_DATA_MEMORY),                       // 
+    .OUT_EX_ADDRESS           (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),                       // 
     .OUT_EnableMEM             (MEM_ENABLEMEM_HAZARD)                           // SIGNAL EXISTS | Create signal on module
 );
 ram_512x8 Data_Memory (
     // OUTPUT
-    .DataOut                (DATA_MEMORY),
+    .DataOut                (DATA_MEMORY_RES_SUSSY_MUX),
     // INPUT
     .Enable                 (MEM_MEM_ENABLE_DATA_MEMORY),
     .ReadWrite              (MEM_MEM_READWRITE_DATA_MEMORY),
     .SignExtend             (MEM_MEM_SIGNE_DATA_MEMORY),
-    .Address                (MEM_ADDRESS_DATA_MEMORY),
+    .Address                (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),
     .DataIn                 (MEM_DATAIN_DATA_MEMORY),
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
-  MUX32BitTwoToOne MEM_Memory_MUX_Case_One (
+  // Sussy baka!
+  MUX32BitTwoToOne SUSSY_MUX ( // MEM_Memory_MUX_Case_One
                        // OUTPUT
-                       .Out                        (),
+                       .Out                        (SUSSY_MUX_RES_PLUS_8_MUX),
                        // INPUT
-                       .Input_One                  (),
-                       .Input_Two                  (),
+                       .Input_One                  (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),
+                       .Input_Two                  (DATA_MEMORY_RES_SUSSY_MUX),
                        .S                          (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE)
                      );
 
-  MUX32BitTwoToOne MEM_Memory_MUX_Case_Two (
-                       .Input_One                  (),
-                       .Input_Two                  (),
-                       .Out                        ()
+  MUX32BitTwoToOne PLUS_8_MUX ( // MEM_Memory_MUX_Case_Two
+                       .Input_One                  (MEM_PLUS8_PLUS_8_MUX)
+                       .Input_Two                  (SUSSY_MUX_RES_PLUS_8_MUX),
+                       .S                          (MEM_PC_PLUS8_INSTR_PLUS_8_MUX)            // SIGNAL EXISTS
+                       .Out                        (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2)  // SIGNAL EXISTS
                      );
 
 
