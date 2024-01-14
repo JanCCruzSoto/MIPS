@@ -753,7 +753,7 @@ ram_512x8 Data_Memory (
     .ReadWrite              (MEM_MEM_READWRITE_DATA_MEMORY),
     .SignExtend             (MEM_MEM_SIGNE_DATA_MEMORY),
     .Address                (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX[8:0]),
-    .DataIn                 (MEM_DATAIN_DATA_MEMORY),
+    .DataIn                 (DataIn),
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
