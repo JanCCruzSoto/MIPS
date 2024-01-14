@@ -36,8 +36,8 @@ module PPU (
   wire SignExtend;
   wire [1:0] Size;
   wire [8:0] Address;     // This outputs from the ALU into the RAM Address 
-  wire [31:0] DataIn;     // This outputs from the EX_MX2 mux into the DataIn from the RAM
-  wire [31:0] DataOut; // TODO: Find a way to receive instructions from the outside instead
+  wire [31:0] DataIn;     // TODO: check for fuck ups
+  wire [31:0] DataOut;   
 
 
   // Counters
@@ -185,7 +185,7 @@ module PPU (
   wire [31:0] CTA_MUX_TA_nPC_SELECTOR;
 
   // ====| UB MUX |
-  wire UB_MUX_SELECTION_NPC_SELECTOR; // TODO: SE CAMBIO DE 32 A 1 BIT VERIFICAR CREAR NUEVO MUX O VERIFICAR SI YA HAY UNO
+  wire UB_MUX_SELECTION_NPC_SELECTOR; 
 
   // ====| MX1 |===== //
   wire [31:0] MX1_MX1RESULT_UTAMUX_AND_EX;
@@ -214,13 +214,13 @@ module PPU (
 
   wire [3:0] EX_ALU_OP_ALU;
   wire EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX;
-  wire EX_IMM16_OPERAND;
-  wire EX_PC_8_PC_EX;
-  wire EX_PC_8_MEM_AND_PC_SELECTOR_MUX;
-  wire EX_MX1_ALU;
-  wire EX_MX2_OPERAND;
-  wire EX_HISIGNAL_OPERAND;
-  wire EX_LOSIGNAL_OPERAND;
+  wire [15:0] EX_IMM16_OPERAND;
+  wire [31:0] EX_PC_8_PC_EX;
+  wire [31:0] EX_PC_8_MEM_AND_PC_SELECTOR_MUX;
+  wire [31:0] EX_MX1_ALU;
+  wire [31:0] EX_MX2_OPERAND;
+  wire [31:0] EX_HISIGNAL_OPERAND;
+  wire [31:0] EX_LOSIGNAL_OPERAND;
 
   // =====| OPERAND HANDLER |===== //
   wire [31:0] HANDLER_N_ALU;
@@ -231,11 +231,11 @@ module PPU (
   wire ALU_N_FLAG_MEM_AND_CONDITION_HANDLER;
 
   // =====| PC SELECTOR MUX |===== //
-
+  wire [31:0] PC_SELECTOR_MUX_PC_MX1_AND_MX2;
 
   // =====| CONDITION HANDLER |===== //
-  wire CONDITION_HANDLER_IFRESET_IF;
-  wire [31:0] COND_HANDLER_UB_UB_MUX; //TODO: SE CAMBIO DE 1 A 32 BITS
+  wire        CONDITION_HANDLER_IFRESET_IF;
+  wire        COND_HANDLER_UB_UB_MUX; 
   wire [31:0] REGISTER_FILE_PA_MX1;
   wire [31:0] REGISTER_FILE_PB_MX2;
 
@@ -259,7 +259,6 @@ module PPU (
 
   
   wire [31:0] PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2;
-  wire MEM_PC_PLUS8_INSTR_PLUS_8_MUX;
   wire [31:0] MEM_PLUS8_PLUS_8_MUX;
   wire [31:0] SUSSY_MUX_RES_PLUS_8_MUX;
   wire [31:0] DATA_MEMORY_RES_SUSSY_MUX;
@@ -290,11 +289,11 @@ module PPU (
 
 
   // USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE
-  Mux_9Bit_OR_32BIT_Case_One nPCselector (
-                               .nPC      (nPC[8:0]),
-                               .TA       (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
-                               .S        (UB_MUX_SELECTION_NPC_SELECTOR),  // SIGNAL EXISTS
-                               .Address  (nPC_MUX)
+  MUX32BitTwoToOne NPC_SELECTOR_MUX (
+                               .Out               (nPC),
+                               .Input_One         (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
+                               .Input_Two         (nPC_MUX),  // SIGNAL EXISTS
+                               .S                 (UB_MUX_SELECTION_NPC_SELECTOR)
                              );
 
   nPCLogicBox AddPlusFour(
@@ -305,7 +304,7 @@ module PPU (
   // not exactly 32 bits :\
   Register_32bit_nPC nPC_reg (
                        .DS           (nPC_PLUS_4[31:0]),   // IN
-                       .Qs           (nPC[31:0]),          // OUT
+                       .QS           (nPC[31:0]),          // OUT
                        .stallnPC     (stall_NPC),
                        .Clk          (Clk),
                        .Reset        (Reset)
@@ -314,7 +313,7 @@ module PPU (
   // Refer to Memory.v for differences between this and the nPC
   Register_32bit_PC PC_reg (
                       .DS         (nPC_MUX[31:0]),       // IN
-                      .Qs         (PC[31:0]),          // OUT
+                      .QS         (PC[31:0]),          // OUT
                       .stallPC    (stall_PC),
                       .Clk        (Clk),
                       .Reset      (Reset)
@@ -516,7 +515,7 @@ module PPU (
                                   .Result         (TIMES_4_ADDRESS26_EX),
 
                                   // INPUT
-                                  .Address26      (ID_INSTRUCTION_CU[25:0]) // ADDRESS 26 | TODO: Create an explicit wire for this
+                                  .Address26      (ID_INSTRUCTION_CU[25:0]) // ADDRESS 26 
                                 );
 
   Bitwise_OR_Logic_Box Bitwise_OR_Logic ( /*USED FOR CALCULATING UNCONDITIONAL TA*/
@@ -557,11 +556,11 @@ module PPU (
                        .Input_Two                  (EX_CTA_CTA_MUX),                           // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
                      );
-  MUX32BitTwoToOne UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
-                       .Out                        (UB_MUX_SELECTION_NPC_SELECTOR),            // SIGNAL EXISTS
+  Mux_1BitTwoToOne UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
+                       .OUT                        (UB_MUX_SELECTION_NPC_SELECTOR),            // SIGNAL EXISTS
 
-                       .Input_One                  (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
-                       .Input_Two                  (32'hf0000000),                             // SIGNAL EXISTS
+                       .INPUT_ONE                  (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
+                       .INPUT_TWO                  (1'b1),                             // SIGNAL EXISTS
                        .S                          (CU_MUX_UB_INSTR_UB_MUX)                    // SIGNAL EXISTS
                      );
 
@@ -645,7 +644,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .ID_PC                      (IF_PC_ID),                                     // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .ID_IMM16                   (ID_IMM16_EX_AND_TIMES_4),                      // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .ID_REG                     (MUX_DESTINATION_REG_EX),                       // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
-    .ID_RT                      (),    //  ADD SIGNAL TO MODULE
+    .ID_RT                      (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),        //  ADD SIGNAL TO MODULE
     
     // Output
     .OUT_ID_ALU_OP              (EX_ALU_OP_ALU),                                // SIGNAL EXISTS
@@ -660,8 +659,8 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_ID_MEM_SIZE            (EX_MEM_SIZE_MEM),                              // SIGNAL EXISTS
     .OUT_ID_MEM_SIGNE           (EX_MEM_SIGNE_MEM),                             // SIGNAL EXISTS
     .OUT_ID_PC_PLUS8_RESULT     (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS | Create this signal in module
-    .OUT_ID_MX1_Result          (EX_MX1_ALU),                                   // SIGNAL EXISTS
-    .OUT_ID_MX2_Result          (EX_MX2_OPERAND),                               // SIGNAL EXISTS
+    .OUT_ID_MX1_RESULT          (EX_MX1_ALU),                                   // SIGNAL EXISTS
+    .OUT_ID_MX2_RESULT          (EX_MX2_OPERAND),                               // SIGNAL EXISTS
     .OUT_ID_HI_QS               (EX_HISIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
     .OUT_ID_LO_QS               (EX_LOSIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
     .OUT_ID_PC                  (EX_PC),                                        // TODO: VERIFY WITH GTK WAVE
@@ -669,7 +668,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | Create this signal in module
     .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
     .OUT_regMEM                 (MEM_REGMEM_HAZARD),                            // SIGNAL EXISTS | Create this signal in module
-    .OUT_regWB                  (WB_REGWB_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
+    .OUT_regWB                  (WB_REGWB_HAZARD_AND_REGISTER_FILE),                              // SIGNAL EXISTS | Create this signal in module
     .OUT_ID_RT                  ()              // ADD SIGNAL TO MODULE
 );
 
@@ -681,7 +680,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
             .PB         (EX_MX2_OPERAND),       // SIGNAL EXISTS
             .HI         (EX_HISIGNAL_OPERAND),  // SIGNAL EXISTS
             .LO         (EX_LOSIGNAL_OPERAND),  // SIGNAL EXISTS
-            .PC         (Out_ID_PC),
+            .PC         (Out_ID_PC),            // TODO: Verify with GTK Wave
             .imm16      (EX_IMM16_OPERAND),     // SIGNAL EXISTS
             .Si         (EX_OP_H_S_OPERAND)     // SIGNAL EXISTS
           );
@@ -697,14 +696,14 @@ Pipeline_Register_32bit_ID_EX ID_EX (
         .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER)      // SIGNAL EXISTS
       );
 
-  Mux_9Bit_OR_32BIT_Case_Two PC_Selector_MUX (
+  MUX32BitTwoToOne PC_Selector_MUX (
                                // OUTPUT
-                               .Out          (), // PC_PLUS_MUX_PC_MX1_AND_MX2                                              // SIGNAL EXISTS
+                               .Out             (PC_SELECTOR_MUX_PC_MX1_AND_MX2),               // TODO: Create signal                                           // SIGNAL EXISTS
 
                                // INPUT
-                               .PC_Plus_8    (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS
-                               .Result       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       // SIGNAL EXISTS
-                               .S            (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)     // SIGNAL EXISTS
+                               .Input_One       (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS
+                               .Input_Two       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       // SIGNAL EXISTS
+                               .S               (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)     // SIGNAL EXISTS
                              );
 
   Condition_Handler Condition_Handler (
@@ -714,8 +713,8 @@ Pipeline_Register_32bit_ID_EX ID_EX (
                        
                       // INPUT
                       .RT             (),
-                      .z_flag         (ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER),     // SIGNAL EXISTS
-                      .n_flag         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER),      // SIGNAL EXISTS
+                      .Z_FLAG         (ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER),     // SIGNAL EXISTS
+                      .N_FLAG         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER),      // SIGNAL EXISTS
                       .CH_opcode()
                     );
 
@@ -723,7 +722,7 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     // INPUT
     .Clk,         // Clock signal
     .Reset,        // Reset signal
-    .EX_LOAD_INSTR             (EX_LOADEX_HAZARD),                              // SIGNAL EXISTS | TODO: ????
+    .EX_LOAD_INSTR             (EX_LOADEX_HAZARD),                              // SIGNAL EXISTS 
     .EX_HI_ENABLE              (EX_HI_ENABLE_MEM),                              // SIGNAL EXISTS
     .EX_LO_ENABLE              (EX_LO_ENABLE_MEM),                              // SIGNAL EXISTS
     .EX_RF_ENABLE              (EX_RF_ENABLE_MEM),                              // SIGNAL EXISTS
@@ -753,7 +752,7 @@ ram_512x8 Data_Memory (
     .Enable                 (MEM_MEM_ENABLE_DATA_MEMORY),
     .ReadWrite              (MEM_MEM_READWRITE_DATA_MEMORY),
     .SignExtend             (MEM_MEM_SIGNE_DATA_MEMORY),
-    .Address                (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),
+    .Address                (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX[8:0]),
     .DataIn                 (MEM_DATAIN_DATA_MEMORY),
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
@@ -769,9 +768,9 @@ ram_512x8 Data_Memory (
                      );
 
   MUX32BitTwoToOne PLUS_8_MUX ( // MEM_Memory_MUX_Case_Two
-                       .Input_One                  (MEM_PLUS8_PLUS_8_MUX)
+                       .Input_One                  (MEM_PLUS8_PLUS_8_MUX),
                        .Input_Two                  (SUSSY_MUX_RES_PLUS_8_MUX),
-                       .S                          (MEM_PC_PLUS8_INSTR_PLUS_8_MUX)            // SIGNAL EXISTS
+                       .S                          (MEM_PC_PLUS8_INSTR_PLUS_8_MUX),           // SIGNAL EXISTS
                        .Out                        (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2)  // SIGNAL EXISTS
                      );
 
@@ -783,7 +782,7 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     .OUT_MEM_HI_ENABLE         (MEM_HI_ENABLE_WB), // CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
     .OUT_MEM_LO_ENABLE         (MEM_LO_ENABLE_WB), // CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
 
-                                   .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
 
     .OUT_EnableMEM             (WB_ENABLEWB_HAZARD), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     
@@ -800,8 +799,8 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
   initial
   begin
     Reset <= 1'b1;
-    stall_NPC <= 1'b1;
-    stall_PC <= 1'b1;
+    //stall_NPC <= 1'b1;
+    //stall_PC <= 1'b1;     TODO: Verify deletion
     S <= 1'b0;
     Clk <= 1'b0;
     #2 Clk <= ~Clk;

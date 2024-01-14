@@ -56,6 +56,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     input wire [31:0]   ID_LO_QS,
     input wire [31:0]   ID_PC,
     input wire [15:0]   ID_IMM16,
+    input wire [4:0]    ID_REG,
     input wire [4:0]    ID_RT,
 
     // Output Contræl Signals
@@ -79,6 +80,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     output reg [4:0]  OUT_regEX,
     output reg [4:0]  OUT_regMEM,
     output reg [31:0] OUT_ID_PC,
+    output reg [15:0] OUT_ID_IMM16,
     output reg [4:0]  OUT_regWB,
     output reg [4:0]  OUT_ID_RT
   );
@@ -164,7 +166,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     output reg [1:0]  OUT_EX_MEM_SIZE,       // SIZE OF STORE
     output reg        OUT_EX_MEM_SIGNE,      // SIGN EXTENSION
     output reg        OUT_EnableMEM,
-    output reg [8:0]  OUT_EX_ADDRESS
+    output reg [31:0]  OUT_EX_ADDRESS
     // TODO: SEEMS REGMEM IS NOT HERE, WE ALSO NEED TO ADD IT, FOR INPUT AND OUTPUT
   );
   always @(posedge Clk)
@@ -217,7 +219,8 @@ module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
     output reg OUT_MEM_HI_ENABLE, //HI register enable
     output reg OUT_MEM_LO_ENABLE, //LO register enable
     output reg [31:0] OUT_RW_REGISTER_FILE,
-    output reg [31:0] OUT_PW_MEM_TO_REG_MUX
+    output reg [31:0] OUT_PW_MEM_TO_REG_MUX,        //TODO: Check if this belongs
+    output reg OUT_EnableMEM
   );
 
   always @(posedge Clk)
