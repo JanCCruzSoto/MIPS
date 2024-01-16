@@ -27,8 +27,6 @@ module PPU (
 
   reg Reset;
   reg Clk;
-  reg S;
-  reg StallFID;
 
 
   // The following wires belong to the RAM
@@ -297,7 +295,7 @@ module PPU (
                                .Out               (nPC_MUX),
                                .Input_One         (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
                                .Input_Two         (nPC),  // SIGNAL EXISTS
-                               .S                 (UB_MUX_SELECTION_NPC_SELECTOR)
+                               .S                 (1'b1) //1'b1 UB_MUX_SELECTION_NPC_SELECTOR
                              );
 
   nPCLogicBox AddPlusFour(
@@ -807,9 +805,9 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     Reset <= 1'b1;
     //stall_NPC <= 1'b1;
     //stall_PC <= 1'b1;     TODO: Verify deletion
-    S <= 1'b0;
+    // S <= 1'b0;
     Clk <= 1'b0;
-    #2 Clk <= ~Clk;
+    #4 Clk <= ~Clk;
     #1 Reset <= 1'b0;
     #1 Clk <= ~Clk;
     forever
@@ -818,13 +816,28 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
 
   initial
   begin
+    $dumpfile("test.vcd"); // pass this to GTK Wave to visualize better wtf is going on
+    $dumpvars(0, PPU);
     #52;
     $display("\n----------------------------------------------------------\nDONE :D");
     $finish;
   end
 
 initial begin
-  $monitor("Instruction: %b | CLK: %b | PC: %d | nPC: %d", DataOut_InstructionMemory, Clk, PC[31:0], nPC[31:0]);
+  $monitor("TIME: %d\n\
+Instruction: %b | CLK: %b | PC: %d | nPC: %d | stall_nPC: %d | nPC_MUX: %d | Reset: %d | stall_PC: %d | nPC_PLUS_4: %d \n\
+UB_MUX_SELECTION_NPC_SELECTOR: %d | CU_MUX_UB_INSTR_UB_MUX: %d | CU_UB_INSTR_CU_MUX: %d", 
+  $time,
+  DataOut_InstructionMemory, 
+  Clk, PC, nPC, 
+  stall_NPC, 
+  nPC_MUX, 
+  Reset, stall_PC, 
+  nPC_PLUS_4, 
+  UB_MUX_SELECTION_NPC_SELECTOR, 
+  CU_MUX_UB_INSTR_UB_MUX, 
+  CU_UB_INSTR_CU_MUX
+  );
 end
 
 

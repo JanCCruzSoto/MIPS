@@ -90,55 +90,6 @@ module Mux_Control_Unit (
   end
 endmodule
 
-// module Mux_9Bit_OR_32BIT_Case_One ( /*USED FOR SELECTING BETWEEN JUMP TA OR nPC IN IF STAGE*/
-//     input wire [8:0] nPC,
-//     input wire [31:0] TA,
-
-//     input wire S, //Selection signal
-
-//     output reg [31:0] Address
-//   );
-
-//   always@(*)
-//   begin
-
-//     case(S)
-//       1'b0:
-//         Address = nPC;
-
-//       1'b1:
-//         Address = TA;
-//     endcase
-
-//   end
-
-// endmodule
-
-// module Mux_9Bit_OR_32BIT_Case_Two ( /*USED FOR SELECTING PC + 8 WHEN REQUIRED BY AN INSTRUCTION*/
-//     input wire [8:0] PC_Plus_8,
-//     input wire [31:0] Result,
-
-//     input wire S, //Selection signal
-
-//     output reg [31:0] Out
-//   );
-
-//   always@(*)
-//   begin
-
-//     case(S)
-//       1'b0:
-//         Out = Result;
-
-//       1'b1:
-//         Out = PC_Plus_8;
-//     endcase
-
-//   end
-
-// endmodule
-
-
 module Mux_1BitTwoToOne (
     input wire INPUT_ONE,
     input wire INPUT_TWO,
@@ -193,10 +144,10 @@ module Mux_Jump_OR_Condition ( /*USED FOR 1 BIT INPUTS*/ /*ONLY ONE USED IN ID*/
 
     case(S)
       1'b0:
-        Out = Condition;
+        Out <= Condition;
 
       1'b1:
-        Out = Jump;
+        Out <= Jump;
     endcase
 
   end
@@ -216,13 +167,13 @@ module Mux_RegisterFile_Ports (
   begin
     case(S)
       2'b00:
-        Out = ID_Result;
+        Out <= ID_Result;
       2'b01:
-        Out = EX_Result;
+        Out <= EX_Result;
       2'b10:
-        Out = MEM_Result;
+        Out <= MEM_Result;
       2'b11:
-        Out = WB_Result;
+        Out <= WB_Result;
     endcase
   end
 
@@ -240,27 +191,24 @@ module Mux_Destination_Registers ( /*USED FOR 5 BIT INPUTS*/ /*ONE USED IN ID*/
     output reg [4:0] Out // Corrected to 5-bit output
   );
 
-
   always@(*)
   begin
     case(S)
       2'b00:
-        Out = RD;
+        Out <= RD;
       2'b01:
-        Out = RT;
+        Out <= RT;
       2'b10:
-        Out = R31;
+        Out <= R31;
       default:
-        Out = 5'bxxxxx; // Undefined state
+        Out <= 5'bxxxxx; // Undefined state
     endcase
   end
-
 endmodule
 
 
 
 module Mux_32to1 (
-
     input wire [31:0] Rzero,
     input wire [31:0] Rone,
     input wire [31:0] Rtwo,

@@ -8,9 +8,9 @@ module Register_32bit_nPC (
   always @(posedge Clk)
   begin
     if (Reset)
-      QS <= 32'd4;
+      QS = 32'd4;
     else if (stallnPC)
-      QS <= DS;
+      QS = DS;
   end
 endmodule
 
@@ -26,7 +26,7 @@ module Register_32bit_PC (
     if (Reset)
       QS <= 32'd0;
     else if (stallPC)
-      QS <= DS;
+      QS = DS;
   end
 endmodule
 
