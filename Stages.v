@@ -78,10 +78,8 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     output reg [31:0] OUT_ID_MX1_RESULT,
     output reg [31:0] OUT_ID_MX2_RESULT,
     output reg [4:0]  OUT_regEX,
-    output reg [4:0]  OUT_regMEM,
     output reg [31:0] OUT_ID_PC,
     output reg [15:0] OUT_ID_IMM16,
-    output reg [4:0]  OUT_regWB,
     output reg [4:0]  OUT_ID_RT
   );
 
@@ -105,8 +103,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_LO_QS            <= 32'b0;
       OUT_EnableEX            <= 1'b0;
       OUT_regEX               <= 5'b0;
-      OUT_regMEM              <= 5'b0;
-      OUT_regWB               <= 5'b0;
+      OUT_ID_IMM16               <= 5'b0;
       OUT_ID_RT               <= 5'b0;
       OUT_ID_PC               <= 32'b0;
     end
@@ -131,8 +128,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_MX2_RESULT       <= MX2_RESULT;
       OUT_EnableEX            <= ID_HI_QS;
       OUT_regEX               <= ID_LO_QS;
-      OUT_regMEM              <= ID_PC;
-      OUT_regWB               <= ID_IMM16;
+      OUT_ID_IMM16            <= ID_IMM16;
       OUT_ID_PC               <= ID_PC;
     end
   end
@@ -155,6 +151,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     input wire        EX_MEM_SIGNE,        // SIGN EXTENSION
     input wire [31:0] EX_ADDRESS,          // OUTPUT FROM THE ALU
     input wire        EX_ENABLE_MEM,
+    input wire [4:0]  EX_REGEX,
 
     // Output ContrEX Signals
     output reg        OUT_EX_LOAD_INSTR,     // LOAD INSTRUCTIONS
@@ -168,7 +165,8 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     output reg [1:0]  OUT_EX_MEM_SIZE,       // SIZE OF STORE
     output reg        OUT_EX_MEM_SIGNE,      // SIGN EXTENSION
     output reg        OUT_EnableMEM,
-    output reg [31:0]  OUT_EX_ADDRESS
+    output reg [31:0] OUT_EX_ADDRESS,
+    output reg [4:0]  OUT_REGEX
     // TODO: SEEMS REGMEM IS NOT HERE, WE ALSO NEED TO ADD IT, FOR INPUT AND OUTPUT
   );
   always @(posedge Clk)
@@ -187,6 +185,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
       OUT_EX_MEM_SIZE         <= 2'b0;
       OUT_EX_MEM_SIGNE        <= 1'b0;
       OUT_EnableMEM           <= 1'b0;
+      OUT_REGEX               <= 5'b0;
     end
     else
     begin
@@ -204,6 +203,7 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
       // The address is 9 bits but we taking all 32 because weĺl 
       // need em when selecting between this and the data out
       OUT_EX_ADDRESS          <= EX_ADDRESS;    
+      OUT_REGEX               <= EX_REGEX;
     end
   end
 endmodule
@@ -217,15 +217,15 @@ module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
     input wire MEM_RF_ENABLE, // Register file enable
     input wire MEM_HI_ENABLE, // HI register enable
     input wire MEM_LO_ENABLE, // LO register enable
-    input wire [31:0] MEM_TO_REG_MUX_RESULT,
-    input wire [31:0] EX_REGEX,
+    input wire [4:0] EX_REGEX,
+    input wire [31:0] PW_REGISTER_FILE,
 
     // Output Control Signals
     output reg OUT_MEM_RF_ENABLE, //register file enable
     output reg OUT_MEM_HI_ENABLE, //HI register enable
     output reg OUT_MEM_LO_ENABLE, //LO register enable
-    output reg [31:0] OUT_RW_REGISTER_FILE,
-    output reg [31:0] OUT_PW_MEM_TO_REG_MUX,        //TODO: Check if this belongs
+    output reg [4:0] OUT_RW_REGISTER_FILE, // REGEX  basically
+    output reg [31:0] OUT_PW_REGISTER_FILE,
     output reg OUT_EnableMEM
   );
 
@@ -236,16 +236,16 @@ module Pipeline_Register_32bit_MEM_WB ( /*MEM/WB REGISTER*/
       OUT_MEM_RF_ENABLE     <= 1'b0;
       OUT_MEM_HI_ENABLE     <= 1'b0;
       OUT_MEM_LO_ENABLE     <= 1'b0;
-      OUT_RW_REGISTER_FILE  <= 32'b0;
-      OUT_PW_MEM_TO_REG_MUX <= 32'b0;
+      OUT_RW_REGISTER_FILE  <= 5'b0;
+      OUT_PW_REGISTER_FILE  <= 31'b0;
     end
     else
     begin
       OUT_MEM_RF_ENABLE     <= MEM_RF_ENABLE;
       OUT_MEM_HI_ENABLE     <= MEM_HI_ENABLE;
       OUT_MEM_LO_ENABLE     <= MEM_LO_ENABLE;
-      OUT_RW_REGISTER_FILE  <= MEM_TO_REG_MUX_RESULT;
-      OUT_PW_MEM_TO_REG_MUX <= EX_REGEX;
+      OUT_RW_REGISTER_FILE  <= EX_REGEX;
+      OUT_PW_REGISTER_FILE  <= PW_REGISTER_FILE;
     end
   end
 

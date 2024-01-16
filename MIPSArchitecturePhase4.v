@@ -245,7 +245,6 @@ module PPU (
   wire [31:0] MEM_PWDS_MX1_AND_MX2;
 
   wire MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE;
-  wire MEM_RF_ENABLE_;
   wire MEM_HI_ENABLE_WB;
   wire MEM_LO_ENABLE_WB;
   wire MEM_PC_PLUS8_INSTR_PLUS_8_MUX;
@@ -254,7 +253,7 @@ module PPU (
   wire [1:0] MEM_MEM_SIZE_DATA_MEMORY;
   wire MEM_MEM_SIGNE_DATA_MEMORY;
   wire [31:0] MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX;
-
+  wire MEM_MEM_RF_ENABLE_WB;
 
 
 // ====
@@ -268,7 +267,7 @@ module PPU (
   // ====| MEM/WB
   wire [31:0] WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2;
   wire WB_REG_FILE_ENABLE_REGISTER_FILE;
-
+  wire [4:0] MEM_REGEX_WB;
 
   // -|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|-|- //
   // --------------------------------------------------- //
@@ -295,7 +294,7 @@ module PPU (
                                .Out               (nPC_MUX),
                                .Input_One         (CTA_MUX_TA_nPC_SELECTOR),        // SIGNAL EXISTS
                                .Input_Two         (nPC),  // SIGNAL EXISTS
-                               .S                 (1'b1) //1'b1 UB_MUX_SELECTION_NPC_SELECTOR
+                               .S                 (1'b1) //1'b1 UB_MUX_SELECTION_NPC_SELECTOR TODO: Change back to signal till we fix some mayor issues throught
                              );
 
   nPCLogicBox AddPlusFour(
@@ -587,7 +586,7 @@ module PPU (
 
                   // INPUT
                   .Clk    (Clk),
-                  .RW     (WB_REGWB_HAZARD_AND_REGISTER_FILE),                            // SIGNAL EXISTS
+                  .RW     (),                            // SIGNAL EXISTS
                   .E      (WB_REG_FILE_ENABLE_REGISTER_FILE),                             // SIGNAL EXISTS
                   .PW_DS  (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),         // SIGNAL EXISTS
                   .RA     (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),                        // SIGNAL EXISTS
@@ -668,10 +667,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_ID_PC                  (ID_PC_EX),                                        // TODO: VERIFY WITH GTK WAVE
     .OUT_ID_IMM16               (EX_IMM16_OPERAND),                             // SIGNAL EXISTS
     .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | Create this signal in module
-    .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
-    .OUT_regMEM                 (MEM_REGMEM_HAZARD),                            // SIGNAL EXISTS | Create this signal in module
-    .OUT_regWB                  (WB_REGWB_HAZARD_AND_REGISTER_FILE),                              // SIGNAL EXISTS | Create this signal in module
-    .OUT_ID_RT                  ()              // ADD SIGNAL TO MODULE
+    .OUT_regEX                  (EX_REGEX_HAZARD)                              // SIGNAL EXISTS | Create this signal in module
 );
 
   Handler Operand_Handler (
@@ -722,7 +718,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
 
 Pipeline_Register_32bit_EX_MEM EX_MEM (
     // INPUT
-    .Clk,         // Clock signal
+    .Clk,          // Clock signal
     .Reset,        // Reset signal
     .EX_LOAD_INSTR             (EX_LOADEX_HAZARD),                              // SIGNAL EXISTS 
     .EX_HI_ENABLE              (EX_HI_ENABLE_MEM),                              // SIGNAL EXISTS
@@ -735,9 +731,10 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .EX_MEM_SIZE               (EX_MEM_SIZE_MEM),                               // SIGNAL EXISTS
     .EX_MEM_SIGNE              (EX_MEM_SIGNE_MEM),                              // SIGNAL EXISTS
     .EX_ADDRESS                (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),        // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .EX_REGEX                  (MEM_REGMEM_HAZARD),
     // OUTPUT
     .OUT_EX_LOAD_INSTR        (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE),            // CHANGE THESE SIGNALS IN MODULE
-    .OUT_EX_RF_ENABLE         (MEM_MEM_RF_),                                   // CHANGE THESE SIGNALS IN MODULE
+    .OUT_EX_RF_ENABLE         (MEM_MEM_RF_ENABLE_WB),                                   // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_HI_ENABLE         (MEM_HI_ENABLE_WB),                              // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_LO_ENABLE         (MEM_LO_ENABLE_WB),                              // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_PC_PLUS8_INSTR    (MEM_PC_PLUS8_INSTR_PLUS_8_MUX),                 // CHANGE THESE SIGNALS IN MODULE
@@ -747,7 +744,8 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .OUT_EX_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_SIGNE         (MEM_MEM_SIGNE_DATA_MEMORY),                     // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_ADDRESS           (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),                       // 
-    .OUT_EnableMEM             (MEM_ENABLEMEM_HAZARD)                           // SIGNAL EXISTS | Create signal on module
+    .OUT_EnableMEM            (MEM_ENABLEMEM_HAZARD),                          // SIGNAL EXISTS | Create signal on module
+    .OUT_REGEX                (MEM_REGEX_WB)
 );
 ram_512x8 Data_Memory (
     // OUTPUT
@@ -781,21 +779,23 @@ ram_512x8 Data_Memory (
 
 Pipeline_Register_32bit_MEM_WB MEM_WB (
   // Output Control Signals
-    .OUT_MEM_RF_ENABLE         (),
+    .OUT_MEM_RF_ENABLE         (WB_REG_FILE_ENABLE_REGISTER_FILE),
 
-    .OUT_MEM_HI_ENABLE         (MEM_HI_ENABLE_WB), // CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
-    .OUT_MEM_LO_ENABLE         (MEM_LO_ENABLE_WB), // CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
+    .OUT_MEM_HI_ENABLE         (WB_HIENABLE_HI), // CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
+    .OUT_MEM_LO_ENABLE         (WB_LOENABLE_LO), // CHANGE SIGNAL IN MODULE SO IT MAKE SENSE
 
-    .OUT_RW_REGISTER_FILE     (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
-
+    .OUT_RW_REGISTER_FILE      (WB_REGWB_HAZARD_AND_REGISTER_FILE), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
+    .OUT_PW_REGISTER_FILE      (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),
     .OUT_EnableMEM             (WB_ENABLEWB_HAZARD), // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     
     // Input Control Signals
-    .MEM_RF_ENABLE             (WB_REG_FILE_ENABLE_REGISTER_FILE), // SIGNAL EXISTS | REGISTER FILE
-    .MEM_HI_ENABLE             (WB_HIENABLE_HI),                   // SIGNAL EXISTS
-    .MEM_LO_ENABLE             (WB_LOENABLE_LO),                   // SIGNAL EXISTS
-    .Clk                      (Clk),
-    .Reset                    (Reset)
+    .MEM_RF_ENABLE             (MEM_MEM_RF_ENABLE_WB), // SIGNAL EXISTS | REGISTER FILE
+    .MEM_HI_ENABLE             (MEM_HI_ENABLE_WB),                   // SIGNAL EXISTS
+    .MEM_LO_ENABLE             (MEM_LO_ENABLE_WB),                   // SIGNAL EXISTS
+    .PW_REGISTER_FILE          (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2), // OUT_PW_REGISTER_FILE
+    .EX_REGEX                  (MEM_REGEX_WB), // goes to OUT_RW_REGISTER_FILE
+    .Clk                       (Clk),
+    .Reset                     (Reset)
 );
 
 
