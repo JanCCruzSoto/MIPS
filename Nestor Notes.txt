@@ -1,0 +1,11 @@
+RS entra por RA en el register file
+el valor dentro de RS sale por PA en el register file
+
+r5 se supone que de 52, no 12
+
+Part ONE: r1, r3, r4, r5, r8, r10, r11 y r12
+
+Part TWO: r5, r6, r16, r17, r18
+
+Check ALU inputs
+
