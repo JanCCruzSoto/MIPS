@@ -1,147 +1,201 @@
 VCD info: dumpfile test.vcd opened for output.
-Forwarding: fwdA=xx, fwdB=xx
-Time:                    0, Inputs: enableEX=x, enableMEM=x, enableWB=x, loadEX=x, regEX= x, regMEM= z, regWB= x, operandA= x, operandB= x
-loadEx: loadEX = x
-No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                    0
-Instruction: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | CLK: 0 | PC:          x | nPC:          x | stall_nPC: 1 | nPC_MUX:          x | Reset: 1 | stall_PC: 1 | nPC_PLUS_4:          x 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x
+Instruction: xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx | CLK: 0 | PC:          x | nPC:          x | stall_nPC: x | nPC_MUX:          x | Reset: 1 | stall_PC: x | nPC_PLUS_4:          x 
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 Forwarding: fwdA=xx, fwdB=xx
-Time:                    4, Inputs: enableEX=0, enableMEM=0, enableWB=x, loadEX=0, regEX= 0, regMEM= z, regWB= 0, operandA= x, operandB= x
+Time:                    4, Inputs: enableEX=0, enableMEM=0, enableWB=x, loadEX=0, regEX= 0, regMEM= 0, regWB= 0, operandA= x, operandB= x
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                    4
 Instruction: 00100100000001010000000000110100 | CLK: 1 | PC:          0 | nPC:          4 | stall_nPC: 1 | nPC_MUX:          4 | Reset: 1 | stall_PC: 1 | nPC_PLUS_4:          8 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                    5
 Instruction: 00100100000001010000000000110100 | CLK: 1 | PC:          0 | nPC:          4 | stall_nPC: 1 | nPC_MUX:          4 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:          8 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                    6
 Instruction: 00100100000001010000000000110100 | CLK: 0 | PC:          0 | nPC:          4 | stall_nPC: 1 | nPC_MUX:          4 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:          8 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: x | CU_UB_INSTR_CU_MUX: x 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 This is ADDIU
-Forwarding: fwdA=xx, fwdB=xx
-Time:                    8, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=x, regEX= x, regMEM= z, regWB= 0, operandA= 0, operandB= 5
+Forwarding: fwdA=xx, fwdB=0x
+Time:                    8, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=x, regEX= x, regMEM= 0, regWB= 0, operandA= 0, operandB= 5
 loadEx: loadEX = x
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                    8
 Instruction: 10000000101100000000000000000000 | CLK: 1 | PC:          4 | nPC:          8 | stall_nPC: 1 | nPC_MUX:          8 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         12 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                   10
 Instruction: 10000000101100000000000000000000 | CLK: 0 | PC:          4 | nPC:          8 | stall_nPC: 1 | nPC_MUX:          8 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         12 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
-Forwarding: fwdA=xx, fwdB=xx
-Time:                   12, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=0, regEX= x, regMEM= z, regWB= z, operandA= 5, operandB=16
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
+Forwarding: fwdA=01, fwdB=x0
+Time:                   12, Inputs: enableEX=1, enableMEM=z, enableWB=x, loadEX=0, regEX= 5, regMEM= x, regWB= 0, operandA= 5, operandB=16
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 This is LB
 TIME:                   12
 Instruction: 10010000101100010000000000000001 | CLK: 1 | PC:          8 | nPC:         12 | stall_nPC: 1 | nPC_MUX:         12 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         16 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                   14
 Instruction: 10010000101100010000000000000001 | CLK: 0 | PC:          8 | nPC:         12 | stall_nPC: 1 | nPC_MUX:         12 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         16 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 This is LBU
 Forwarding: fwdA=xx, fwdB=xx
-Time:                   16, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=1, regEX= x, regMEM= z, regWB= z, operandA= 5, operandB=17
+Time:                   16, Inputs: enableEX=0, enableMEM=z, enableWB=x, loadEX=1, regEX=16, regMEM= 5, regWB= x, operandA= 5, operandB=17
 loadEx: loadEX = 1
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                   16
 Instruction: 10010000101100100000000000000010 | CLK: 1 | PC:         12 | nPC:         16 | stall_nPC: 1 | nPC_MUX:         16 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         20 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                   18
 Instruction: 10010000101100100000000000000010 | CLK: 0 | PC:         12 | nPC:         16 | stall_nPC: 1 | nPC_MUX:         16 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         20 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
-This is LBU
-Forwarding: fwdA=xx, fwdB=xx
-Time:                   20, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=1, regEX= x, regMEM= z, regWB= z, operandA= 5, operandB=18
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
+Forwarding: fwdA=xx, fwdB=00
+Time:                   20, Inputs: enableEX=1, enableMEM=z, enableWB=x, loadEX=1, regEX=17, regMEM=16, regWB= 5, operandA= 5, operandB=18
 loadEx: loadEX = 1
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
+This is LBU
 TIME:                   20
 Instruction: 00000110000000010000000000000100 | CLK: 1 | PC:         16 | nPC:         20 | stall_nPC: 1 | nPC_MUX:         20 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         24 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                   22
 Instruction: 00000110000000010000000000000100 | CLK: 0 | PC:         16 | nPC:         20 | stall_nPC: 1 | nPC_MUX:         20 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         24 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:          x | R8:          x | R11: :         x | R12:          x | R17:          x
 This is BGEZ
-Forwarding: fwdA=xx, fwdB=xx
-Time:                   24, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=1, regEX= x, regMEM= z, regWB= z, operandA=16, operandB= 1
+Forwarding: fwdA=xx, fwdB=00
+Time:                   24, Inputs: enableEX=1, enableMEM=z, enableWB=x, loadEX=1, regEX=18, regMEM=17, regWB=16, operandA=16, operandB= 1
 loadEx: loadEX = 1
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                   24
 Instruction: 00000000000000000000000000000000 | CLK: 1 | PC:         20 | nPC:         24 | stall_nPC: 1 | nPC_MUX:         24 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         28 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                   26
 Instruction: 00000000000000000000000000000000 | CLK: 0 | PC:         20 | nPC:         24 | stall_nPC: 1 | nPC_MUX:         24 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         28 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
-Forwarding: fwdA=xx, fwdB=xx
-Time:                   28, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=0, regEX= x, regMEM= z, regWB= z, operandA= 0, operandB= 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:          x
+Forwarding: fwdA=00, fwdB=00
+Time:                   28, Inputs: enableEX=0, enableMEM=z, enableWB=x, loadEX=0, regEX= 0, regMEM=18, regWB=17, operandA= 0, operandB= 0
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 This is NOP
 TIME:                   28
 Instruction: 00000010010100010011000000100011 | CLK: 1 | PC:         24 | nPC:         28 | stall_nPC: 1 | nPC_MUX:         28 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         32 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:          x
 TIME:                   30
 Instruction: 00000010010100010011000000100011 | CLK: 0 | PC:         24 | nPC:         28 | stall_nPC: 1 | nPC_MUX:         28 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         32 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:          x
 This is SUBU
-Forwarding: fwdA=xx, fwdB=xx
-Time:                   32, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=0, regEX= x, regMEM= z, regWB= z, operandA=18, operandB=17
+Forwarding: fwdA=xx, fwdB=00
+Time:                   32, Inputs: enableEX=0, enableMEM=z, enableWB=x, loadEX=0, regEX= 0, regMEM= 0, regWB=18, operandA=18, operandB=17
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                   32
 Instruction: 00010000000000000000000000000010 | CLK: 1 | PC:         28 | nPC:         32 | stall_nPC: 1 | nPC_MUX:         32 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         36 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 TIME:                   34
 Instruction: 00010000000000000000000000000010 | CLK: 0 | PC:         28 | nPC:         32 | stall_nPC: 1 | nPC_MUX:         32 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         36 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
-This is B/BEQ
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 Forwarding: fwdA=xx, fwdB=xx
-Time:                   36, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=0, regEX= x, regMEM= z, regWB= z, operandA= 0, operandB= 0
+Time:                   36, Inputs: enableEX=1, enableMEM=z, enableWB=x, loadEX=0, regEX= 6, regMEM= 0, regWB= 0, operandA= 0, operandB= 0
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
+This is B/BEQ
 TIME:                   36
 Instruction: 00000000000000000000000000000000 | CLK: 1 | PC:         32 | nPC:         36 | stall_nPC: 1 | nPC_MUX:         36 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         40 
-UB_MUX_SELECTION_NPC_SELECTOR: 1 | CU_MUX_UB_INSTR_UB_MUX: 1 | CU_UB_INSTR_CU_MUX: 1
+UB_MUX_SELECTION_NPC_SELECTOR: 1 | CU_MUX_UB_INSTR_UB_MUX: 1 | CU_UB_INSTR_CU_MUX: 1 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 TIME:                   38
 Instruction: 00000000000000000000000000000000 | CLK: 0 | PC:         32 | nPC:         36 | stall_nPC: 1 | nPC_MUX:         36 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         40 
-UB_MUX_SELECTION_NPC_SELECTOR: 1 | CU_MUX_UB_INSTR_UB_MUX: 1 | CU_UB_INSTR_CU_MUX: 1
+UB_MUX_SELECTION_NPC_SELECTOR: 1 | CU_MUX_UB_INSTR_UB_MUX: 1 | CU_UB_INSTR_CU_MUX: 1 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 This is NOP
-TIME:                   40
-Instruction: 00000010010100010011000000100001 | CLK: 1 | PC:         36 | nPC:         40 | stall_nPC: 1 | nPC_MUX:         40 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         44 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
-TIME:                   42
-Instruction: 00000010010100010011000000100001 | CLK: 0 | PC:         36 | nPC:         40 | stall_nPC: 1 | nPC_MUX:         40 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         44 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
-This is ADDU
 Forwarding: fwdA=xx, fwdB=xx
-Time:                   44, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=0, regEX= x, regMEM= z, regWB= z, operandA=18, operandB=17
+Time:                   40, Inputs: enableEX=0, enableMEM=z, enableWB=x, loadEX=0, regEX= 0, regMEM= 6, regWB= 0, operandA= 0, operandB= 0
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
+TIME:                   40
+Instruction: 00000010010100010011000000100001 | CLK: 1 | PC:         36 | nPC:         40 | stall_nPC: 1 | nPC_MUX:         40 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         44 
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
+TIME:                   42
+Instruction: 00000010010100010011000000100001 | CLK: 0 | PC:         36 | nPC:         40 | stall_nPC: 1 | nPC_MUX:         40 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         44 
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
+Forwarding: fwdA=00, fwdB=00
+Time:                   44, Inputs: enableEX=0, enableMEM=z, enableWB=x, loadEX=0, regEX= 0, regMEM= 0, regWB= 6, operandA=18, operandB=17
+loadEx: loadEX = 0
+No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
+This is ADDU
 TIME:                   44
 Instruction: 10100000101001100000000000000011 | CLK: 1 | PC:         40 | nPC:         44 | stall_nPC: 1 | nPC_MUX:         44 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         48 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 TIME:                   46
 Instruction: 10100000101001100000000000000011 | CLK: 0 | PC:         40 | nPC:         44 | stall_nPC: 1 | nPC_MUX:         44 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         48 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 This is SB
-Forwarding: fwdA=xx, fwdB=xx
-Time:                   48, Inputs: enableEX=x, enableMEM=z, enableWB=x, loadEX=0, regEX= x, regMEM= z, regWB= z, operandA= 5, operandB= 6
+Forwarding: fwdA=00, fwdB=01
+Time:                   48, Inputs: enableEX=1, enableMEM=z, enableWB=x, loadEX=0, regEX= 6, regMEM= 0, regWB= 0, operandA= 5, operandB= 6
 loadEx: loadEX = 0
 No Hazard, Not Stalling: stallPC=1, stallNPC=1, stallIFID=1, controlMux=0
 TIME:                   48
 Instruction: 00010000000000001111111111111111 | CLK: 1 | PC:         44 | nPC:         48 | stall_nPC: 1 | nPC_MUX:         48 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         52 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 TIME:                   50
 Instruction: 00010000000000001111111111111111 | CLK: 0 | PC:         44 | nPC:         48 | stall_nPC: 1 | nPC_MUX:         48 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         52 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20
 
 ----------------------------------------------------------
 DONE :D
-MIPSArchitecturePhase4.v:823: $finish called at 52 (1ns)
+MIPSArchitecturePhase4.v:822: $finish called at 52 (1ns)
+Forwarding: fwdA=01, fwdB=01
 This is B/BEQ
-Forwarding: fwdA=xx, fwdB=xx
 TIME:                   52
 Instruction: 00000000000000000000000000000000 | CLK: 1 | PC:         48 | nPC:         52 | stall_nPC: 1 | nPC_MUX:         52 | Reset: 0 | stall_PC: 1 | nPC_PLUS_4:         56 
-UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0
+UB_MUX_SELECTION_NPC_SELECTOR: x | CU_MUX_UB_INSTR_UB_MUX: 0 | CU_UB_INSTR_CU_MUX: 0 
+
+R1:          x | R3:          x | R4:          x | R5:         12 | R8:          x | R11: :         x | R12:          x | R17:         20

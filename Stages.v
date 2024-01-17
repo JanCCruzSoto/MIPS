@@ -74,7 +74,6 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     output reg [31:0] OUT_ID_PC_PLUS8_RESULT, // maybe 8 bits
     output reg [31:0] OUT_ID_HI_QS,
     output reg [31:0] OUT_ID_LO_QS,
-    output reg        OUT_EnableEX,
     output reg [31:0] OUT_ID_MX1_RESULT,
     output reg [31:0] OUT_ID_MX2_RESULT,
     output reg [4:0]  OUT_regEX,
@@ -101,7 +100,6 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_PC_PLUS8_RESULT  <= 32'b0;
       OUT_ID_HI_QS            <= 32'b0;
       OUT_ID_LO_QS            <= 32'b0;
-      OUT_EnableEX            <= 1'b0;
       OUT_regEX               <= 5'b0;
       OUT_ID_IMM16               <= 5'b0;
       OUT_ID_RT               <= 5'b0;
@@ -126,8 +124,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_LO_QS            <= ID_LO_QS;
       OUT_ID_MX1_RESULT       <= MX1_RESULT;
       OUT_ID_MX2_RESULT       <= MX2_RESULT;
-      OUT_EnableEX            <= ID_HI_QS;
-      OUT_regEX               <= ID_LO_QS;
+      OUT_regEX               <= ID_REG;
       OUT_ID_IMM16            <= ID_IMM16;
       OUT_ID_PC               <= ID_PC;
     end
