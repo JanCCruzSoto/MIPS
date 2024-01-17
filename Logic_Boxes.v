@@ -96,10 +96,8 @@ module HiRegister (
   // Update HiSignal with PW on the rising edge of clk if HiEnable is high
   always @(posedge clk)
   begin
-    if (HiEnable)
-    begin
-      HiSignal <= PW;
-    end
+    if (HiEnable) HiSignal <= PW;
+    else HiSignal <= 32'b0;
   end
 
 endmodule
@@ -114,10 +112,8 @@ module LoRegister (
   // Update LoSignal with PW on the rising edge of clk if LoEnable is high
   always @(posedge clk)
   begin
-    if (LoEnable)
-    begin
-      LoSignal <= PW;
-    end
+    if (LoEnable) LoSignal <= PW;
+    else LoSignal <= 32'b0;
   end
 
 endmodule

@@ -1,37 +1,35 @@
-module Pipeline_Register_32bit_IF_ID ( /*IF/ID REGISTER*/
-    input wire [31:0] DS, PC,         // 32-bit Instruction
-    input wire Clk, LE,               // CLOCK SIGNAL AND ENABLE SIGNAL
-    input wire Reset,                 // RESET SIGNAL
-    output reg [31:0] Qs, PC_out,     // 32-bit Instruction
-    output reg [15:0] OUT_IF_IMM16,
-    output reg [4:0]  OUT_IF_OPERAND_A,
-    output reg [4:0]  OUT_IF_OPERAND_B
-  );
-
-  always @(posedge Clk)
-  begin
-    Qs <= DS;
-    if (Reset)
-    begin
-      Qs                  <= 32'b0;   // setting the instruction set to 000000000000000000000000
-      PC_out              <= 32'b0;
-      OUT_IF_IMM16        <= 15'b0;
-      OUT_IF_OPERAND_A    <= 5'b0;
-      OUT_IF_OPERAND_B    <= 5'b0;
+module Pipeline_Register_32bit_IF_ID (
+    input wire Clk,
+    input wire LE,
+    input wire Reset,   // not used
+    input wire [31:0] DS, // 32-bit Instruction
+    input wire [31:0] PC, // counter
+    output reg [31:0] Qs, // 32-bit Instruction OUT
+    output reg [31:0] PC_out,
+    output reg [15:0] OUT_IF_IMM16,               // Imm16
+    output reg [4:0]  OUT_IF_OPERAND_A,           // ALSO KNOWN AS RS, ENTERS TO RA IN THE REG FILE
+    output reg [4:0]  OUT_IF_OPERAND_B            // ALSO KNOWN AS RT, ENTERS TO RB IN THE REG FILE
+);
+//es reset sincronico
+    always @(posedge Clk, LE) 
+        if (!LE) begin
+            // Reset the registers when reset signal is asserted
+            Qs <= 32'b0;       
+            PC_out <= 32'b0; 
+            OUT_IF_IMM16 <= 16'b0;
+            OUT_IF_OPERAND_A <= 5'b0;
+            OUT_IF_OPERAND_B <= 5'b0;
+        end else if (LE) begin
+            Qs <= DS;
+            PC_out <= PC;
+            OUT_IF_IMM16 <= DS[15:0];
+            OUT_IF_OPERAND_A <= DS[25:21]; //rs
+            OUT_IF_OPERAND_B <= DS[20:16]; //rt
     end
-    else if (LE)
-    begin
-      Qs                  <= DS;
-      PC_out              <= PC;
-      OUT_IF_IMM16        <= DS[15:0];
-      OUT_IF_OPERAND_A    <= DS[25:21]; // ALSO KNOWN AS RS, ENTERS TO RA IN THE REG FILE
-      OUT_IF_OPERAND_B    <= DS[20:16]; // ALSO KNOWN AS RT, ENTERS TO RB IN THE REG FILE
-      Qs <= DS;
-      PC_out <= PC;
-    end
-  end
-
 endmodule
+
+
+
 
 module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN THE INPUTS NON RELATED TO CONTROL SIGNALS
     input wire Clk,         // Clock signal
@@ -101,7 +99,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_HI_QS            <= 32'b0;
       OUT_ID_LO_QS            <= 32'b0;
       OUT_regEX               <= 5'b0;
-      OUT_ID_IMM16               <= 5'b0;
+      OUT_ID_IMM16            <= 5'b0;
       OUT_ID_RT               <= 5'b0;
       OUT_ID_PC               <= 32'b0;
     end

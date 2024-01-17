@@ -817,7 +817,7 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
   begin
     $dumpfile("test.vcd"); // pass this to GTK Wave to visualize better wtf is going on
     $dumpvars(0, PPU);
-    #52;
+    #58;
     $display("\n----------------------------------------------------------\nDONE :D");
     $finish;
   end
