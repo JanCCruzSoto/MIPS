@@ -24,7 +24,7 @@ module Handler (
       3'b011: N = PC;
       3'b100: N = imm16_extended;
       3'b101: N = imm16_concat;
-      default: N = 32'bzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzzz; // 
+      default: N = 32'b00000000000000000000000000000000; // 
     endcase
   end
 
