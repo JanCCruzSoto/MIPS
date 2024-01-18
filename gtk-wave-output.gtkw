@@ -1,0 +1,202 @@
+[*]
+[*] GTKWave Analyzer v3.3.117 (w)1999-2023 BSI
+[*] Thu Jan 18 03:31:20 2024
+[*]
+[dumpfile] "/home/pikachu/Documentos/MIPS/test.vcd"
+[dumpfile_mtime] "Thu Jan 18 03:23:10 2024"
+[dumpfile_size] 59143
+[savefile] "/home/pikachu/Documentos/MIPS/gtk-wave-output.gtkw"
+[timestart] 0
+[size] 1898 929
+[pos] -1 -1
+*-2.951906 4 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+[treeopen] PPU.
+[sst_width] 356
+[signals_width] 583
+[sst_expanded] 1
+[sst_vpaned_height] 500
+@200
+-ALU
+@22
+PPU.ALU.alu_control[3:0]
+@28
+PPU.ALU.n_flag
+@22
+PPU.ALU.operand_A[31:0]
+PPU.ALU.operand_B[31:0]
+PPU.ALU.result[31:0]
+@28
+PPU.ALU.z_flag
+@200
+-PCs
+@24
+PPU.PC[31:0]
+PPU.IF_PC_ID[31:0]
+PPU.ID_PC_EX[31:0]
+PPU.EX_PC_8_MEM_AND_PC_SELECTOR_MUX[31:0]
+@200
+-OPERAND
+@22
+PPU.Operand_Handler.HI[31:0]
+PPU.Operand_Handler.LO[31:0]
+PPU.Operand_Handler.N[31:0]
+PPU.Operand_Handler.PB[31:0]
+@24
+PPU.Operand_Handler.PC[31:0]
+@28
+PPU.Operand_Handler.Si[2:0]
+@22
+PPU.Operand_Handler.imm16[15:0]
+@28
+PPU.Operand_Handler.imm16_extended[31:0]
+PPU.Operand_Handler.imm16_concat[31:0]
+PPU.CU.instruction[31:0]
+@200
+-CLK
+@28
+PPU.Clk
+@200
+-Hazard
+@28
+PPU.Hazard.controlMux
+PPU.Hazard.enableEX
+PPU.Hazard.enableMEM
+PPU.Hazard.enableWB
+PPU.Hazard.fwdA[1:0]
+PPU.Hazard.fwdB[1:0]
+PPU.Hazard.loadEX
+@22
+PPU.Hazard.operandA[4:0]
+PPU.Hazard.operandB[4:0]
+PPU.Hazard.regEX[4:0]
+PPU.Hazard.regMEM[4:0]
+PPU.Hazard.regWB[4:0]
+@28
+PPU.Hazard.stallIFID
+PPU.Hazard.stallNPC
+PPU.Hazard.stallPC
+@200
+-MEM/WB
+@22
+PPU.MEM_WB.EX_REGEX[4:0]
+PPU.MEM_WB.OUT_RW_REGISTER_FILE[4:0]
+@28
+PPU.MEM_WB.Reset
+@200
+-Sussy MUX
+@22
+PPU.SUSSY_MUX.Input_One[31:0]
+PPU.SUSSY_MUX.Input_Two[31:0]
+PPU.SUSSY_MUX.Out[31:0]
+@28
+PPU.SUSSY_MUX.S
+@200
+-UB_MUX
+@28
+PPU.UB_MUX.INPUT_ONE
+PPU.UB_MUX.INPUT_TWO
+PPU.UB_MUX.OUT
+PPU.UB_MUX.S
+@200
+-UTA_MUX
+@22
+PPU.UTA_MUX.Input_One[31:0]
+PPU.UTA_MUX.Input_Two[31:0]
+PPU.UTA_MUX.Out[31:0]
+@29
+PPU.UTA_MUX.S
+@200
+-X4_SE_Case_One
+@22
+PPU.X4_SE_Case_One.Imm16[15:0]
+PPU.X4_SE_Case_One.Imm16_extended[31:0]
+PPU.X4_SE_Case_One.Result[31:0]
+@200
+-X4_SE_Case_Tw0
+@22
+PPU.X4_SE_Case_Two.Address26[25:0]
+PPU.X4_SE_Case_Two.Address26_extended[31:0]
+PPU.X4_SE_Case_Two.Result[31:0]
+@200
+-MX1
+@22
+PPU.MX1.ID_Result[31:0]
+PPU.MX1.EX_Result[31:0]
+PPU.MX1.WB_Result[31:0]
+PPU.MX1.MEM_Result[31:0]
+PPU.MX1.Out[31:0]
+@28
+PPU.MX1.S[1:0]
+@200
+-MX2
+@22
+PPU.MX2.ID_Result[31:0]
+PPU.MX2.EX_Result[31:0]
+PPU.MX2.MEM_Result[31:0]
+PPU.MX2.WB_Result[31:0]
+PPU.MX2.Out[31:0]
+@28
+PPU.MX2.S[1:0]
+@200
+-
+-Conditional Handler
+@28
+PPU.Condition_Handler.CH_Out
+PPU.Condition_Handler.if_id_reset
+@22
+PPU.Condition_Handler.CH_opcode[5:0]
+PPU.Condition_Handler.RT[4:0]
+@28
+PPU.Condition_Handler.N_FLAG
+PPU.Condition_Handler.Z_FLAG
+@200
+-Reg File
+@28
+PPU.Reg_File.Clk
+PPU.Reg_File.E
+@22
+PPU.Reg_File.PA[31:0]
+PPU.Reg_File.PB[31:0]
+PPU.Reg_File.PW_DS[31:0]
+PPU.Reg_File.PA[31:0]
+PPU.Reg_File.PB[31:0]
+PPU.Reg_File.PW_DS[31:0]
+@24
+PPU.Reg_File.Qs_register_inputs_eight[31:0]
+PPU.Reg_File.Qs_register_inputs_eighteen[31:0]
+PPU.Reg_File.Qs_register_inputs_eleven[31:0]
+PPU.Reg_File.Qs_register_inputs_fifteen[31:0]
+PPU.Reg_File.Qs_register_inputs_five[31:0]
+PPU.Reg_File.Qs_register_inputs_four[31:0]
+PPU.Reg_File.Qs_register_inputs_fourteen[31:0]
+PPU.Reg_File.Qs_register_inputs_nine[31:0]
+PPU.Reg_File.Qs_register_inputs_nineteen[31:0]
+PPU.Reg_File.Qs_register_inputs_one[31:0]
+PPU.Reg_File.Qs_register_inputs_seven[31:0]
+PPU.Reg_File.Qs_register_inputs_seventeen[31:0]
+PPU.Reg_File.Qs_register_inputs_six[31:0]
+PPU.Reg_File.Qs_register_inputs_sixteen[31:0]
+PPU.Reg_File.Qs_register_inputs_ten[31:0]
+PPU.Reg_File.Qs_register_inputs_thirteen[31:0]
+PPU.Reg_File.Qs_register_inputs_thirty[31:0]
+PPU.Reg_File.Qs_register_inputs_thirtyone[31:0]
+PPU.Reg_File.Qs_register_inputs_three[31:0]
+PPU.Reg_File.Qs_register_inputs_twelve[31:0]
+PPU.Reg_File.Qs_register_inputs_twenty[31:0]
+PPU.Reg_File.Qs_register_inputs_twentyeight[31:0]
+PPU.Reg_File.Qs_register_inputs_twentyfive[31:0]
+PPU.Reg_File.Qs_register_inputs_twentyfour[31:0]
+PPU.Reg_File.Qs_register_inputs_twentynine[31:0]
+PPU.Reg_File.Qs_register_inputs_twentyone[31:0]
+PPU.Reg_File.Qs_register_inputs_twentyseven[31:0]
+PPU.Reg_File.Qs_register_inputs_twentysix[31:0]
+PPU.Reg_File.Qs_register_inputs_twentythree[31:0]
+PPU.Reg_File.Qs_register_inputs_twentytwo[31:0]
+PPU.Reg_File.Qs_register_inputs_two[31:0]
+PPU.Reg_File.Qs_register_inputs_zero[31:0]
+@22
+PPU.Reg_File.RA[4:0]
+PPU.Reg_File.RB[4:0]
+PPU.Reg_File.RW[4:0]
+[pattern_trace] 1
+[pattern_trace] 0

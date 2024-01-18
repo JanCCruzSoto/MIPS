@@ -29,11 +29,9 @@ module Pipeline_Register_32bit_IF_ID (
 endmodule
 
 
-
-
 module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN THE INPUTS NON RELATED TO CONTROL SIGNALS
-    input wire Clk,         // Clock signal
-    input wire Reset,        // Reset signal
+    input wire Clk,                        // Clock signal
+    input wire Reset,                      // Reset signal
 
     // Input Control Signals
     input wire [3:0]    ID_ALU_OP,        // 4 BIT BUS (ALU CONTROL)
@@ -56,8 +54,9 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     input wire [15:0]   ID_IMM16,
     input wire [4:0]    ID_REG,
     input wire [4:0]    ID_RT,
+    input wire [5:0]    ID_CH_OPCODE,
 
-    // Output Contræl Signals
+    // Output Control Signals
     output reg [3:0]  OUT_ID_ALU_OP,          // 4 bit BUS (ALU CONTROL)
     output reg        OUT_ID_LOAD_INSTR,      // LOAD INSTRUCTIONS
     output reg        OUT_ID_RF_ENABLE,       // Register file enable
@@ -77,7 +76,8 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
     output reg [4:0]  OUT_regEX,
     output reg [31:0] OUT_ID_PC,
     output reg [15:0] OUT_ID_IMM16,
-    output reg [4:0]  OUT_ID_RT
+    output reg [4:0]  OUT_ID_RT,
+    output reg [5:0]  OUT_ID_CH_OPCODE    
   );
 
   always @(posedge Clk)
@@ -102,6 +102,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_ID_IMM16            <= 5'b0;
       OUT_ID_RT               <= 5'b0;
       OUT_ID_PC               <= 32'b0;
+      OUT_ID_CH_OPCODE        <= 5'b0;
     end
     else
     begin
@@ -125,6 +126,7 @@ module Pipeline_Register_32bit_ID_EX ( /*ID/EX REGISTER*/ //WILL NEED CHANGES IN
       OUT_regEX               <= ID_REG;
       OUT_ID_IMM16            <= ID_IMM16;
       OUT_ID_PC               <= ID_PC;
+      OUT_ID_CH_OPCODE        <= ID_CH_OPCODE;
     end
   end
 endmodule
@@ -159,7 +161,6 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     output reg        OUT_EX_MEM_READWRITE,  // LOAD(READ) OR STORE(WRITE)
     output reg [1:0]  OUT_EX_MEM_SIZE,       // SIZE OF STORE
     output reg        OUT_EX_MEM_SIGNE,      // SIGN EXTENSION
-    output reg        OUT_EnableMEM,
     output reg [31:0] OUT_EX_ADDRESS,
     output reg [4:0]  OUT_REGEX
     // TODO: SEEMS REGMEM IS NOT HERE, WE ALSO NEED TO ADD IT, FOR INPUT AND OUTPUT
@@ -179,7 +180,6 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
       OUT_EX_MEM_READWRITE    <= 1'b0;
       OUT_EX_MEM_SIZE         <= 2'b0;
       OUT_EX_MEM_SIGNE        <= 1'b0;
-      OUT_EnableMEM           <= 1'b0;
       OUT_REGEX               <= 5'b0;
     end
     else
@@ -194,7 +194,6 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
       OUT_EX_MEM_READWRITE    <= EX_MEM_READWRITE;
       OUT_EX_MEM_SIZE         <= EX_MEM_SIZE;
       OUT_EX_MEM_SIGNE        <= EX_MEM_SIGNE;
-      OUT_EnableMEM           <= EX_ENABLE_MEM;
       // The address is 9 bits but we taking all 32 because weĺl 
       // need em when selecting between this and the data out
       OUT_EX_ADDRESS          <= EX_ADDRESS;    

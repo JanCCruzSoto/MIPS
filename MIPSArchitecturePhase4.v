@@ -133,7 +133,7 @@ module PPU (
   reg HAZARD_STALLPC_PC;
 
   // wire EX_ENABLEEX_HAZARD;
-  wire MEM_ENABLEMEM_HAZARD;
+  // wire MEM_ENABLEMEM_HAZARD;
   wire WB_ENABLEWB_HAZARD;
 
   wire [4:0] EX_REGEX_HAZARD;
@@ -202,7 +202,7 @@ module PPU (
   wire [31:0] PLUS_8_PC_8_EX; // THIS IS THE PC THAT KEEPS PROPAGATING TO MEM
 
   // =====| ID/EX |===== //
-  wire [31:0] EX_PWDS_MX1_AND_MX2;
+  // wire [31:0] EX_PWDS_MX1_AND_MX2;   // TODO: DECIDE TO NUKE THIS OR NOT
   wire EX_LOADEX_HAZARD;
   wire EX_RF_ENABLE_MEM_AND_HAZARD;
   wire EX_HI_ENABLE_MEM;
@@ -236,13 +236,15 @@ module PPU (
   wire [31:0] PC_SELECTOR_MUX_PC_MX1_AND_MX2;
 
   // =====| CONDITION HANDLER |===== //
+  wire [5:0]  EX_CH_OPCODE_CH;
+  wire [4:0]  EX_RT_CH;
   wire        CONDITION_HANDLER_IFRESET_IF;
   wire        COND_HANDLER_UB_UB_MUX; 
   wire [31:0] REGISTER_FILE_PA_MX1;
   wire [31:0] REGISTER_FILE_PB_MX2;
 
   // =====| EX/MEM |===== //
-  wire [31:0] MEM_PWDS_MX1_AND_MX2;
+  // wire [31:0] MEM_PWDS_MX1_AND_MX2; // TODO: DECIDE TO NUKE THIS OR NOT
 
   wire MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE;
   wire MEM_HI_ENABLE_WB;
@@ -253,7 +255,7 @@ module PPU (
   wire [1:0] MEM_MEM_SIZE_DATA_MEMORY;
   wire MEM_MEM_SIGNE_DATA_MEMORY;
   wire [31:0] MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX;
-  wire MEM_MEM_RF_ENABLE_WB;
+  wire MEM_MEM_RF_ENABLE_WB; // also connects to the hazard
 
 
 // ====
@@ -445,7 +447,7 @@ module PPU (
 
                            // input
                            .enableEX   (EX_RF_ENABLE_MEM_AND_HAZARD),                 // SIGNAL EXISTS
-                           .enableMEM  (MEM_ENABLEMEM_HAZARD),               // SIGNAL EXISTS
+                           .enableMEM  (MEM_MEM_RF_ENABLE_WB),               // SIGNAL EXISTS
                            .enableWB   (WB_ENABLEWB_HAZARD),                 // SIGNAL EXISTS
 
                            .loadEX     (EX_LOADEX_HAZARD),                   // SIGNAL EXISTS
@@ -462,10 +464,9 @@ module PPU (
                                   // OUTPUT
                                   .Qs                 (ID_INSTRUCTION_CU),                        // OUTPUT OF THE INSTRUCTION | SIGNAL EXISTS
                                   .PC_out             (IF_PC_ID),                                 // SIGNAL EXISTS
-                                  .OUT_IF_IMM16       (ID_IMM16_EX_AND_TIMES_4),                              //   Create this signal in module
-
-    .OUT_IF_OPERAND_A   (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | Create this signal in module
-    .OUT_IF_OPERAND_B   (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | Create this signal in module
+                                  .OUT_IF_IMM16       (ID_IMM16_EX_AND_TIMES_4),                  //   Create this signal in module
+                                  .OUT_IF_OPERAND_A   (ID_OPERAND_A_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | Create this signal in module
+                                  .OUT_IF_OPERAND_B   (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),    // SIGNAL EXISTS | Create this signal in module
 
                                   // INPUT
                                   .DS                 (DataOut_InstructionMemory),                // SIGNAL EXISTS | INPUT OF THE INSTRUCTION
@@ -595,8 +596,8 @@ module PPU (
   Mux_RegisterFile_Ports MX1 (
                            // PA
                            .ID_Result  (REGISTER_FILE_PA_MX1),                                     // SIGNAL EXISTS                                // SIGNAL EXISTS
-                           .EX_Result  (EX_PWDS_MX1_AND_MX2),                                      // SIGNAL EXISTS
-                           .MEM_Result (MEM_PWDS_MX1_AND_MX2),                                     // SIGNAL EXISTS
+                           .EX_Result  (PC_SELECTOR_MUX_PC_MX1_AND_MX2),                                      // SIGNAL EXISTS
+                           .MEM_Result (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2),                                     // SIGNAL EXISTS
                            .WB_Result  (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),     // SIGNAL EXISTS
                            .S          (HAZARD_FWDB_MX1),                                          // SIGNAL EXISTS
                            .Out        (MX1_MX1RESULT_UTAMUX_AND_EX)                               // SIGNAL EXISTS
@@ -605,8 +606,8 @@ module PPU (
   Mux_RegisterFile_Ports MX2 (
                            // PB
                            .ID_Result  (REGISTER_FILE_PB_MX2),                                     // SIGNAL EXISTS
-                           .EX_Result  (EX_PWDS_MX1_AND_MX2),                                      // SIGNAL EXISTS
-                           .MEM_Result (MEM_PWDS_MX1_AND_MX2),                                     // SIGNAL EXISTS
+                           .EX_Result  (PC_SELECTOR_MUX_PC_MX1_AND_MX2),                                      // SIGNAL EXISTS
+                           .MEM_Result (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2),                                     // SIGNAL EXISTS
                            .WB_Result  (WB_PWDS_HI_AND_LOW_AND_REGISTER_FILE_AND_MX1_AND_MX2),     // SIGNAL EXISTS
                            .S          (HAZARD_FWDB_MX2),                                          // SIGNAL EXISTS
                            .Out        (MX2_MX2_RESULT_EX)                                         // SIGNAL EXISTS
@@ -645,7 +646,8 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .ID_IMM16                   (ID_IMM16_EX_AND_TIMES_4),                      // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .ID_REG                     (MUX_DESTINATION_REG_EX),                       // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .ID_RT                      (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),        //  ADD SIGNAL TO MODULE
-    
+    .ID_CH_OPCODE               (ID_INSTRUCTION_CU[31:26]),
+
     // Output
     .OUT_ID_ALU_OP              (EX_ALU_OP_ALU),                                // SIGNAL EXISTS
     .OUT_ID_LOAD_INSTR          (EX_LOADEX_HAZARD),                             // SIGNAL EXISTS
@@ -663,10 +665,11 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_ID_MX2_RESULT          (EX_MX2_OPERAND),                               // SIGNAL EXISTS
     .OUT_ID_HI_QS               (EX_HISIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
     .OUT_ID_LO_QS               (EX_LOSIGNAL_OPERAND),                          // SIGNAL EXISTS  CREATE THIS SIGNAL IN MODULE
-    .OUT_ID_PC                  (ID_PC_EX),                                        // TODO: VERIFY WITH GTK WAVE
+    .OUT_ID_PC                  (ID_PC_EX),                                     // TODO: VERIFY WITH GTK WAVE
     .OUT_ID_IMM16               (EX_IMM16_OPERAND),                             // SIGNAL EXISTS
-    // .OUT_EnableEX               (EX_ENABLEEX_HAZARD),                           // SIGNAL EXISTS | Create this signal in module
-    .OUT_regEX                  (EX_REGEX_HAZARD)                              // SIGNAL EXISTS | Create this signal in module
+    .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
+    .OUT_ID_CH_OPCODE           (EX_CH_OPCODE_CH),
+    .OUT_ID_RT                  (EX_RT_CH)
 );
 
   Handler Operand_Handler (
@@ -709,10 +712,10 @@ Pipeline_Register_32bit_ID_EX ID_EX (
                       .CH_Out         (COND_HANDLER_UB_UB_MUX),                   // SIGNAL EXISTS
                        
                       // INPUT
-                      .RT             (),
+                      .RT             (EX_RT_CH),
                       .Z_FLAG         (ALU_Z_FLAG_MEM_AND_CONDITION_HANDLER),     // SIGNAL EXISTS
                       .N_FLAG         (ALU_N_FLAG_MEM_AND_CONDITION_HANDLER),      // SIGNAL EXISTS
-                      .CH_opcode()
+                      .CH_opcode      (EX_CH_OPCODE_CH)
                     );
 
 Pipeline_Register_32bit_EX_MEM EX_MEM (
@@ -743,7 +746,6 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .OUT_EX_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_SIGNE         (MEM_MEM_SIGNE_DATA_MEMORY),                     // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_ADDRESS           (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),                       // 
-    .OUT_EnableMEM            (MEM_ENABLEMEM_HAZARD),                          // SIGNAL EXISTS | Create signal on module
     .OUT_REGEX                (MEM_REGMEM_HAZARD)
 );
 ram_512x8 Data_Memory (
