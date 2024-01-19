@@ -49,8 +49,7 @@ module Mux_Control_Unit (
     output reg OUT_ID_MEM_SIGNE
   );
 
-  always @(*)
-  begin
+  always @(*) begin
     case(controlMux)
       1'b0:
       begin
@@ -190,18 +189,12 @@ module Mux_Destination_Registers ( /*USED FOR 5 BIT INPUTS*/ /*ONE USED IN ID*/
 
     output reg [4:0] Out // Corrected to 5-bit output
   );
-
-  always@(*)
-  begin
+  always@(*) begin
     case(S)
-      2'b00:
-        Out <= RD;
-      2'b01:
-        Out <= RT;
-      2'b10:
-        Out <= R31;
-      default:
-        Out <= 5'bxxxxx; // Undefined state
+      2'b00:   Out <= RD;
+      2'b01:   Out <= RT;
+      2'b10:   Out <= R31;
+      default: Out <= 5'b00000; // Undefined state
     endcase
   end
 endmodule

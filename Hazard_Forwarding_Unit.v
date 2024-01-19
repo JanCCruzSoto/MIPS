@@ -21,22 +21,48 @@ module Hazard_Forwarding_Unit (
     input wire [4:0] operandA, // Source operand A in ID stage
     input wire [4:0] operandB // Source operand B in ID stage
 );
+    reg newEnableEX;
+    reg newEnableMEM;
+    reg newEnableWB;
 
     always @* begin
+        // if (enableEX == 1'bx)  begin
+        //     newEnableEX  = 1'b0;
+        // end else begin
+        //     newEnableEX  = enableEX;
+        // end
+        // if (enableMEM == 1'bx) begin 
+        //     newEnableMEM = 1'b0;
+        // end else begin
+        //     newEnableMEM = enableMEM;
+        // end
+        // if (enableWB == 1'bx) begin
+        //     newEnableWB  = 1'b0;
+        // end else begin
+        //     newEnableWB = enableWB;
+        // end
+
+        if (enableEX == 1'b1)  newEnableEX  = 1'b1;
+        else newEnableEX = 1'b0;
+        if (enableMEM == 1'b1) newEnableMEM = 1'b1;
+        else newEnableMEM = 1'b0;
+        if (enableWB == 1'b1)  newEnableWB  = 1'b1;
+        else newEnableWB = 1'b0;
+
         // Forwarding for operand A
-        fwdA = (enableEX && (operandA == regEX)) ? 2'b01 :
-               (enableMEM && (operandA == regMEM)) ? 2'b10 :
-               (enableWB && (operandA == regWB)) ? 2'b11 : 2'b00;
+        fwdA = (newEnableEX && (operandA == regEX)) ? 2'b01 :
+               (newEnableMEM && (operandA == regMEM)) ? 2'b10 :
+               (newEnableWB && (operandA == regWB)) ? 2'b11 : 2'b00;
 
         // Forwarding for operand B
-        fwdB = (enableEX && (operandB == regEX)) ? 2'b01 :
-               (enableMEM && (operandB == regMEM)) ? 2'b10 :
-               (enableWB && (operandB == regWB)) ? 2'b11 : 2'b00;
+        fwdB = (newEnableEX && (operandB == regEX)) ? 2'b01 :
+               (newEnableMEM && (operandB == regMEM)) ? 2'b10 :
+               (newEnableWB && (operandB == regWB)) ? 2'b11 : 2'b00;
 
         // Display forwarding information
         $display("Forwarding: fwdA=%b, fwdB=%b", fwdA, fwdB);
         $display("Time: %t, Inputs: enableEX=%b, enableMEM=%b, enableWB=%b, loadEX=%b, regEX=%d, regMEM=%d, regWB=%d, operandA=%d, operandB=%d", 
-                 $time, enableEX, enableMEM, enableWB, loadEX, regEX, regMEM, regWB, operandA, operandB);
+                 $time, newEnableEX, newEnableMEM, newEnableWB, loadEX, regEX, regMEM, regWB, operandA, operandB);
         // Detect load-use hazard
         if (loadEX && ((operandA == regEX) || (operandB == regEX))) begin
             stallPC = 1'b0;

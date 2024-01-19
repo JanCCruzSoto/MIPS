@@ -111,7 +111,7 @@ module PPU (
   wire CU_MUX_LO_ENABLE_EX;
   wire CU_MUX_PC_PLUS8_INSTR_ID;
   wire CU_MUX_UB_INSTR_UB_MUX;
-  wire CU_MUX_JALR_JR_INSTR_ID;
+  wire CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX;  
 
   wire [1:0] CU_MUX_ID_DESTINATION_REGISTER_MUX_DESTINATION;
   wire [2:0] CU_MUX_ID_OP_H_S_EX;
@@ -148,7 +148,6 @@ module PPU (
   wire [31:0] PC_PLUS_8_MUX_PC_MX1_AND_MX2;   // created this new wire for the mux vic did
 
   // =====| IF/ID |===== //
-  wire CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX;
 
   wire [15:0] ID_IMM16_EX_AND_TIMES_4;
   wire [31:0] ID_INSTRUCTION_CU;
@@ -383,7 +382,7 @@ module PPU (
                      .OUT_ID_LO_ENABLE             (CU_MUX_LO_ENABLE_EX),                  // SIGNAL EXISTS
                      .OUT_ID_PC_PLUS8_INSTR        (CU_MUX_PC_PLUS8_INSTR_ID),             // SIGNAL EXISTS
                      .OUT_ID_UB_INSTR              (CU_MUX_UB_INSTR_UB_MUX),               // SIGNAL EXISTS
-                     .OUT_ID_JALR_JR_INSTR         (CU_MUX_JALR_JR_INSTR_ID),              // SIGNAL EXISTS
+                     .OUT_ID_JALR_JR_INSTR         (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX),              // SIGNAL EXISTS
 
                      .OUT_ID_DESTINATION_REGISTER  (CU_MUX_ID_DESTINATION_REGISTER_MUX_DESTINATION),     // SIGNAL EXISTS
                      .OUT_ID_OP_H_S                (CU_MUX_ID_OP_H_S_EX),                   // SIGNAL EXISTS
@@ -554,7 +553,7 @@ module PPU (
 
                        // INPUT
                        .Input_One                  (UTA_MUX_UTA_MUX_RESULT_CTA_MUX),           // SIGNAL EXISTS
-                       .Input_Two                  (EX_CTA_CTA_MUX),                           // SIGNAL EXISTS
+                       .Input_Two                  (PLUS_4_BOX_P4_EX),  // PLUS_4_BOX_P4_EX  EX_CTA_CTA_MUX                         // SIGNAL EXISTS
                        .S                          (CU_MUX_JALR_JR_INSTR_UTA_MUX_AND_CTA_MUX)      // SIGNAL EXISTS | TODO: ASK NESTOR ABOUT THIS, FR
                      );
   Mux_1BitTwoToOne UB_MUX ( // ID_MUX_Case_three | Unconditional Branch TODO: VERIFICAR EL UNCONDITIONAL PQ SE SUPONE Q TIRE UN SOLO BIT Y ESTA TIRANDO 32
@@ -623,7 +622,7 @@ module PPU (
 // 21 signals
 Pipeline_Register_32bit_ID_EX ID_EX (
     .Clk                        (Clk),
-    .Reset                      (Reset),
+    .Reset                      (CONDITION_HANDLER_IFRESET_IF),
     
     // INPUT
     .ID_HI_ENABLE               (CU_MUX_HI_ENABLE_EX),                          // SIGNAL EXISTS
@@ -647,6 +646,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .ID_REG                     (MUX_DESTINATION_REG_EX),                       // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .ID_RT                      (ID_OPERAND_B_REGISTER_FILE_AND_HAZARD),        //  ADD SIGNAL TO MODULE
     .ID_CH_OPCODE               (ID_INSTRUCTION_CU[31:26]),
+    // .ID_CTA                     (PLUS_4_BOX_P4_EX),
 
     // Output
     .OUT_ID_ALU_OP              (EX_ALU_OP_ALU),                                // SIGNAL EXISTS
@@ -670,6 +670,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
     .OUT_regEX                  (EX_REGEX_HAZARD),                              // SIGNAL EXISTS | Create this signal in module
     .OUT_ID_CH_OPCODE           (EX_CH_OPCODE_CH),
     .OUT_ID_RT                  (EX_RT_CH)
+    // .OUT_ID_CTA                 (EX_CTA_CTA_MUX)
 );
 
   Handler Operand_Handler (
@@ -720,8 +721,8 @@ Pipeline_Register_32bit_ID_EX ID_EX (
 
 Pipeline_Register_32bit_EX_MEM EX_MEM (
     // INPUT
-    .Clk,          // Clock signal
-    .Reset,        // Reset signal
+    .Clk                       (Clk),          // Clock signal
+    .Reset                     (CONDITION_HANDLER_IFRESET_IF),        // Reset signal
     .EX_LOAD_INSTR             (EX_LOADEX_HAZARD),                              // SIGNAL EXISTS 
     .EX_HI_ENABLE              (EX_HI_ENABLE_MEM),                              // SIGNAL EXISTS
     .EX_LO_ENABLE              (EX_LO_ENABLE_MEM),                              // SIGNAL EXISTS
@@ -756,7 +757,7 @@ ram_512x8 Data_Memory (
     .ReadWrite              (MEM_MEM_READWRITE_DATA_MEMORY),
     .SignExtend             (MEM_MEM_SIGNE_DATA_MEMORY),
     .Address                (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX[8:0]),
-    .DataIn                 (DataIn),
+    .DataIn                 (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
@@ -771,8 +772,8 @@ ram_512x8 Data_Memory (
                      );
 
   MUX32BitTwoToOne PLUS_8_MUX ( // MEM_Memory_MUX_Case_Two
-                       .Input_One                  (MEM_PLUS8_PLUS_8_MUX),
-                       .Input_Two                  (SUSSY_MUX_RES_PLUS_8_MUX),
+                       .Input_One                  (SUSSY_MUX_RES_PLUS_8_MUX),
+                       .Input_Two                  (MEM_PLUS8_PLUS_8_MUX),
                        .S                          (MEM_PC_PLUS8_INSTR_PLUS_8_MUX),           // SIGNAL EXISTS
                        .Out                        (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2)  // SIGNAL EXISTS
                      );
@@ -796,7 +797,7 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     .PW_REGISTER_FILE          (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2), // OUT_PW_REGISTER_FILE
     .EX_REGEX                  (MEM_REGMEM_HAZARD), // goes to OUT_RW_REGISTER_FILE
     .Clk                       (Clk),
-    .Reset                     (Reset)
+    .Reset                     (CONDITION_HANDLER_IFRESET_IF)
 );
 
 

@@ -9,6 +9,7 @@ module Condition_Handler (
 ); 
 
 always @* begin
+    if_id_reset <= 1'b0;
     case (CH_opcode)
         6'b000101: begin //not equal
             if(Z_FLAG == 0) CH_Out <= 1'b1;

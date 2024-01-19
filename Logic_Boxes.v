@@ -4,9 +4,8 @@ module Sum_Logic_Box ( /*USED FOR CONDITIONAL TARGET ADDRESS CALCULATION*/
 
     output reg [31:0] Result        // TODO: SE CAMBIO DE 16 A 32 BIT
   );
-  always@(First_Value || Second_Value)
-  begin
-    Result = First_Value + Second_Value;
+  always @(*) begin
+    Result <= First_Value + Second_Value;
   end
 endmodule
 

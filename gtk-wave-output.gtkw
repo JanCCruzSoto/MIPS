@@ -1,18 +1,18 @@
 [*]
 [*] GTKWave Analyzer v3.3.117 (w)1999-2023 BSI
-[*] Thu Jan 18 03:31:20 2024
+[*] Fri Jan 19 02:32:11 2024
 [*]
 [dumpfile] "/home/pikachu/Documentos/MIPS/test.vcd"
-[dumpfile_mtime] "Thu Jan 18 03:23:10 2024"
-[dumpfile_size] 59143
+[dumpfile_mtime] "Fri Jan 19 02:19:18 2024"
+[dumpfile_size] 58984
 [savefile] "/home/pikachu/Documentos/MIPS/gtk-wave-output.gtkw"
 [timestart] 0
 [size] 1898 929
 [pos] -1 -1
-*-2.951906 4 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
+*-3.499976 17 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1 -1
 [treeopen] PPU.
 [sst_width] 356
-[signals_width] 583
+[signals_width] 473
 [sst_expanded] 1
 [sst_vpaned_height] 500
 @200
@@ -21,7 +21,7 @@
 PPU.ALU.alu_control[3:0]
 @28
 PPU.ALU.n_flag
-@22
+@420
 PPU.ALU.operand_A[31:0]
 PPU.ALU.operand_B[31:0]
 PPU.ALU.result[31:0]
@@ -39,17 +39,16 @@ PPU.EX_PC_8_MEM_AND_PC_SELECTOR_MUX[31:0]
 @22
 PPU.Operand_Handler.HI[31:0]
 PPU.Operand_Handler.LO[31:0]
+@420
 PPU.Operand_Handler.N[31:0]
-PPU.Operand_Handler.PB[31:0]
 @24
+PPU.Operand_Handler.PB[31:0]
 PPU.Operand_Handler.PC[31:0]
 @28
 PPU.Operand_Handler.Si[2:0]
-@22
+@24
 PPU.Operand_Handler.imm16[15:0]
 @28
-PPU.Operand_Handler.imm16_extended[31:0]
-PPU.Operand_Handler.imm16_concat[31:0]
 PPU.CU.instruction[31:0]
 @200
 -CLK
@@ -64,6 +63,14 @@ PPU.Hazard.enableMEM
 PPU.Hazard.enableWB
 PPU.Hazard.fwdA[1:0]
 PPU.Hazard.fwdB[1:0]
+@200
+-
+@28
+PPU.Hazard.newEnableEX
+@29
+PPU.Hazard.newEnableMEM
+@28
+PPU.Hazard.newEnableWB
 PPU.Hazard.loadEX
 @22
 PPU.Hazard.operandA[4:0]
@@ -91,6 +98,30 @@ PPU.SUSSY_MUX.Out[31:0]
 @28
 PPU.SUSSY_MUX.S
 @200
+-CTA MUX
+@22
+PPU.CTA_MUX.Input_One[31:0]
+PPU.CTA_MUX.Input_Two[31:0]
+PPU.CTA_MUX.Out[31:0]
+@28
+PPU.CTA_MUX.S
+@200
+-ID EX
+@22
+[color] 1
+PPU.ID_EX.ID_CTA[31:0]
+[color] 1
+PPU.ID_EX.OUT_ID_CTA[31:0]
+PPU.ID_EX.ID_ALU_OP[3:0]
+PPU.ID_EX.OUT_ID_ALU_OP[3:0]
+@200
+-PLUS 4 BOX ID THING
+@22
+PPU.IF_PC_ID[31:0]
+PPU.PLUS_4_BOX_ID.First_Value[31:0]
+PPU.PLUS_4_BOX_ID.Result[31:0]
+PPU.PLUS_4_BOX_ID.Second_Value[31:0]
+@200
 -UB_MUX
 @28
 PPU.UB_MUX.INPUT_ONE
@@ -103,7 +134,7 @@ PPU.UB_MUX.S
 PPU.UTA_MUX.Input_One[31:0]
 PPU.UTA_MUX.Input_Two[31:0]
 PPU.UTA_MUX.Out[31:0]
-@29
+@28
 PPU.UTA_MUX.S
 @200
 -X4_SE_Case_One
@@ -119,24 +150,43 @@ PPU.X4_SE_Case_Two.Address26_extended[31:0]
 PPU.X4_SE_Case_Two.Result[31:0]
 @200
 -MX1
-@22
+@24
 PPU.MX1.ID_Result[31:0]
 PPU.MX1.EX_Result[31:0]
-PPU.MX1.WB_Result[31:0]
 PPU.MX1.MEM_Result[31:0]
+PPU.MX1.WB_Result[31:0]
 PPU.MX1.Out[31:0]
 @28
 PPU.MX1.S[1:0]
 @200
 -MX2
-@22
+@24
 PPU.MX2.ID_Result[31:0]
 PPU.MX2.EX_Result[31:0]
-PPU.MX2.MEM_Result[31:0]
 PPU.MX2.WB_Result[31:0]
+PPU.MX2.MEM_Result[31:0]
 PPU.MX2.Out[31:0]
 @28
 PPU.MX2.S[1:0]
+@200
+-IF ID
+@28
+PPU.IF_ID.Clk
+@22
+PPU.IF_ID.DS[31:0]
+@28
+PPU.IF_ID.LE
+@22
+PPU.IF_ID.OUT_IF_IMM16[15:0]
+@24
+PPU.IF_ID.OUT_IF_OPERAND_A[4:0]
+PPU.IF_ID.OUT_IF_OPERAND_B[4:0]
+PPU.IF_ID.PC[31:0]
+PPU.IF_ID.PC_out[31:0]
+@22
+PPU.IF_ID.Qs[31:0]
+@28
+PPU.IF_ID.Reset
 @200
 -
 -Conditional Handler
@@ -150,11 +200,12 @@ PPU.Condition_Handler.RT[4:0]
 PPU.Condition_Handler.N_FLAG
 PPU.Condition_Handler.Z_FLAG
 @200
+-ALU
 -Reg File
 @28
 PPU.Reg_File.Clk
 PPU.Reg_File.E
-@22
+@420
 PPU.Reg_File.PA[31:0]
 PPU.Reg_File.PB[31:0]
 PPU.Reg_File.PW_DS[31:0]
@@ -194,9 +245,81 @@ PPU.Reg_File.Qs_register_inputs_twentythree[31:0]
 PPU.Reg_File.Qs_register_inputs_twentytwo[31:0]
 PPU.Reg_File.Qs_register_inputs_two[31:0]
 PPU.Reg_File.Qs_register_inputs_zero[31:0]
-@22
 PPU.Reg_File.RA[4:0]
 PPU.Reg_File.RB[4:0]
 PPU.Reg_File.RW[4:0]
+@200
+-
+-
+-SUSSY MUX
+@420
+PPU.SUSSY_MUX.Input_One[31:0]
+PPU.SUSSY_MUX.Input_Two[31:0]
+PPU.SUSSY_MUX.Out[31:0]
+@28
+PPU.SUSSY_MUX.S
+@200
+-
+-PLUS_8_MUX
+@420
+PPU.PLUS_8_MUX.Input_One[31:0]
+PPU.PLUS_8_MUX.Input_Two[31:0]
+PPU.PLUS_8_MUX.Out[31:0]
+@28
+PPU.PLUS_8_MUX.S
+@200
+-
+-
+-EX_MEM
+@28
+PPU.EX_MEM.Clk
+@22
+PPU.EX_MEM.EX_ADDRESS[31:0]
+@28
+PPU.EX_MEM.EX_ENABLE_MEM
+PPU.EX_MEM.EX_HI_ENABLE
+PPU.EX_MEM.EX_LOAD_INSTR
+PPU.EX_MEM.EX_LO_ENABLE
+PPU.EX_MEM.EX_MEM_ENABLE
+PPU.EX_MEM.EX_MEM_READWRITE
+PPU.EX_MEM.EX_MEM_SIGNE
+PPU.EX_MEM.EX_MEM_SIZE[1:0]
+PPU.EX_MEM.EX_PC_PLUS8_INSTR
+@22
+PPU.EX_MEM.EX_PC_PLUS_8[31:0]
+PPU.EX_MEM.EX_REGEX[4:0]
+@28
+PPU.EX_MEM.EX_RF_ENABLE
+@22
+PPU.EX_MEM.OUT_EX_ADDRESS[31:0]
+@28
+PPU.EX_MEM.OUT_EX_HI_ENABLE
+PPU.EX_MEM.OUT_EX_LOAD_INSTR
+PPU.EX_MEM.OUT_EX_LO_ENABLE
+PPU.EX_MEM.OUT_EX_MEM_ENABLE
+PPU.EX_MEM.OUT_EX_MEM_READWRITE
+PPU.EX_MEM.OUT_EX_MEM_SIGNE
+PPU.EX_MEM.OUT_EX_MEM_SIZE[1:0]
+PPU.EX_MEM.OUT_EX_PC_PLUS8_INSTR
+@22
+PPU.EX_MEM.OUT_EX_PC_PLUS_8[31:0]
+@28
+PPU.EX_MEM.OUT_EX_RF_ENABLE
+@22
+PPU.EX_MEM.OUT_REGEX[4:0]
+@28
+PPU.EX_MEM.Reset
+@200
+-DATA MEM
+@22
+PPU.Data_Memory.Address[8:0]
+@420
+PPU.Data_Memory.DataIn[31:0]
+PPU.Data_Memory.DataOut[31:0]
+@28
+PPU.Data_Memory.Enable
+PPU.Data_Memory.ReadWrite
+PPU.Data_Memory.SignExtend
+PPU.Data_Memory.Size[1:0]
 [pattern_trace] 1
 [pattern_trace] 0
