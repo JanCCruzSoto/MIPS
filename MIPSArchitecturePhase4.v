@@ -353,14 +353,14 @@ module PPU (
   // Refer to Control_Unit.v
   Control_Unit CU (
                  // OUTPUT
-                 .ID_ALU_OP                (CU_ALU_OP_CU_MUX),          // SIGNALS EXIST
-                 .ID_LOAD_INSTR            (CU_LOAD_INSTR_CU_MUX),      // SIGNALS EXIST
-                 .ID_RF_ENABLE             (CU_RF_ENABLE_CU_MUX),       // SIGNALS EXIST
-                 .ID_HI_ENABLE             (CU_HI_ENABLE_CU_MUX),       // SIGNALS EXIST
-                 .ID_LO_ENABLE             (CU_LO_ENABLE_CU_MUX),       // SIGNALS EXIST
-                 .ID_PC_PLUS8_INSTR        (CU_PC_PLUS8_INSTR_CU_MUX),  // SIGNALS EXIST
-                 .ID_UB_INSTR              (CU_UB_INSTR_CU_MUX),        // SIGNALS EXIST
-                 .ID_JALR_JR_INSTR         (CU_JALR_JR_INSTR_CU_MUX),   // SIGNALS EXIST
+                 .ID_ALU_OP                (CU_ALU_OP_CU_MUX),                   // SIGNALS EXIST
+                 .ID_LOAD_INSTR            (CU_LOAD_INSTR_CU_MUX),               // SIGNALS EXIST
+                 .ID_RF_ENABLE             (CU_RF_ENABLE_CU_MUX),                // SIGNALS EXIST
+                 .ID_HI_ENABLE             (CU_HI_ENABLE_CU_MUX),                // SIGNALS EXIST
+                 .ID_LO_ENABLE             (CU_LO_ENABLE_CU_MUX),                // SIGNALS EXIST
+                 .ID_PC_PLUS8_INSTR        (CU_PC_PLUS8_INSTR_CU_MUX),           // SIGNALS EXIST
+                 .ID_UB_INSTR              (CU_UB_INSTR_CU_MUX),                 // SIGNALS EXIST
+                 .ID_JALR_JR_INSTR         (CU_JALR_JR_INSTR_CU_MUX),            // SIGNALS EXIST
 
                  .ID_DESTINATION_REGISTER  (CU_DESTINATION_REGISTER_CU_MUX),     // SIGNAL EXISTS
                  .ID_OP_H_S                (CU_OP_H_S_CU_MUX),                   // SIGNAL EXISTS

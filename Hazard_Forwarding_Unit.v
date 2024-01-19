@@ -42,12 +42,20 @@ module Hazard_Forwarding_Unit (
         //     newEnableWB = enableWB;
         // end
 
+        // This line is the culprit, the bane of existance, the one who caused
+        // tremors, tribulations and tempests of emotions, <insert more 
+        // soul-like deep lore here>
         if (enableEX == 1'b1)  newEnableEX  = 1'b1;
         else newEnableEX = 1'b0;
         if (enableMEM == 1'b1) newEnableMEM = 1'b1;
         else newEnableMEM = 1'b0;
         if (enableWB == 1'b1)  newEnableWB  = 1'b1;
         else newEnableWB = 1'b0;
+           
+        // newEnableEX  = enableEX;
+        // newEnableMEM = enableMEM;
+        // newEnableWB  = enableWB;
+    
 
         // Forwarding for operand A
         fwdA = (newEnableEX && (operandA == regEX)) ? 2'b01 :

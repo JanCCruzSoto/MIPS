@@ -147,7 +147,6 @@ module Pipeline_Register_32bit_EX_MEM ( /*EX/MEM REGISTER*/
     input wire [1:0]  EX_MEM_SIZE,         // SIZE OF STORE
     input wire        EX_MEM_SIGNE,        // SIGN EXTENSION
     input wire [31:0] EX_ADDRESS,          // OUTPUT FROM THE ALU
-    input wire        EX_ENABLE_MEM,
     input wire [4:0]  EX_REGEX,
 
     // Output ContrEX Signals

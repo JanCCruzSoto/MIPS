@@ -218,7 +218,7 @@ module Register_32bit (
   output reg [31:0] Qs    // 32-bit output data
 );
 
-always @(posedge Clk)
+always @(posedge Clk, Ld)
 begin
   if (Ld)
     Qs <= DS;

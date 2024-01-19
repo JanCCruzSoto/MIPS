@@ -138,17 +138,11 @@ module Mux_Jump_OR_Condition ( /*USED FOR 1 BIT INPUTS*/ /*ONLY ONE USED IN ID*/
     output reg Out
   );
 
-  always@(*)
-  begin
-
+  always@(*) begin
     case(S)
-      1'b0:
-        Out <= Condition;
-
-      1'b1:
-        Out <= Jump;
+      1'b0: Out <= Condition;
+      1'b1: Out <= Jump;
     endcase
-
   end
 
 endmodule
