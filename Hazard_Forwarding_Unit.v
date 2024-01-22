@@ -69,8 +69,8 @@ module Hazard_Forwarding_Unit (
 
         // Display forwarding information
         $display("Forwarding: fwdA=%b, fwdB=%b", fwdA, fwdB);
-        $display("Time: %t, Inputs: enableEX=%b, enableMEM=%b, enableWB=%b, loadEX=%b, regEX=%d, regMEM=%d, regWB=%d, operandA=%d, operandB=%d", 
-                 $time, newEnableEX, newEnableMEM, newEnableWB, loadEX, regEX, regMEM, regWB, operandA, operandB);
+        // $display("Time: %t, Inputs: enableEX=%b, enableMEM=%b, enableWB=%b, loadEX=%b, regEX=%d, regMEM=%d, regWB=%d, operandA=%d, operandB=%d", 
+        //          $time, newEnableEX, newEnableMEM, newEnableWB, loadEX, regEX, regMEM, regWB, operandA, operandB);
         // Detect load-use hazard
         if (loadEX && ((operandA == regEX) || (operandB == regEX))) begin
             stallPC = 1'b0;
