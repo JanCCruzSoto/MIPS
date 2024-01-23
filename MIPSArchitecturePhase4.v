@@ -37,6 +37,8 @@ module PPU (
   wire [31:0] DataIn;     // TODO: check for fuck ups
   wire [31:0] DataOut;   
 
+  wire [31:0] OUT_EX_DATAIN;
+  wire [31:0] EX_DATAIN;
 
 
 
@@ -353,14 +355,14 @@ module PPU (
   // Refer to Control_Unit.v
   Control_Unit CU (
                  // OUTPUT
-                 .ID_ALU_OP                (CU_ALU_OP_CU_MUX),          // SIGNALS EXIST
-                 .ID_LOAD_INSTR            (CU_LOAD_INSTR_CU_MUX),      // SIGNALS EXIST
-                 .ID_RF_ENABLE             (CU_RF_ENABLE_CU_MUX),       // SIGNALS EXIST
-                 .ID_HI_ENABLE             (CU_HI_ENABLE_CU_MUX),       // SIGNALS EXIST
-                 .ID_LO_ENABLE             (CU_LO_ENABLE_CU_MUX),       // SIGNALS EXIST
-                 .ID_PC_PLUS8_INSTR        (CU_PC_PLUS8_INSTR_CU_MUX),  // SIGNALS EXIST
-                 .ID_UB_INSTR              (CU_UB_INSTR_CU_MUX),        // SIGNALS EXIST
-                 .ID_JALR_JR_INSTR         (CU_JALR_JR_INSTR_CU_MUX),   // SIGNALS EXIST
+                 .ID_ALU_OP                (CU_ALU_OP_CU_MUX),                   // SIGNALS EXIST
+                 .ID_LOAD_INSTR            (CU_LOAD_INSTR_CU_MUX),               // SIGNALS EXIST
+                 .ID_RF_ENABLE             (CU_RF_ENABLE_CU_MUX),                // SIGNALS EXIST
+                 .ID_HI_ENABLE             (CU_HI_ENABLE_CU_MUX),                // SIGNALS EXIST
+                 .ID_LO_ENABLE             (CU_LO_ENABLE_CU_MUX),                // SIGNALS EXIST
+                 .ID_PC_PLUS8_INSTR        (CU_PC_PLUS8_INSTR_CU_MUX),           // SIGNALS EXIST
+                 .ID_UB_INSTR              (CU_UB_INSTR_CU_MUX),                 // SIGNALS EXIST
+                 .ID_JALR_JR_INSTR         (CU_JALR_JR_INSTR_CU_MUX),            // SIGNALS EXIST
 
                  .ID_DESTINATION_REGISTER  (CU_DESTINATION_REGISTER_CU_MUX),     // SIGNAL EXISTS
                  .ID_OP_H_S                (CU_OP_H_S_CU_MUX),                   // SIGNAL EXISTS
@@ -472,10 +474,21 @@ module PPU (
                                   .PC                 (PC),                                       // ALDREADY EXISTTS
                                   .Clk                (Clk),                                      // ALDREADY EXISTTS
                                   .LE                 (stall_IFID),                               // ALDREADY EXISTTS
-                                  .Reset              (CONDITION_HANDLER_IFRESET_IF)                                     // ALDREADY EXISTTS
+                                  .Reset              (IF_RESET_ID)                                     // ALDREADY EXISTTS
                                 );
 
   // Wacky Logic boxes Extravaganza // ------------------
+
+  OR_1_Bit Real_Reset (
+// OUTPUT
+  .Result        (IF_RESET_ID),
+  // input
+
+  .Reset         (Reset),
+  .RESET_CONDITION_HANLDER (CONDITION_HANDLER_IFRESET_IF)
+  );
+
+
   HiRegister Hi (
                // OUTPUT
                .HiSignal        (HI_HISIGNAL_EX),   // SIGNAL EXISTS
@@ -622,7 +635,7 @@ module PPU (
 // 21 signals
 Pipeline_Register_32bit_ID_EX ID_EX (
     .Clk                        (Clk),
-    .Reset                      (CONDITION_HANDLER_IFRESET_IF),
+    .Reset                      (Reset),
     
     // INPUT
     .ID_HI_ENABLE               (CU_MUX_HI_ENABLE_EX),                          // SIGNAL EXISTS
@@ -702,8 +715,8 @@ Pipeline_Register_32bit_ID_EX ID_EX (
                                .Out             (PC_SELECTOR_MUX_PC_MX1_AND_MX2),               // TODO: Create signal                                           // SIGNAL EXISTS
 
                                // INPUT
-                               .Input_One       (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS
-                               .Input_Two       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),       // SIGNAL EXISTS
+                               .Input_One       (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),              // SIGNAL EXISTS
+                               .Input_Two       (EX_PC_8_MEM_AND_PC_SELECTOR_MUX),       // SIGNAL EXISTS
                                .S               (EX_PC_PLUS8_INSTR_MEM_AND_PC_SELECTOR_MUX)     // SIGNAL EXISTS
                              );
 
@@ -722,7 +735,7 @@ Pipeline_Register_32bit_ID_EX ID_EX (
 Pipeline_Register_32bit_EX_MEM EX_MEM (
     // INPUT
     .Clk                       (Clk),          // Clock signal
-    .Reset                     (CONDITION_HANDLER_IFRESET_IF),        // Reset signal
+    .Reset                     (Reset),        // Reset signal
     .EX_LOAD_INSTR             (EX_LOADEX_HAZARD),                              // SIGNAL EXISTS 
     .EX_HI_ENABLE              (EX_HI_ENABLE_MEM),                              // SIGNAL EXISTS
     .EX_LO_ENABLE              (EX_LO_ENABLE_MEM),                              // SIGNAL EXISTS
@@ -735,6 +748,7 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .EX_MEM_SIGNE              (EX_MEM_SIGNE_MEM),                              // SIGNAL EXISTS
     .EX_ADDRESS                (ALU_ALU_Result_MEM_AND_PC_SELECTOR_MUX),        // SIGNAL EXISTS | CREATE SIGNAL IN MODULE
     .EX_REGEX                  (EX_REGEX_HAZARD),
+    .EX_DATAIN                 (EX_MX2_OPERAND),
     // OUTPUT
     .OUT_EX_LOAD_INSTR        (MEM_LOAD_INSTR_MEMORY_MUX_CASE_ONE),            // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_RF_ENABLE         (MEM_MEM_RF_ENABLE_WB),                                   // CHANGE THESE SIGNALS IN MODULE
@@ -747,7 +761,8 @@ Pipeline_Register_32bit_EX_MEM EX_MEM (
     .OUT_EX_MEM_SIZE          (MEM_MEM_SIZE_DATA_MEMORY),                      // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_MEM_SIGNE         (MEM_MEM_SIGNE_DATA_MEMORY),                     // CHANGE THESE SIGNALS IN MODULE
     .OUT_EX_ADDRESS           (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),                       // 
-    .OUT_REGEX                (MEM_REGMEM_HAZARD)
+    .OUT_REGEX                (MEM_REGMEM_HAZARD),
+    .OUT_EX_DATAIN            (OUT_ID_MEM)
 );
 ram_512x8 Data_Memory (
     // OUTPUT
@@ -757,7 +772,7 @@ ram_512x8 Data_Memory (
     .ReadWrite              (MEM_MEM_READWRITE_DATA_MEMORY),
     .SignExtend             (MEM_MEM_SIGNE_DATA_MEMORY),
     .Address                (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX[8:0]),
-    .DataIn                 (MEM_ADDRESS_DATA_MEMORY_AND_SUSSY_MUX),
+    .DataIn                 (OUT_ID_MEM),
     .Size                   (MEM_MEM_SIZE_DATA_MEMORY)
 );
 
@@ -797,7 +812,7 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     .PW_REGISTER_FILE          (PLUS_8_MUX_RES_SUSSY_WB_AND_MX1_AND_MX2), // OUT_PW_REGISTER_FILE
     .EX_REGEX                  (MEM_REGMEM_HAZARD), // goes to OUT_RW_REGISTER_FILE
     .Clk                       (Clk),
-    .Reset                     (CONDITION_HANDLER_IFRESET_IF)
+    .Reset                     (Reset)
 );
 
 
@@ -810,17 +825,22 @@ Pipeline_Register_32bit_MEM_WB MEM_WB (
     // S <= 1'b0;
     Clk <= 1'b0;
     #4 Clk <= ~Clk;
-    #1 Reset <= 1'b0;
-    #1 Clk <= ~Clk;
+    #3 Reset <= 1'b0;
     forever
       #2 Clk = ~Clk;
+      
+  end
+
+  initial begin
+    #73 $display("fffffffffffffffffffffffffffffffffffff fffffffffffffffffffff mem52 %b , mem53 %b , mem54 %b, mem55 %b", Data_Memory.Mem[52], Data_Memory.Mem[53], Data_Memory.Mem[54], Data_Memory.Mem[55]);
+
   end
 
   initial
   begin
     $dumpfile("test.vcd"); // pass this to GTK Wave to visualize better wtf is going on
     $dumpvars(0, PPU);
-    #58;
+    #100;
     $display("\n----------------------------------------------------------\nDONE :D");
     $finish;
   end

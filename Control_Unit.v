@@ -376,13 +376,14 @@ always @(instruction) begin
             $display("This is LB");
             ID_ALU_OP = 0000;
             ID_LOAD_INSTR = 1;
-            //ID_RTD_INSTR = 1;
             ID_MEM_ENABLE = 1;
             ID_MEM_READWRITE = 0;
             ID_MEM_SIZE = 2'b0;
             ID_MEM_SIGNE = 1;
             ID_DESTINATION_REGISTER = 2'b01;
-            ID_OP_H_S = 100;            
+            ID_OP_H_S = 3'b101;  
+            ID_RF_ENABLE = 1;
+          
           end
           OPCODE_LBU: begin 
             //LBU: Load Byte Unsigned

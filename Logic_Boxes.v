@@ -31,6 +31,20 @@ module Bitwise_AND_Logic_Box ( /*USED FOR CALCULATING UNCONDITIONAL TA*/
   end
 endmodule
 
+module OR_1_Bit (
+  input wire Reset,
+  input wire RESET_CONDITION_HANLDER,
+
+  output reg Result
+
+);
+
+always@(Reset || RESET_CONDITION_HANLDER)
+begin
+  Result = Reset || RESET_CONDITION_HANLDER;
+end
+
+endmodule
 module Bitwise_OR_Logic_Box ( /*USED FOR CALCULATING UNCONDITIONAL TA*/
     input wire [31:0] AND_Output,
     input wire [31:0] Address26_x4_Output,

@@ -70,8 +70,7 @@ Otwentyeight = 0;
 Otwentynine = 0;
 Othirty = 0;
 Othirtyone = 0;
-    if(E)
-    begin
+    if(E) begin
         case (RW)
             5'b00000: Ozero = 1'b1; //Register Zero Value
             5'b00001: Oone = 1'b1;
@@ -106,40 +105,39 @@ Othirtyone = 0;
             5'b11110: Othirty = 1'b1;
             5'b11111: Othirtyone = 1'b1;
         endcase
-    end
-    else begin 
-        Ozero = 1'bz;
-        Oone = 1'bz;
-        Otwo = 1'bz;
-        Othree = 1'bz; 
-        Ofour = 1'bz;
-        Ofive = 1'bz;
-        Osix = 1'bz;
-        Oseven = 1'bz;
-        Oeight = 1'bz;
-        Onine = 1'bz;
-        Oten = 1'bz;
-        Oeleven = 1'bz;
-        Otwelve = 1'bz;
-        Othirteen = 1'bz;
-        Ofourteen = 1'bz;
-        Ofifteen = 1'bz;
-        Osixteen = 1'bz;
-        Oseventeen = 1'bz;
-        Oeighteen = 1'bz;
-        Onineteen = 1'bz;
-        Otwenty = 1'bz;
-        Otwentyone = 1'bz;
-        Otwentytwo = 1'bz;
-        Otwentythree = 1'bz;
-        Otwentyfour = 1'bz;
-        Otwentyfive = 1'bz;
-        Otwentysix = 1'bz;
-        Otwentyseven = 1'bz;
-        Otwentyeight = 1'bz;
-        Otwentynine = 1'bz;
-        Othirty = 1'bz;
-        Othirtyone = 1'bz;
+    end else begin 
+        Ozero        = 1'b0;
+        Oone         = 1'b0;
+        Otwo         = 1'b0;
+        Othree       = 1'b0; 
+        Ofour        = 1'b0;
+        Ofive        = 1'b0;
+        Osix         = 1'b0;
+        Oseven       = 1'b0;
+        Oeight       = 1'b0;
+        Onine        = 1'b0;
+        Oten         = 1'b0;
+        Oeleven      = 1'b0;
+        Otwelve      = 1'b0;
+        Othirteen    = 1'b0;
+        Ofourteen    = 1'b0;
+        Ofifteen     = 1'b0;
+        Osixteen     = 1'b0;
+        Oseventeen   = 1'b0;
+        Oeighteen    = 1'b0;
+        Onineteen    = 1'b0;
+        Otwenty      = 1'b0;
+        Otwentyone   = 1'b0;
+        Otwentytwo   = 1'b0;
+        Otwentythree = 1'b0;
+        Otwentyfour  = 1'b0;
+        Otwentyfive  = 1'b0;
+        Otwentysix   = 1'b0;
+        Otwentyseven = 1'b0;
+        Otwentyeight = 1'b0;
+        Otwentynine  = 1'b0;
+        Othirty      = 1'b0;
+        Othirtyone   = 1'b0;
     end
 end
 
